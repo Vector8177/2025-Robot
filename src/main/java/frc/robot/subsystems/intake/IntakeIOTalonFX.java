@@ -1,0 +1,50 @@
+// Copyright (c) 2025 FRC 6328
+// http://github.com/Mechanical-Advantage
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file at
+// the root directory of this project.
+
+package frc.robot.subsystems.intake;
+
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.hardware.TalonFX;
+
+/** Generic roller IO implementation for a roller or series of rollers using a Kraken. */
+public class IntakeIOTalonFX implements IntakeIO {
+  private final TalonFX intakeMotor;
+  private final NeutralOut neutralOut = new NeutralOut();
+
+  public IntakeIOTalonFX() {
+    intakeMotor = new TalonFX(15); // CHANGE ID, NOT ACCURATE; send this a string later
+
+    TalonFXConfiguration config = new TalonFXConfiguration();
+    config.CurrentLimits.SupplyCurrentLimitEnable = true;
+    config.MotionMagic.MotionMagicAcceleration = 100;
+
+    intakeMotor.getConfigurator().apply(config, 0.5);
+  }
+
+  @Override
+  public void updateInputs(IntakeIOInputs inputs) {
+    inputs.intakeAppliedVolts =
+        intakeMotor.getDutyCycle().getValueAsDouble()
+            * intakeMotor.getSupplyVoltage().getValueAsDouble();
+  }
+
+  @Override
+  public void setIntakeVoltage(double volts) {
+    TalonFXConfiguration newConfig = new TalonFXConfiguration();
+    newConfig.TorqueCurrent = new TorqueCurrentConfigs();
+
+    intakeMotor.setVoltage(volts);
+    // this.talon.getConfigurator().apply(newConfig, .05);
+  }
+
+  @Override
+  public void stop() {
+    intakeMotor.setControl(neutralOut);
+  }
+}
