@@ -199,45 +199,43 @@ public class RobotContainer {
     driverController
         .a()
         .whileTrue(
-            DriveCommands.joystickDrive(
-                drive,
-                () ->
-                    LimelightHelpers.getTX("limelight-bottom")
-                            > alignRange * Math.cos(drive.getRotation().getRadians())
-                        ? -alignSpeed * Math.cos(drive.getRotation().getRadians())
-                        : LimelightHelpers.getTX("limelight-bottom")
-                                < -alignRange * Math.cos(drive.getRotation().getRadians())
-                            ? alignSpeed * Math.cos(drive.getRotation().getRadians())
-                            : 0,
-                () ->
-                    LimelightHelpers.getTX("limelight-bottom")
-                            > alignRange * Math.sin(drive.getRotation().getRadians())
-                        ? -alignSpeed * Math.sin(drive.getRotation().getRadians())
-                        : LimelightHelpers.getTX("limelight-bottom")
-                                < -alignRange * Math.sin(drive.getRotation().getRadians())
-                            ? alignSpeed * Math.sin(drive.getRotation().getRadians())
-                            : 0,
-                () -> 0));
-    // LimelightHelpers.getTY("limelight-bottom") > .2
-    // ? .4
-    // : LimelightHelpers.getTY("limelight-bottom") < -.2 ? -.4 : 0
+            Commands.sequence(
+                DriveCommands.joystickDrive(
+                    drive,
+                    () ->
+                        LimelightHelpers.getTX("limelight-bottom")
+                                > alignRange * Math.cos(drive.getRotation().getRadians())
+                            ? -alignSpeed * Math.cos(drive.getRotation().getRadians())
+                            : LimelightHelpers.getTX("limelight-bottom")
+                                    < -alignRange * Math.cos(drive.getRotation().getRadians())
+                                ? alignSpeed * Math.cos(drive.getRotation().getRadians())
+                                : 0,
+                    () ->
+                        LimelightHelpers.getTX("limelight-bottom")
+                                > alignRange * Math.sin(drive.getRotation().getRadians())
+                            ? -alignSpeed * Math.sin(drive.getRotation().getRadians())
+                            : LimelightHelpers.getTX("limelight-bottom")
+                                    < -alignRange * Math.sin(drive.getRotation().getRadians())
+                                ? alignSpeed * Math.sin(drive.getRotation().getRadians())
+                                : 0,
+                    () -> 0)));
+
     driverController
         .b()
         .whileTrue(
             DriveCommands.joystickDrive(
                 drive,
-                () -> 0,
-                () -> 0,
+                () -> -driverController.getLeftY(),
+                () -> -driverController.getLeftX(),
                 () ->
-                    LimelightHelpers.getTX("limelight-bottom") > 3
-                        ? -.5
-                        : LimelightHelpers.getTX("limelight-bottom") < -3 ? .5 : 0));
+                    LimelightHelpers.getTXNC("limelight-bottom") < 4
+                            && LimelightHelpers.getTXNC("limelight-bottom") > -4
+                        ? 0
+                        : LimelightHelpers.getTXNC("limelight-bottom") > 4 ? -.5 : .5));
+    // LimelightHelpers.getTXNC("limelight-bottom") > 2
+    // ? -.4
+    // : LimelightHelpers.getTXNC("limelight-bottom") < -2 ? .4 : 0))
 
-    driverController
-        .x()
-        .whileTrue(
-            DriveCommands.joystickDrive(
-                drive, () -> 0, () -> 0, () -> new Rotation2d(Math.PI).getRadians()));
     operatorController
         .leftStick()
         .onTrue(MainCommands.setElevatorPosition(elevator, operatorController.getLeftY()));
