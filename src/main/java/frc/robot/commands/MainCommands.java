@@ -84,4 +84,20 @@ public class MainCommands {
         },
         elevator);
   }
+
+  public static Command setElevatorVoltage(Elevator elevator, double volts) {
+    return runOnce(
+        () -> {
+          elevator.setVoltage(volts);
+        },
+        elevator);
+  }
+
+  public static Command stopElevator(Elevator elevator) {
+    return runOnce(
+        () -> {
+          elevator.setVoltage(0);
+        },
+        elevator);
+  }
 }

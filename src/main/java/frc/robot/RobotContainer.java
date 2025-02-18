@@ -14,6 +14,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -145,6 +146,19 @@ public class RobotContainer {
         break;
     }
 
+    NamedCommands.registerCommand("Stop intake", MainCommands.stopIntake(intake));
+    NamedCommands.registerCommand("Run intake", MainCommands.runIntake(intake));
+    NamedCommands.registerCommand("Run outtake", MainCommands.runOuttake(intake));
+
+    NamedCommands.registerCommand(
+        "Set wrist intake position", MainCommands.setWristIntakePosition(wrist));
+    NamedCommands.registerCommand(
+        "Set wrist scoring position", MainCommands.setWristScoringPosition(wrist));
+
+    NamedCommands.registerCommand("Set climber up", MainCommands.setClimberUp(climber));
+    NamedCommands.registerCommand("Set climber down", MainCommands.setClimberDown(climber));
+    NamedCommands.registerCommand("Stop climber", MainCommands.stopClimber(climber));
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -232,13 +246,10 @@ public class RobotContainer {
                             && LimelightHelpers.getTXNC("limelight-bottom") > -4
                         ? 0
                         : LimelightHelpers.getTXNC("limelight-bottom") > 4 ? -.5 : .5));
-    // LimelightHelpers.getTXNC("limelight-bottom") > 2
-    // ? -.4
-    // : LimelightHelpers.getTXNC("limelight-bottom") < -2 ? .4 : 0))
 
-    operatorController
-        .leftStick()
-        .onTrue(MainCommands.setElevatorPosition(elevator, operatorController.getLeftY()));
+    // operatorController.a().onTrue(MainCommands.setElevatorPosition(elevator, 20));
+    operatorController.povUp().whileTrue(MainCommands.setElevatorVoltage(elevator, 2));
+    operatorController.povDown().whileTrue(MainCommands.setElevatorVoltage(elevator, -2));
     operatorController
         .rightTrigger()
         .onTrue(MainCommands.runIntake(intake))

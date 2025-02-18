@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Start to Reef"
+            "pathName": "Left Start to Reef"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Reef to Pickup"
+            "pathName": "Reef to Left Human"
           }
         }
       ]

@@ -11,15 +11,14 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
   // Constructor
   public ElevatorIOTalonFX() {
-    // Initialize the CANSparkMax motors for main and follower
-    leadMotor = new TalonFX(99); // CHANGE IDS LATER
-    followMotor = new TalonFX(98);
+    leadMotor = new TalonFX(31); // CHANGE IDS LATER
+    followMotor = new TalonFX(32);
     config = new TalonFXConfiguration();
 
     leadMotor.getConfigurator().apply(config, 0.05);
     followMotor.getConfigurator().apply(config, 0.05);
 
-    followMotor.setControl(new Follower(99, false));
+    followMotor.setControl(new Follower(31, true));
   }
 
   @Override
@@ -39,7 +38,7 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
   @Override
   public void resetPosition() {
-    // encoders
+    // leadMotor.setPosition(0.0);
   }
 
   @Override

@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Start to Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef to Left Human"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Human to Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef to Right Human"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Human to Reef"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
