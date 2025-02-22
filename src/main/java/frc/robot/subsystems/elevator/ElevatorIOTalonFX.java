@@ -44,9 +44,4 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   public void setPosition(double position) {
     leadMotor.setPosition(position);
   }
-
-  @Override
-  public void stop() {
-    leadMotor.stopMotor();
-  }
 }

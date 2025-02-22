@@ -24,24 +24,20 @@ public class Elevator extends SubsystemBase {
   public Elevator(ElevatorIO io) {
     this.io = io;
     pidController =
-        new PIDController(
-          ElevatorConstants.unweightedP, ElevatorConstants.unweightedI, ElevatorConstants.unweightedD);
+        new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
     pidController.enableContinuousInput(0, Math.PI * 2);
     pidController.setTolerance(.25);
 
     feedForward =
         new ArmFeedforward(
-            ElevatorConstants.unweightedS,
-            ElevatorConstants.unweightedG,
-            ElevatorConstants.unweightedV,
-            ElevatorConstants.unweightedA);
+            ElevatorConstants.kS, ElevatorConstants.kG, ElevatorConstants.kV, ElevatorConstants.kA);
   }
 
-// Periodic method called in every cycle (e.g., 20ms)
+  // Periodic method called in every cycle (e.g., 20ms)
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.recordOutput("Elevator Position", getPosition());
+    Logger.recordOutput("Elevator Position", io.getPosition());
     setSpeedRaw(targetSpeed);
 
     double pidMotorSpeed =
@@ -61,11 +57,6 @@ public class Elevator extends SubsystemBase {
     targetSpeed = speed;
   }
 
-  // Method to stop the elevator
-  public void stop() {
-    io.stop();
-  }
-
   public boolean atSetpoint() {
     return pidController.atSetpoint();
   }
@@ -81,9 +72,6 @@ public class Elevator extends SubsystemBase {
 
   public void setMotor(double voltage) {
     io.setElevatorVoltage(voltage);
-  }
-  public double getPosition() {
-    return io.getPosition();
   }
 
   public void resetPosition() {

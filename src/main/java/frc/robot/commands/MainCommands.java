@@ -3,6 +3,7 @@ package frc.robot.commands;
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.elevator.Elevator;
@@ -24,31 +25,38 @@ public class MainCommands {
   public static Command runIntake(Intake intake) {
     return runOnce(
         () -> {
-          intake.setSpeed(.75); // SPEED IS NOT CORRECT, CHECK AGAIN - .5
+          intake.setSpeed(1);
         },
         intake);
   }
 
-  public static Command runOuttake(Intake intake) {
+  public static Command runOutake(Intake intake) {
     return runOnce(
         () -> {
-          intake.setSpeed(-.75); // SPEED IS NOT CORRECT, CHECK AGAIN
+          intake.setSpeed(-1);
         },
         intake);
   }
 
-  public static Command setWristIntakePosition(Wrist wrist) {
-    return runOnce(
-        () -> {
-          wrist.setPosition(WristConstants.WIRST_INTAKE_POSITION);
-        },
-        wrist);
+  public static Command setIntakePosition(Wrist wrist, Elevator elevator) {
+    return sequence(
+        runOnce(
+            () -> {
+              elevator.setPosition(ElevatorConstants.ELEVATOR_INTAKE);
+            },
+            elevator),
+        waitSeconds(0.5),
+        runOnce(
+            () -> {
+              wrist.setPosition(WristConstants.WIRST_INTAKE_POSITION);
+            },
+            wrist));
   }
 
   public static Command setWristScoringPosition(Wrist wrist) {
     return runOnce(
         () -> {
-          wrist.setPosition(WristConstants.WRIST_SCORING_POSITION);
+          wrist.setPosition(WristConstants.WRIST_SCORING_POSITION_L1);
         },
         wrist);
   }
@@ -77,20 +85,20 @@ public class MainCommands {
         climber);
   }
 
-
-  public static Command setElevatorPosition(Wrist wrist, Elevator elevator, double position) {
+  public static Command setElevatorPosition(
+      Wrist wrist, Elevator elevator, double elevatorPosition, double wristPosition) {
     return sequence(
-      runOnce(
-        () -> {
-          elevator.setPosition(position);
-        },
-        elevator),
-      waitSeconds(1.0),
-      runOnce(
-        () -> {
-          wrist.setPosition(WristConstants.WRIST_SCORING_POSITION);
-        },
-        wrist));
+        runOnce(
+            () -> {
+              elevator.setPosition(elevatorPosition);
+            },
+            elevator),
+        waitSeconds(0.5),
+        runOnce(
+            () -> {
+              wrist.setPosition(wristPosition);
+            },
+            wrist));
   }
 
   public static Command setElevatorVoltage(Elevator elevator, double speed) {

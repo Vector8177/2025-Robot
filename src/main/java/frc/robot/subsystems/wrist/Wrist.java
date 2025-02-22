@@ -18,18 +18,13 @@ public class Wrist extends SubsystemBase {
   public Wrist(WristIO io) {
 
     this.io = io;
-    pidController =
-        new PIDController(
-            WristConstants.unweightedP, WristConstants.unweightedI, WristConstants.unweightedD);
+    pidController = new PIDController(WristConstants.kP, WristConstants.kI, WristConstants.kD);
     pidController.enableContinuousInput(0, Math.PI * 2);
     pidController.setTolerance(.25);
 
     feedForward =
         new ArmFeedforward(
-            WristConstants.unweightedS,
-            WristConstants.unweightedG,
-            WristConstants.unweightedV,
-            WristConstants.unweightedA);
+            WristConstants.kS, WristConstants.kG, WristConstants.kV, WristConstants.kA);
   }
 
   @Override
@@ -54,7 +49,7 @@ public class Wrist extends SubsystemBase {
   }
 
   public Command moveWrist(double position) {
-    return run(() -> setPosition(position)).until(() -> atSetpoint());
+    return runOnce(() -> setPosition(position)).until(() -> atSetpoint());
   }
 
   public void setPosition(double position) {

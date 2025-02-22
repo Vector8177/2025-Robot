@@ -13,9 +13,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -39,9 +40,10 @@ public final class Constants {
   }
 
   public static final class ElevatorConstants {
-    public static final int LEFT_ELEVATOR_MOTOR_ID = 31;
+    public static final int LEFT_ELEVATOR_MOTOR_ID = 31; // lead motor
     public static final int RIGHT_ELEVATOR_MOTOR_ID = 32;
 
+    public static final int ELEVATOR_INTAKE = 2; // change this later
     public static final int ELEVATOR_L1 = 5; // change this later
     public static final int ELEVATOR_L2 = 10; // change this later
     public static final int ELEVATOR_L3 = 15; // change this later
@@ -49,23 +51,19 @@ public final class Constants {
 
     public static final int MAX_ELEVATOR_VOLTAGE = 12;
 
-    public static double unweightedP = 0.5;
-    public static double unweightedI = 0.0;
-    public static double unweightedD = 0.0;
+    public static double kP = 0.5;
+    public static double kI = 0.0;
+    public static double kD = 0.0;
 
-    public static double unweightedS = 0.11237;
-    public static double unweightedV = 0.56387;
-    public static double unweightedA = 0.041488;
-    public static double unweightedG = 0.76416;
-
-    public static final double motorGearRatio = 1 / 32.0; // sus
-
-    public static final int currentLimit = 40;
+    public static double kS = 0.11237;
+    public static double kV = 0.56387;
+    public static double kA = 0.041488;
+    public static double kG = 0.76416;
   }
 
   public static final class IntakeConstants {
 
-    public static final int INTAKE_MOTOR_ID = 17;
+    public static final int INTAKE_MOTOR_ID = 42;
     public static final int MAX_INTAKE_VOLTAGE = 12;
     public static final double INTAKE_SPEED = 1d;
   }
@@ -74,74 +72,74 @@ public final class Constants {
     public static final int WRIST_MOTOR_ID = 41;
     public static final int MAX_WRIST_VOLTAGE = 12;
 
-    public static final double WIRST_INTAKE_POSITION = 10; // Change this later
-    public static final double WRIST_SCORING_POSITION = 5; // Change this later
+    public static final double WIRST_INTAKE_POSITION = 5; // Change this later
+    public static final double WRIST_SCORING_POSITION_L1 = 1.5; // Change this later
+    public static final double WRIST_SCORING_POSITION_L2 =
+        2; // Change this later; L2 and L3 should be the same
+    public static final double WRIST_SCORING_POSITION_L4 = 3; // Change this later
 
-    public static double unweightedP = 0.5;
-    public static double unweightedI = 0.0;
-    public static double unweightedD = 0.0;
+    public static double kP = 0.5;
+    public static double kI = 0.0;
+    public static double kD = 0.0;
 
-    public static double unweightedS = 0.11237;
-    public static double unweightedV = 0.56387;
-    public static double unweightedA = 0.041488;
-    public static double unweightedG = 0.76416;
-
-    public static final double motorGearRatio = 1 / 32.0; // sus
-
-    public static final int currentLimit = 40;
+    public static double kS = 0.11237;
+    public static double kV = 0.56387;
+    public static double kA = 0.041488;
+    public static double kG = 0.76416;
   }
 
   public final class VisionConstants {
     public static final double alignSpeed = .4;
-    public static final double alignRange = 2.75;
+    public static final double alignRange = 3;
+    public static final double closeAlignSpeed = .2;
+    public static final double closeAlignRange = 1;
 
-    public static final class PoseEstimation {
-      public interface StandardDeviation {
-        Vector<N3> forMeasurement(double distance, int count);
-      }
+    // AprilTag layout
+    public static AprilTagFieldLayout aprilTagLayout =
+        AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
-      /**
-       * Standard deviations of model states. Increase these numbers to trust your model's state
-       * estimates less. This matrix is in the form [x, y, theta]ᵀ, with units in meters and
-       * radians.
-       */
-      public static final StandardDeviation PHOTON_VISION_STD_DEV =
-          (distance, count) -> {
-            double distanceMultiplier = Math.pow(distance - ((count - 1) * 2), 2);
-            double translationalStdDev = (0.05 / (count)) * distanceMultiplier + 0.05;
-            double rotationalStdDev = 0.2 * distanceMultiplier + 0.1;
-            return VecBuilder.fill(translationalStdDev, translationalStdDev, rotationalStdDev);
-          };
+    // Camera names, must match names configured on coprocessor
+    public static String camera0Name = "limelight-bottom";
+    public static String camera1Name = "limelight-top";
 
-      public static final double POSE_AMBIGUITY_CUTOFF = .3;
+    // Robot to camera transforms
+    // (Not used by Limelight, configure in web UI instead)
+    public static Transform3d robotToCamera0 =
+        new Transform3d(0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, 0.0));
+    public static Transform3d robotToCamera1 =
+        new Transform3d(-0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, Math.PI));
 
-      public static final double POSE_DISTANCE_CUTOFF = FieldConstants.fieldLength / 2;
-    }
+    // Basic filtering thresholds
+    public static double maxAmbiguity = 0.3;
+    public static double maxZError = 0.75;
 
-    public static class FieldConstants {
-      public static final double fieldLength = 16.542;
-      public static final double fieldWidth = 8.0137;
-    }
+    // Standard deviation baselines, for 1 meter distance and 1 tag
+    // (Adjusted automatically based on distance and # of tags)
+    public static double linearStdDevBaseline = 0.02; // Meters
+    public static double angularStdDevBaseline = 0.06; // Radians
+
+    // Standard deviation multipliers for each camera
+    // (Adjust to trust some cameras more than others)
+    public static double[] cameraStdDevFactors =
+        new double[] {
+          1.0, // Camera 0
+          1.0 // Camera 1
+        };
+
+    // Multipliers to apply for MegaTag 2 observations
+    public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
+    public static double angularStdDevMegatag2Factor =
+        Double.POSITIVE_INFINITY; // No rotation data available
   }
 
   public static final class ClimberConstants {
     public static final int RIGHT_MOTOR_ID = 52;
     public static final int LEFT_MOTOR_ID = 51;
 
-    public static final double CLIMBER_GEAR_RATIO = 1 / 125d; // sus
-
-    public static final double rightClimberAbsoluteEncoderOffset = 0d;
-    public static final double leftClimberAbsoluteEncoderOffset = 0d;
-
     public static final int maxClimberMotorVoltage = 12;
 
     public static final double climberKP = 1d;
     public static final double climberKI = 0d;
     public static final double climberKD = 0d;
-
-    public static final double climberSpeed = 30d;
-
-    public static final double climberTopLimit = 20000d;
-    public static final double climberBottomLimit = 0.2d;
   }
 }

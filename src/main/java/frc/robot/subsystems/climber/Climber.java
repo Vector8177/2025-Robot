@@ -1,7 +1,6 @@
 package frc.robot.subsystems.climber;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
@@ -10,19 +9,10 @@ public class Climber extends SubsystemBase {
   private final ClimberIO io;
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
-  private final PIDController climberController;
-
-  private double desiredLeftClimberPosition = 170;
   private double targetSpeed = 0.0;
 
   public Climber(ClimberIO io) {
     this.io = io;
-
-    climberController =
-        new PIDController(
-            Constants.ClimberConstants.climberKP,
-            Constants.ClimberConstants.climberKI,
-            Constants.ClimberConstants.climberKD);
   }
 
   public void setSpeedRaw(double speed) {
@@ -46,12 +36,6 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Climber", inputs);
-    io.setClimberVoltage(
-        MathUtil.clamp(
-            climberController.calculate(
-                inputs.leftClimberEncoderPosition, desiredLeftClimberPosition),
-            -Constants.ClimberConstants.maxClimberMotorVoltage,
-            Constants.ClimberConstants.maxClimberMotorVoltage));
 
     setSpeedRaw(targetSpeed);
   }

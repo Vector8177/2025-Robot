@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.MainCommands;
 import frc.robot.generated.TunerConstants;
@@ -153,17 +154,54 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
     NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
-    NamedCommands.registerCommand("Run Outtake", MainCommands.runOuttake(intake));
+    NamedCommands.registerCommand("Run Outake", MainCommands.runOutake(intake));
 
     NamedCommands.registerCommand(
-        "Set Wrist Intake Position", MainCommands.setWristIntakePosition(wrist));
+        "Set Wrist Intake Position", MainCommands.setIntakePosition(wrist, elevator));
     NamedCommands.registerCommand(
         "Set Wrist Scoring Position", MainCommands.setWristScoringPosition(wrist));
-    // NamedCommands.registerCommand("Turn Auto-align on", MainCommands.alignRange(drive));
-    NamedCommands.registerCommand("Set Elevator L1", MainCommands.setElevatorPosition(wrist, elevator, ElevatorConstants.ELEVATOR_L1));
-    NamedCommands.registerCommand("Set Elevator L2", MainCommands.setElevatorPosition(wrist, elevator, ElevatorConstants.ELEVATOR_L2));
-    NamedCommands.registerCommand("Set Elevator L3", MainCommands.setElevatorPosition(wrist, elevator, ElevatorConstants.ELEVATOR_L3));
-    NamedCommands.registerCommand("Set Elevator L4", MainCommands.setElevatorPosition(wrist, elevator, ElevatorConstants.ELEVATOR_L4));
+
+    NamedCommands.registerCommand(
+        "Auto-align",
+        DriveCommands.autoAlign(
+            drive,
+            () ->
+                LimelightHelpers.getTXNC("limelight-bottom") < VisionConstants.alignRange
+                        && LimelightHelpers.getTXNC("limelight-bottom")
+                            > -VisionConstants.alignRange
+                    ? 0
+                    : LimelightHelpers.getTXNC("limelight-bottom") > VisionConstants.alignRange
+                        ? -VisionConstants.alignSpeed
+                        : VisionConstants.alignSpeed));
+
+    NamedCommands.registerCommand(
+        "Set Elevator L1",
+        MainCommands.setElevatorPosition(
+            wrist,
+            elevator,
+            ElevatorConstants.ELEVATOR_L1,
+            WristConstants.WRIST_SCORING_POSITION_L1));
+    NamedCommands.registerCommand(
+        "Set Elevator L2",
+        MainCommands.setElevatorPosition(
+            wrist,
+            elevator,
+            ElevatorConstants.ELEVATOR_L2,
+            WristConstants.WRIST_SCORING_POSITION_L2));
+    NamedCommands.registerCommand(
+        "Set Elevator L3",
+        MainCommands.setElevatorPosition(
+            wrist,
+            elevator,
+            ElevatorConstants.ELEVATOR_L3,
+            WristConstants.WRIST_SCORING_POSITION_L2));
+    NamedCommands.registerCommand(
+        "Set Elevator L4",
+        MainCommands.setElevatorPosition(
+            wrist,
+            elevator,
+            ElevatorConstants.ELEVATOR_L4,
+            WristConstants.WRIST_SCORING_POSITION_L4));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -211,7 +249,7 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
     driverController
-        .a()
+        .b()
         .whileTrue(
             Commands.sequence(
                 DriveCommands.joystickDrive(
@@ -242,32 +280,63 @@ public class RobotContainer {
                                 : 0,
                     () -> 0)));
     driverController
-        .b()
+        .a()
         .whileTrue(
             DriveCommands.joystickDrive(
                 drive,
                 () -> -driverController.getLeftY(),
                 () -> -driverController.getLeftX(),
                 () ->
-                    LimelightHelpers.getTXNC("limelight-bottom") < 3
-                            && LimelightHelpers.getTXNC("limelight-bottom") > -3
+                    LimelightHelpers.getTXNC("limelight-bottom") < VisionConstants.alignRange
+                            && LimelightHelpers.getTXNC("limelight-bottom")
+                                > -VisionConstants.alignRange
                         ? 0
-                        : LimelightHelpers.getTXNC("limelight-bottom") > 3 ? -.5 : .5));
+                        : LimelightHelpers.getTXNC("limelight-bottom") > VisionConstants.alignRange
+                            ? -VisionConstants.alignSpeed
+                            : VisionConstants.alignSpeed));
 
-    operatorController.povUp().onTrue(MainCommands.setElevatorPosition(wrist, elevator, ElevatorConstants.ELEVATOR_L1));
-    operatorController.povLeft().onTrue(MainCommands.setElevatorPosition(wrist, elevator, ElevatorConstants.ELEVATOR_L2));
-    operatorController.povDown().onTrue(MainCommands.setElevatorPosition(wrist, elevator, ElevatorConstants.ELEVATOR_L3));
-    operatorController.povRight().onTrue(MainCommands.setElevatorPosition(wrist, elevator, ElevatorConstants.ELEVATOR_L4));
+    operatorController
+        .povUp()
+        .onTrue(
+            MainCommands.setElevatorPosition(
+                wrist,
+                elevator,
+                ElevatorConstants.ELEVATOR_L1,
+                WristConstants.WRIST_SCORING_POSITION_L1));
+    operatorController
+        .povLeft()
+        .onTrue(
+            MainCommands.setElevatorPosition(
+                wrist,
+                elevator,
+                ElevatorConstants.ELEVATOR_L2,
+                WristConstants.WRIST_SCORING_POSITION_L2));
+    operatorController
+        .povDown()
+        .onTrue(
+            MainCommands.setElevatorPosition(
+                wrist,
+                elevator,
+                ElevatorConstants.ELEVATOR_L3,
+                WristConstants.WRIST_SCORING_POSITION_L2));
+    operatorController
+        .povRight()
+        .onTrue(
+            MainCommands.setElevatorPosition(
+                wrist,
+                elevator,
+                ElevatorConstants.ELEVATOR_L4,
+                WristConstants.WRIST_SCORING_POSITION_L4));
     operatorController
         .rightTrigger()
         .onTrue(MainCommands.runIntake(intake))
         .onFalse(MainCommands.stopIntake(intake));
     operatorController
         .leftTrigger()
-        .onTrue(MainCommands.runOuttake(intake))
+        .onTrue(MainCommands.runOutake(intake))
         .onFalse(MainCommands.stopIntake(intake));
-    operatorController.y().onTrue(MainCommands.setWristIntakePosition(wrist));
-    operatorController.a().onTrue(MainCommands.setWristScoringPosition(wrist));
+    operatorController.a().onTrue(MainCommands.setIntakePosition(wrist, elevator));
+    operatorController.y().onTrue(MainCommands.setWristScoringPosition(wrist));
     operatorController
         .rightBumper()
         .onTrue(MainCommands.setClimberUp(climber))
