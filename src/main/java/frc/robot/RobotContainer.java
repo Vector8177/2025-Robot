@@ -158,21 +158,9 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
         "Set Wrist Intake Position", MainCommands.setIntakePosition(wrist, elevator));
-    NamedCommands.registerCommand(
-        "Set Wrist Scoring Position", MainCommands.setWristScoringPosition(wrist));
 
     NamedCommands.registerCommand(
-        "Auto-align",
-        DriveCommands.autoAlign(
-            drive,
-            () ->
-                LimelightHelpers.getTXNC("limelight-bottom") < VisionConstants.alignRange
-                        && LimelightHelpers.getTXNC("limelight-bottom")
-                            > -VisionConstants.alignRange
-                    ? 0
-                    : LimelightHelpers.getTXNC("limelight-bottom") > VisionConstants.alignRange
-                        ? -VisionConstants.alignSpeed
-                        : VisionConstants.alignSpeed));
+        "Auto Align", DriveCommands.autoAlign(drive, () -> Vision.autoAlignValue()));
 
     NamedCommands.registerCommand(
         "Set Elevator L1",
@@ -286,15 +274,20 @@ public class RobotContainer {
                 drive,
                 () -> -driverController.getLeftY(),
                 () -> -driverController.getLeftX(),
-                () ->
-                    LimelightHelpers.getTXNC("limelight-bottom") < VisionConstants.alignRange
-                            && LimelightHelpers.getTXNC("limelight-bottom")
-                                > -VisionConstants.alignRange
-                        ? 0
-                        : LimelightHelpers.getTXNC("limelight-bottom") > VisionConstants.alignRange
-                            ? -VisionConstants.alignSpeed
-                            : VisionConstants.alignSpeed));
+                () -> Vision.autoAlignValue()));
 
+    // operatorController
+    //     .povLeft()
+    //     .onTrue(MainCommands.setElevatorPositionTest(elevator, ElevatorConstants.ELEVATOR_L2));
+    // operatorController
+    //     .povUp()
+    //     .onTrue(MainCommands.setElevatorPositionTest(elevator, ElevatorConstants.ELEVATOR_L1));
+    // operatorController
+    //     .povDown()
+    //     .onTrue(MainCommands.setElevatorPositionTest(elevator, ElevatorConstants.ELEVATOR_L3));
+    // operatorController
+    //     .povRight()
+    //     .onTrue(MainCommands.setElevatorPositionTest(elevator, ElevatorConstants.ELEVATOR_L4));
     operatorController
         .povUp()
         .onTrue(
@@ -336,7 +329,14 @@ public class RobotContainer {
         .onTrue(MainCommands.runOutake(intake))
         .onFalse(MainCommands.stopIntake(intake));
     operatorController.a().onTrue(MainCommands.setIntakePosition(wrist, elevator));
-    operatorController.y().onTrue(MainCommands.setWristScoringPosition(wrist));
+    operatorController
+        .b()
+        .onTrue(MainCommands.setElevatorVoltage(elevator, 1))
+        .onFalse(MainCommands.stopElevator(elevator));
+    operatorController
+        .x()
+        .onTrue(MainCommands.setElevatorVoltage(elevator, -1))
+        .onFalse(MainCommands.stopElevator(elevator));
     operatorController
         .rightBumper()
         .onTrue(MainCommands.setClimberUp(climber))

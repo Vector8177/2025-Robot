@@ -17,6 +17,12 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "Auto Align"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "Set Elevator L4"
                 }
               },
@@ -57,12 +63,6 @@
           "type": "path",
           "data": {
             "pathName": "Reef to Left Human"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Set Elevator L1"
           }
         }
       ]

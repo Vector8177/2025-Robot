@@ -53,14 +53,6 @@ public class MainCommands {
             wrist));
   }
 
-  public static Command setWristScoringPosition(Wrist wrist) {
-    return runOnce(
-        () -> {
-          wrist.setPosition(WristConstants.WRIST_SCORING_POSITION_L1);
-        },
-        wrist);
-  }
-
   public static Command setClimberUp(Climber climber) {
     return runOnce(
         () -> {
@@ -89,6 +81,12 @@ public class MainCommands {
       Wrist wrist, Elevator elevator, double elevatorPosition, double wristPosition) {
     return sequence(
         runOnce(
+          () -> {
+            wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION);
+          }, 
+          wrist),
+        waitSeconds(0.5),
+        runOnce(
             () -> {
               elevator.setPosition(elevatorPosition);
             },
@@ -100,6 +98,14 @@ public class MainCommands {
             },
             wrist));
   }
+
+  // public static Command setElevatorPositionTest(Elevator elevator, double elevatorPosition) {
+  //   return runOnce(
+  //       () -> {
+  //         elevator.setPosition(elevatorPosition);
+  //       },
+  //       elevator);
+  // }
 
   public static Command setElevatorVoltage(Elevator elevator, double speed) {
     return runOnce(

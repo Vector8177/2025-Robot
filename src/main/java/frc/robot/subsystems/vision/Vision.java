@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.vision.VisionIO.PoseObservationType;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,11 +63,32 @@ public class Vision extends SubsystemBase {
     return inputs[cameraIndex].latestTargetObservation.tx();
   }
 
+  public static double autoAlignValue() {
+    return LimelightHelpers.getTXNC("limelight-bottom") < VisionConstants.closeAlignRange
+            && LimelightHelpers.getTXNC("limelight-bottom") > -VisionConstants.closeAlignRange
+        ? 0
+        : LimelightHelpers.getTXNC("limelight-bottom") > VisionConstants.closeAlignRange
+            ? -VisionConstants.closeAlignSpeed
+            : LimelightHelpers.getTXNC("limelight-bottom") < -VisionConstants.closeAlignRange
+                ? VisionConstants.closeAlignSpeed
+                : LimelightHelpers.getTXNC("limelight-bottom") > VisionConstants.alignRange
+                    ? -VisionConstants.alignSpeed
+                    : VisionConstants.alignSpeed;
+    // LimelightHelpers.getTXNC("limelight-bottom") < VisionConstants.alignRange
+    //         && LimelightHelpers.getTXNC("limelight-bottom")
+    //             > -VisionConstants.alignRange
+    //     ? 0
+    //     : LimelightHelpers.getTXNC("limelight-bottom") > VisionConstants.alignRange
+    //         ? -VisionConstants.alignSpeed
+    //         : VisionConstants.alignSpeed));
+  }
+
   @Override
   public void periodic() {
     for (int i = 0; i < io.length; i++) {
       io[i].updateInputs(inputs[i]);
       Logger.processInputs("Vision/Camera" + Integer.toString(i), inputs[i]);
+      Logger.recordOutput("Vision/autoalignvalue", autoAlignValue());
     }
 
     // Initialize logging values

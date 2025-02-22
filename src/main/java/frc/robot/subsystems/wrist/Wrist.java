@@ -1,5 +1,7 @@
 package frc.robot.subsystems.wrist;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
@@ -21,6 +23,7 @@ public class Wrist extends SubsystemBase {
     pidController = new PIDController(WristConstants.kP, WristConstants.kI, WristConstants.kD);
     pidController.enableContinuousInput(0, Math.PI * 2);
     pidController.setTolerance(.25);
+    io.resetRelativeEncoder();
 
     feedForward =
         new ArmFeedforward(
@@ -31,6 +34,7 @@ public class Wrist extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     // Logger.getInstance().processInputs("Wrist", inputs);
+    Logger.recordOutput("Wrist Position", io.getPosition());
 
     double pidMotorSpeed =
         pidController.calculate(io.getPosition(), targetPosition)
@@ -38,10 +42,6 @@ public class Wrist extends SubsystemBase {
     setMotor(
         MathUtil.clamp(
             (pidMotorSpeed), -WristConstants.MAX_WRIST_VOLTAGE, WristConstants.MAX_WRIST_VOLTAGE));
-  }
-
-  public double getEncoderPosition() {
-    return inputs.absoluteEncoderPosition;
   }
 
   public void setMotor(double voltage) {
@@ -55,10 +55,6 @@ public class Wrist extends SubsystemBase {
   public void setPosition(double position) {
     // Logger.getInstance().recordOutput("WristTargetPosition", position);
     targetPosition = position;
-  }
-
-  public double getPosition() {
-    return targetPosition;
   }
 
   public boolean atSetpoint() {

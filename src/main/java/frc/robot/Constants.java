@@ -45,15 +45,16 @@ public final class Constants {
 
     public static final int ELEVATOR_INTAKE = 2; // change this later
     public static final int ELEVATOR_L1 = 5; // change this later
-    public static final int ELEVATOR_L2 = 10; // change this later
-    public static final int ELEVATOR_L3 = 15; // change this later
-    public static final int ELEVATOR_L4 = 20; // change this later
+    public static final int ELEVATOR_L2 = 15; // change this later
+    public static final int ELEVATOR_L3 = 20; // change this later
+    public static final int ELEVATOR_L4 = 25; // change this later
+    public static final int ELEVATOR_NET = 45; // change this later
 
     public static final int MAX_ELEVATOR_VOLTAGE = 12;
 
-    public static double kP = 0.5;
+    public static double kP = 2.5;
     public static double kI = 0.0;
-    public static double kD = 0.0;
+    public static double kD = 0.1;
 
     public static double kS = 0.11237;
     public static double kV = 0.56387;
@@ -74,9 +75,10 @@ public final class Constants {
 
     public static final double WIRST_INTAKE_POSITION = 5; // Change this later
     public static final double WRIST_SCORING_POSITION_L1 = 1.5; // Change this later
-    public static final double WRIST_SCORING_POSITION_L2 =
-        2; // Change this later; L2 and L3 should be the same
+    public static final double WRIST_SCORING_POSITION_L2 = 2; // Change this later; L2 and L3 should be the same
     public static final double WRIST_SCORING_POSITION_L4 = 3; // Change this later
+    public static final double WRIST_PERPENDICULAR_POSITION = 3; // Change this later
+    public static final double WRIST_SCORING_POSITION_NET = 3; // Change this later
 
     public static double kP = 0.5;
     public static double kI = 0.0;
@@ -91,7 +93,7 @@ public final class Constants {
   public final class VisionConstants {
     public static final double alignSpeed = .4;
     public static final double alignRange = 3;
-    public static final double closeAlignSpeed = .2;
+    public static final double closeAlignSpeed = .25;
     public static final double closeAlignRange = 1;
 
     // AprilTag layout
@@ -137,9 +139,5 @@ public final class Constants {
     public static final int LEFT_MOTOR_ID = 51;
 
     public static final int maxClimberMotorVoltage = 12;
-
-    public static final double climberKP = 1d;
-    public static final double climberKI = 0d;
-    public static final double climberKD = 0d;
   }
 }

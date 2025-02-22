@@ -3,6 +3,7 @@ package frc.robot.subsystems.elevator;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorIOTalonFX implements ElevatorIO {
@@ -23,6 +24,9 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
     leadMotor.setPosition(0);
     followMotor.setPosition(0);
+
+    leadMotor.setNeutralMode(NeutralModeValue.Brake);
+    followMotor.setNeutralMode(NeutralModeValue.Brake);
   }
 
   @Override
@@ -38,6 +42,7 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   @Override
   public void resetPosition() {
     leadMotor.setPosition(0.0);
+    followMotor.setPosition(0.0);
   }
 
   @Override

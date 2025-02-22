@@ -5,9 +5,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.WristConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class Elevator extends SubsystemBase {
@@ -27,7 +25,7 @@ public class Elevator extends SubsystemBase {
         new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
     pidController.enableContinuousInput(0, Math.PI * 2);
     pidController.setTolerance(.25);
-
+    io.resetPosition();
     feedForward =
         new ArmFeedforward(
             ElevatorConstants.kS, ElevatorConstants.kG, ElevatorConstants.kV, ElevatorConstants.kA);
@@ -38,22 +36,20 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.recordOutput("Elevator Position", io.getPosition());
-    setSpeedRaw(targetSpeed);
 
     double pidMotorSpeed =
         pidController.calculate(io.getPosition(), targetPosition)
             + feedForward.calculate(targetPosition, 0);
+    Logger.recordOutput("PID Speed", pidMotorSpeed);
     setMotor(
         MathUtil.clamp(
-            (pidMotorSpeed), -WristConstants.MAX_WRIST_VOLTAGE, WristConstants.MAX_WRIST_VOLTAGE));
-  }
-
-  private void setSpeedRaw(double speed) {
-    speed = MathUtil.clamp(speed, -1, 1);
-    io.setElevatorVoltage(speed * Constants.IntakeConstants.MAX_INTAKE_VOLTAGE);
+            (pidMotorSpeed),
+            -ElevatorConstants.MAX_ELEVATOR_VOLTAGE,
+            ElevatorConstants.MAX_ELEVATOR_VOLTAGE));
   }
 
   public void setSpeed(double speed) {
+    Logger.recordOutput("Elevator Speed", speed);
     targetSpeed = speed;
   }
 
@@ -66,7 +62,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setPosition(double position) {
-    // Logger.getInstance().recordOutput("WristTargetPosition", position);
+    Logger.recordOutput("ElevatorTargetPosition", position);
     targetPosition = position;
   }
 
