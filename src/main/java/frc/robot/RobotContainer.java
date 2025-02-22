@@ -13,9 +13,9 @@
 
 package frc.robot;
 
+// import com.pathplanner.lib.*;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.MainCommands;
 import frc.robot.generated.TunerConstants;
@@ -59,6 +60,7 @@ public class RobotContainer {
   private final Elevator elevator;
   private final Wrist wrist;
   private final Vision vision;
+  // private final PathPlannerTrajectory trajectory;
 
   // Controller
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -87,6 +89,8 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOTalonFX());
 
         wrist = new Wrist(new WristIOTalonFX());
+
+        // trajectory = PathPlanner.loadPath("Start to center");
 
         vision =
             new Vision(
@@ -146,18 +150,19 @@ public class RobotContainer {
         break;
     }
 
-    NamedCommands.registerCommand("Stop intake", MainCommands.stopIntake(intake));
-    NamedCommands.registerCommand("Run intake", MainCommands.runIntake(intake));
-    NamedCommands.registerCommand("Run outtake", MainCommands.runOuttake(intake));
+    NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
+    NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
+    NamedCommands.registerCommand("Run Outtake", MainCommands.runOuttake(intake));
 
     NamedCommands.registerCommand(
-        "Set wrist intake position", MainCommands.setWristIntakePosition(wrist));
+        "Set Wrist Intake Position", MainCommands.setWristIntakePosition(wrist));
     NamedCommands.registerCommand(
-        "Set wrist scoring position", MainCommands.setWristScoringPosition(wrist));
-
-    NamedCommands.registerCommand("Set climber up", MainCommands.setClimberUp(climber));
-    NamedCommands.registerCommand("Set climber down", MainCommands.setClimberDown(climber));
-    NamedCommands.registerCommand("Stop climber", MainCommands.stopClimber(climber));
+        "Set Wrist Scoring Position", MainCommands.setWristScoringPosition(wrist));
+    // NamedCommands.registerCommand("Turn Auto-align on", MainCommands.alignRange(drive));
+    NamedCommands.registerCommand("Set Elevator L1", MainCommands.setElevatorPositionL1(elevator));
+    NamedCommands.registerCommand("Set Elevator L2", MainCommands.setElevatorPositionL2(elevator));
+    NamedCommands.registerCommand("Set Elevator L3", MainCommands.setElevatorPositionL3(elevator));
+    NamedCommands.registerCommand("Set Elevator L4", MainCommands.setElevatorPositionL4(elevator));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -204,12 +209,6 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
-
-    PIDController aimController = new PIDController(0.1, 0.0, 0.0);
-    aimController.enableContinuousInput(-Math.PI, Math.PI);
-
-    final double alignSpeed = .4;
-    final double alignRange = 2.75;
     driverController
         .a()
         .whileTrue(
@@ -218,22 +217,29 @@ public class RobotContainer {
                     drive,
                     () ->
                         LimelightHelpers.getTX("limelight-bottom")
-                                > alignRange * Math.cos(drive.getRotation().getRadians())
-                            ? -alignSpeed * Math.cos(drive.getRotation().getRadians())
+                                > VisionConstants.alignRange
+                                    * Math.cos(drive.getRotation().getRadians())
+                            ? -VisionConstants.alignSpeed
+                                * Math.cos(drive.getRotation().getRadians())
                             : LimelightHelpers.getTX("limelight-bottom")
-                                    < -alignRange * Math.cos(drive.getRotation().getRadians())
-                                ? alignSpeed * Math.cos(drive.getRotation().getRadians())
+                                    < -VisionConstants.alignRange
+                                        * Math.cos(drive.getRotation().getRadians())
+                                ? VisionConstants.alignSpeed
+                                    * Math.cos(drive.getRotation().getRadians())
                                 : 0,
                     () ->
                         LimelightHelpers.getTX("limelight-bottom")
-                                > alignRange * Math.sin(drive.getRotation().getRadians())
-                            ? -alignSpeed * Math.sin(drive.getRotation().getRadians())
+                                > VisionConstants.alignRange
+                                    * Math.sin(drive.getRotation().getRadians())
+                            ? -VisionConstants.alignSpeed
+                                * Math.sin(drive.getRotation().getRadians())
                             : LimelightHelpers.getTX("limelight-bottom")
-                                    < -alignRange * Math.sin(drive.getRotation().getRadians())
-                                ? alignSpeed * Math.sin(drive.getRotation().getRadians())
+                                    < -VisionConstants.alignRange
+                                        * Math.sin(drive.getRotation().getRadians())
+                                ? VisionConstants.alignSpeed
+                                    * Math.sin(drive.getRotation().getRadians())
                                 : 0,
                     () -> 0)));
-
     driverController
         .b()
         .whileTrue(
@@ -242,14 +248,20 @@ public class RobotContainer {
                 () -> -driverController.getLeftY(),
                 () -> -driverController.getLeftX(),
                 () ->
-                    LimelightHelpers.getTXNC("limelight-bottom") < 4
-                            && LimelightHelpers.getTXNC("limelight-bottom") > -4
+                    LimelightHelpers.getTXNC("limelight-bottom") < 3
+                            && LimelightHelpers.getTXNC("limelight-bottom") > -3
                         ? 0
-                        : LimelightHelpers.getTXNC("limelight-bottom") > 4 ? -.5 : .5));
+                        : LimelightHelpers.getTXNC("limelight-bottom") > 3 ? -.5 : .5));
 
-    // operatorController.a().onTrue(MainCommands.setElevatorPosition(elevator, 20));
-    operatorController.povUp().whileTrue(MainCommands.setElevatorVoltage(elevator, 2));
-    operatorController.povDown().whileTrue(MainCommands.setElevatorVoltage(elevator, -2));
+    operatorController.a().onTrue(MainCommands.setElevatorPositionL1(elevator));
+    operatorController
+        .povUp()
+        .onTrue(MainCommands.setElevatorVoltage(elevator, .25))
+        .onFalse(MainCommands.stopElevator(elevator));
+    operatorController
+        .povDown()
+        .onTrue(MainCommands.setElevatorVoltage(elevator, -.25))
+        .onFalse(MainCommands.stopElevator(elevator));
     operatorController
         .rightTrigger()
         .onTrue(MainCommands.runIntake(intake))

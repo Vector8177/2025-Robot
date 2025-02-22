@@ -2,27 +2,33 @@ package frc.robot.subsystems.elevator;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorIOTalonFX implements ElevatorIO {
   private final TalonFX leadMotor;
   private final TalonFX followMotor;
   private final TalonFXConfiguration config;
+  private final PositionVoltage m_positionVoltage = new PositionVoltage(0).withSlot(0);
 
   // Constructor
   public ElevatorIOTalonFX() {
-    leadMotor = new TalonFX(31); // CHANGE IDS LATER
-    followMotor = new TalonFX(32);
+    leadMotor = new TalonFX(ElevatorConstants.LEFT_ELEVATOR_MOTOR_ID);
+    followMotor = new TalonFX(ElevatorConstants.RIGHT_ELEVATOR_MOTOR_ID);
     config = new TalonFXConfiguration();
 
     leadMotor.getConfigurator().apply(config, 0.05);
     followMotor.getConfigurator().apply(config, 0.05);
 
-    followMotor.setControl(new Follower(31, true));
+    followMotor.setControl(new Follower(ElevatorConstants.LEFT_ELEVATOR_MOTOR_ID, true));
+
+    leadMotor.setPosition(0);
+    followMotor.setPosition(0);
   }
 
   @Override
-  public void set(double voltage) {
+  public void setElevatorVoltage(double voltage) {
     leadMotor.setVoltage(voltage);
   }
 
@@ -38,7 +44,7 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
   @Override
   public void resetPosition() {
-    // leadMotor.setPosition(0.0);
+    leadMotor.setPosition(0.0);
   }
 
   @Override

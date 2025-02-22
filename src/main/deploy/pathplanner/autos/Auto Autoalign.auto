@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Start to Reef"
+            "pathName": "Start to center"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Right Reef to Human"
+            "name": null
           }
         }
       ]

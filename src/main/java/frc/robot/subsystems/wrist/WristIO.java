@@ -18,4 +18,8 @@ public interface WristIO {
   public default void setVoltage(double speed) {}
 
   public default void resetRelativeEncoder() {}
+
+  public default double getPosition() {
+    return 0;
+  }
 }

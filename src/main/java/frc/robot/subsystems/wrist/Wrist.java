@@ -6,7 +6,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WristConstants;
-import frc.robot.Constants.WristConstants.PIDFFmode;
 
 public class Wrist extends SubsystemBase {
   private double targetPosition;
@@ -31,8 +30,6 @@ public class Wrist extends SubsystemBase {
             WristConstants.unweightedG,
             WristConstants.unweightedV,
             WristConstants.unweightedA);
-
-    // setPosition(Position.STANDBY.getWrist());
   }
 
   @Override
@@ -41,21 +38,11 @@ public class Wrist extends SubsystemBase {
     // Logger.getInstance().processInputs("Wrist", inputs);
 
     double pidMotorSpeed =
-        pidController.calculate(inputs.absoluteEncoderPosition, targetPosition)
+        pidController.calculate(io.getPosition(), targetPosition)
             + feedForward.calculate(targetPosition, 0);
     setMotor(
         MathUtil.clamp(
-            (pidMotorSpeed), -WristConstants.maxMotorVoltage, WristConstants.maxMotorVoltage));
-  }
-
-  public void setPIDFFMode(PIDFFmode mode) {
-    pidController.setPID(mode.kP, mode.kI, mode.kD);
-    feedForward = new ArmFeedforward(mode.kS, mode.kG, mode.kV, mode.kA);
-    // if (mode == PIDFFmode.WEIGHTED) {
-    //     Logger.getInstance().recordOutput("WristPIDMode", "Weighted");
-    // } else {
-    //     Logger.getInstance().recordOutput("WristPIDMode", "Unweighted");
-    // }
+            (pidMotorSpeed), -WristConstants.MAX_WRIST_VOLTAGE, WristConstants.MAX_WRIST_VOLTAGE));
   }
 
   public double getEncoderPosition() {

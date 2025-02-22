@@ -2,16 +2,19 @@ package frc.robot.subsystems.wrist;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import frc.robot.Constants.WristConstants;
 
 public class WristIOTalonFX implements WristIO {
   private final TalonFX talon;
   private final TalonFXConfiguration configuration;
 
   public WristIOTalonFX() {
-    this.talon = new TalonFX(69); // Change ID to correct one
-    this.configuration = new TalonFXConfiguration(); // Change ID to correct one
+    talon = new TalonFX(WristConstants.wristMotorId); // Change ID to correct one
+    configuration = new TalonFXConfiguration(); // Change ID to correct one
 
-    this.talon.getConfigurator().apply(this.configuration, .05);
+    talon.getConfigurator().apply(this.configuration, .05);
+
+    talon.setPosition(0);
   }
 
   @Override
@@ -19,11 +22,16 @@ public class WristIOTalonFX implements WristIO {
 
   @Override
   public void resetRelativeEncoder() {
-    this.talon.getConfigurator().apply(new TalonFXConfiguration());
+    talon.setPosition(0);
   }
 
   @Override
   public void setVoltage(double voltage) {
-    this.talon.setVoltage(voltage);
+    talon.setVoltage(voltage);
+  }
+
+  @Override
+  public double getPosition() {
+    return talon.getPosition().getValueAsDouble();
   }
 }

@@ -3,6 +3,7 @@ package frc.robot.commands;
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.elevator.Elevator;
@@ -24,7 +25,7 @@ public class MainCommands {
   public static Command runIntake(Intake intake) {
     return runOnce(
         () -> {
-          intake.setSpeed(.5); // SPEED IS NOT CORRECT, CHECK AGAIN
+          intake.setSpeed(.75); // SPEED IS NOT CORRECT, CHECK AGAIN - .5
         },
         intake);
   }
@@ -32,7 +33,7 @@ public class MainCommands {
   public static Command runOuttake(Intake intake) {
     return runOnce(
         () -> {
-          intake.setSpeed(-.49); // SPEED IS NOT CORRECT, CHECK AGAIN
+          intake.setSpeed(-.75); // SPEED IS NOT CORRECT, CHECK AGAIN
         },
         intake);
   }
@@ -77,18 +78,42 @@ public class MainCommands {
         climber);
   }
 
-  public static Command setElevatorPosition(Elevator elevator, double position) {
+  public static Command setElevatorPositionL1(Elevator elevator) {
     return runOnce(
         () -> {
-          elevator.setPosition(position);
+          elevator.setPosition(ElevatorConstants.ELEVATOR_L1);
         },
         elevator);
   }
 
-  public static Command setElevatorVoltage(Elevator elevator, double volts) {
+  public static Command setElevatorPositionL2(Elevator elevator) {
     return runOnce(
         () -> {
-          elevator.setVoltage(volts);
+          elevator.setPosition(ElevatorConstants.ELEVATOR_L2);
+        },
+        elevator);
+  }
+
+  public static Command setElevatorPositionL3(Elevator elevator) {
+    return runOnce(
+        () -> {
+          elevator.setPosition(ElevatorConstants.ELEVATOR_L3);
+        },
+        elevator);
+  }
+
+  public static Command setElevatorPositionL4(Elevator elevator) {
+    return runOnce(
+        () -> {
+          elevator.setPosition(ElevatorConstants.ELEVATOR_L4);
+        },
+        elevator);
+  }
+
+  public static Command setElevatorVoltage(Elevator elevator, double speed) {
+    return runOnce(
+        () -> {
+          elevator.setSpeed(speed);
         },
         elevator);
   }
@@ -96,7 +121,7 @@ public class MainCommands {
   public static Command stopElevator(Elevator elevator) {
     return runOnce(
         () -> {
-          elevator.setVoltage(0);
+          elevator.setSpeed(0);
         },
         elevator);
   }

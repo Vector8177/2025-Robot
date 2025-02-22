@@ -8,9 +8,9 @@
 package frc.robot.subsystems.intake;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import frc.robot.Constants.IntakeConstants;
 
 /** Generic roller IO implementation for a roller or series of rollers using a Kraken. */
 public class IntakeIOTalonFX implements IntakeIO {
@@ -18,7 +18,9 @@ public class IntakeIOTalonFX implements IntakeIO {
   private final NeutralOut neutralOut = new NeutralOut();
 
   public IntakeIOTalonFX() {
-    intakeMotor = new TalonFX(15); // CHANGE ID, NOT ACCURATE; send this a string later
+    intakeMotor =
+        new TalonFX(
+            IntakeConstants.INTAKE_MOTOR_ID); // CHANGE ID, NOT ACCURATE; send this a string later
 
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
@@ -36,8 +38,8 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   @Override
   public void setIntakeVoltage(double volts) {
-    TalonFXConfiguration newConfig = new TalonFXConfiguration();
-    newConfig.TorqueCurrent = new TorqueCurrentConfigs();
+    // TalonFXConfiguration newConfig = new TalonFXConfiguration();
+    // newConfig.TorqueCurrent = new TorqueCurrentConfigs();
 
     intakeMotor.setVoltage(volts);
     // this.talon.getConfigurator().apply(newConfig, .05);

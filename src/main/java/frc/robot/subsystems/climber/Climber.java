@@ -26,7 +26,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void setSpeedRaw(double speed) {
-    // speed = MathUtil.clamp(speed, -2, 2);
+    speed = MathUtil.clamp(speed, -1, 1);
     io.setClimberVoltage(speed * Constants.ClimberConstants.maxClimberMotorVoltage);
   }
 

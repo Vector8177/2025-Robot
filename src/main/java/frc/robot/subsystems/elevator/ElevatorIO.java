@@ -12,7 +12,7 @@ public interface ElevatorIO {
 
   public default void updateInputs(ElevatorIOInputs inputs) {}
   // Sets the power to the elevator motor
-  public default void set(double voltage) {}
+  public default void setElevatorVoltage(double voltage) {}
 
   // Gets the current position of the elevator (in encoder units)
   public default double getPosition() {

@@ -1,6 +1,5 @@
 package frc.robot.subsystems.climber;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -12,20 +11,14 @@ public class ClimberIOTalonFX implements ClimberIO {
   private final TalonFX leftClimberTalonFX;
   private final TalonFX rightClimberTalonFX;
   private final TalonFXConfiguration configuration;
-  private final CurrentLimitsConfigs limitConfigs;
 
   public ClimberIOTalonFX() {
     leftClimberTalonFX = new TalonFX(Constants.ClimberConstants.LEFT_MOTOR_ID); // Change later
     rightClimberTalonFX = new TalonFX(Constants.ClimberConstants.RIGHT_MOTOR_ID);
 
     configuration = new TalonFXConfiguration();
-    limitConfigs = new CurrentLimitsConfigs();
-    // limitConfigs.StatorCurrentLimit = 130;
-    // limitConfigs.SupplyCurrentLimit = 80;
     leftClimberTalonFX.getConfigurator().apply(configuration, .05);
     rightClimberTalonFX.getConfigurator().apply(configuration, .05);
-    // leftClimberTalonFX.getConfigurator().apply(limitConfigs, .05);
-    // rightClimberTalonFX.getConfigurator().apply(limitConfigs, .05);
 
     rightClimberTalonFX.setControl(new Follower(Constants.ClimberConstants.LEFT_MOTOR_ID, true));
 

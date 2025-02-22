@@ -15,6 +15,18 @@
           "data": {
             "pathName": "Reef to Left Human"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
         }
       ]
     }
