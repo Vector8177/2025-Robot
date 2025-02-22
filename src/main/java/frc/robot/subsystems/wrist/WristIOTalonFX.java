@@ -9,7 +9,7 @@ public class WristIOTalonFX implements WristIO {
   private final TalonFXConfiguration configuration;
 
   public WristIOTalonFX() {
-    talon = new TalonFX(WristConstants.wristMotorId); // Change ID to correct one
+    talon = new TalonFX(WristConstants.WRIST_MOTOR_ID); // Change ID to correct one
     configuration = new TalonFXConfiguration(); // Change ID to correct one
 
     talon.getConfigurator().apply(this.configuration, .05);

@@ -21,11 +21,6 @@ public interface ElevatorIO {
 
   public default void setPosition(double position) {}
 
-  // Gets the current velocity of the elevator
-  public default double getVelocity() {
-    return 0;
-  }
-
   // Resets the encoder position to a specific value
   public default void resetPosition() {}
 

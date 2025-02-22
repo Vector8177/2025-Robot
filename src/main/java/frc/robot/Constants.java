@@ -71,7 +71,7 @@ public final class Constants {
   }
 
   public static final class WristConstants {
-    public static final int wristMotorId = 41;
+    public static final int WRIST_MOTOR_ID = 41;
     public static final int MAX_WRIST_VOLTAGE = 12;
 
     public static final double WIRST_INTAKE_POSITION = 10; // Change this later
@@ -92,23 +92,6 @@ public final class Constants {
   }
 
   public final class VisionConstants {
-    // public static final String bottomCameraName = "limelight-bottom";
-    // public static final Transform3d bottomCameraPosition =
-    //     new Transform3d(
-    //         new Translation3d(
-    //             Units.inchesToMeters(9.1505),
-    //             Units.inchesToMeters(9.666),
-    //             Units.inchesToMeters(31.185)),
-    //         new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(5)));
-
-    // public static final String topCameraName = "limelight-top";
-    // public static final Transform3d topCameraPosition =
-    //     new Transform3d(
-    //         new Translation3d(
-    //             Units.inchesToMeters(9.1505),
-    //             Units.inchesToMeters(-9.666),
-    //             Units.inchesToMeters(31.185)),
-    //         new Rotation3d(0, Units.degreesToRadians(20), Units.degreesToRadians(-5)));
     public static final double alignSpeed = .4;
     public static final double alignRange = 2.75;
 

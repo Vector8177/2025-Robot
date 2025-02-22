@@ -3,7 +3,6 @@ package frc.robot.commands;
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.elevator.Elevator;
@@ -78,36 +77,20 @@ public class MainCommands {
         climber);
   }
 
-  public static Command setElevatorPositionL1(Elevator elevator) {
-    return runOnce(
-        () -> {
-          elevator.setPosition(ElevatorConstants.ELEVATOR_L1);
-        },
-        elevator);
-  }
 
-  public static Command setElevatorPositionL2(Elevator elevator) {
-    return runOnce(
+  public static Command setElevatorPosition(Wrist wrist, Elevator elevator, double position) {
+    return sequence(
+      runOnce(
         () -> {
-          elevator.setPosition(ElevatorConstants.ELEVATOR_L2);
+          elevator.setPosition(position);
         },
-        elevator);
-  }
-
-  public static Command setElevatorPositionL3(Elevator elevator) {
-    return runOnce(
+        elevator),
+      waitSeconds(1.0),
+      runOnce(
         () -> {
-          elevator.setPosition(ElevatorConstants.ELEVATOR_L3);
+          wrist.setPosition(WristConstants.WRIST_SCORING_POSITION);
         },
-        elevator);
-  }
-
-  public static Command setElevatorPositionL4(Elevator elevator) {
-    return runOnce(
-        () -> {
-          elevator.setPosition(ElevatorConstants.ELEVATOR_L4);
-        },
-        elevator);
+        wrist));
   }
 
   public static Command setElevatorVoltage(Elevator elevator, double speed) {

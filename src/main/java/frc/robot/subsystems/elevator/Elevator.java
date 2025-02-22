@@ -37,21 +37,7 @@ public class Elevator extends SubsystemBase {
             ElevatorConstants.unweightedA);
   }
 
-  private void setSpeedRaw(double speed) {
-    speed = MathUtil.clamp(speed, -1, 1);
-    io.setElevatorVoltage(speed * Constants.IntakeConstants.MAX_INTAKE_VOLTAGE);
-  }
-
-  public void setSpeed(double speed) {
-    targetSpeed = speed;
-  }
-
-  // Method to stop the elevator
-  public void stop() {
-    io.stop();
-  }
-
-  // Periodic method called in every cycle (e.g., 20ms)
+// Periodic method called in every cycle (e.g., 20ms)
   @Override
   public void periodic() {
     io.updateInputs(inputs);
@@ -64,6 +50,20 @@ public class Elevator extends SubsystemBase {
     setMotor(
         MathUtil.clamp(
             (pidMotorSpeed), -WristConstants.MAX_WRIST_VOLTAGE, WristConstants.MAX_WRIST_VOLTAGE));
+  }
+
+  private void setSpeedRaw(double speed) {
+    speed = MathUtil.clamp(speed, -1, 1);
+    io.setElevatorVoltage(speed * Constants.IntakeConstants.MAX_INTAKE_VOLTAGE);
+  }
+
+  public void setSpeed(double speed) {
+    targetSpeed = speed;
+  }
+
+  // Method to stop the elevator
+  public void stop() {
+    io.stop();
   }
 
   public boolean atSetpoint() {
@@ -84,10 +84,6 @@ public class Elevator extends SubsystemBase {
   }
   public double getPosition() {
     return io.getPosition();
-  }
-
-  public double getVelocity() {
-    return io.getVelocity();
   }
 
   public void resetPosition() {
