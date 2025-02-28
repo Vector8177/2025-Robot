@@ -21,7 +21,6 @@ public class Elevator extends SubsystemBase {
     this.io = io;
     pidController =
         new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
-    // pidController.enableContinuousInput(0, Math.PI * 2);
     pidController.setTolerance(.25);
     io.resetPosition();
     feedForward =
@@ -36,12 +35,11 @@ public class Elevator extends SubsystemBase {
     Logger.recordOutput("Elevator Position", io.getPosition());
 
     double pidMotorSpeed =
-        MathUtil.applyDeadband(
-            pidController.calculate(io.getPosition(), targetPosition)
-                + feedForward.calculate(targetPosition, 0),
-            .5);
+        pidController.calculate(io.getPosition(), targetPosition)
+            + feedForward.calculate(targetPosition, 0);
     Logger.recordOutput("PID Speed", pidMotorSpeed);
     Logger.recordOutput("Manual Speed", targetSpeed);
+    // Only use this for manual control
     // setMotor(
     //     MathUtil.clamp(
     //         (-targetSpeed * ElevatorConstants.MAX_ELEVATOR_VOLTAGE),

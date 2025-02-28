@@ -124,6 +124,13 @@ public class Robot extends LoggedRobot {
 
     // Return to normal thread priority
     Threads.setCurrentThreadPriority(false, 10);
+
+    // Calculate remaining match time
+    matchTimeRemaining = 150 - (int) matchTimer.get(); // Assuming a 150-second match duration
+
+    // Log match time to Shuffleboard
+    Logger.recordOutput("Match Timer", matchTimeRemaining);
+    SmartDashboard.putNumber("Match Timer", matchTimeRemaining);
   }
 
   /** This function is called once when the robot is disabled. */

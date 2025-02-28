@@ -145,7 +145,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
     NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
-    NamedCommands.registerCommand("Run Outake", MainCommands.runOutake(intake));
+    NamedCommands.registerCommand("Run Outake", MainCommands.runOutakeSlow(intake));
 
     NamedCommands.registerCommand(
         "Set Intake Position", MainCommands.setIntakePosition(wrist, elevator));
@@ -227,6 +227,14 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
+    driverController
+        .x()
+        .whileTrue(
+            DriveCommands.joystickDrive(
+                drive,
+                () -> -driverController.getLeftY() * .5,
+                () -> -driverController.getLeftX() * .5,
+                () -> -driverController.getRightX() * .5));
     // driverController
     //     .b()
     //     .whileTrue(
@@ -325,6 +333,11 @@ public class RobotContainer {
                 ElevatorConstants.ELEVATOR_NET,
                 WristConstants.WRIST_SCORING_POSITION_NET));
     operatorController.a().onTrue(MainCommands.setIntakePosition(wrist, elevator));
+    operatorController
+        .x()
+        .onTrue(MainCommands.runOutakeSlow(intake))
+        .onFalse(MainCommands.stopIntake(intake));
+    operatorController.y().onTrue(MainCommands.stow(wrist, elevator));
     operatorController
         .rightTrigger()
         .onTrue(MainCommands.runIntake(intake))

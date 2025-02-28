@@ -40,6 +40,14 @@ public class MainCommands {
         intake);
   }
 
+  public static Command runOutakeSlow(Intake intake) {
+    return runOnce(
+        () -> {
+          intake.setSpeed(-.5);
+        },
+        intake);
+  }
+
   public static Command setWristPerpendicular(Wrist wrist) {
     return sequence(
         runOnce(
@@ -53,6 +61,12 @@ public class MainCommands {
     return sequence(
         runOnce(
             () -> {
+              wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION);
+            },
+            wrist),
+        waitSeconds(.5),
+        runOnce(
+            () -> {
               elevator.setPosition(ElevatorConstants.ELEVATOR_INTAKE);
             },
             elevator),
@@ -62,6 +76,22 @@ public class MainCommands {
               wrist.setPosition(WristConstants.WRIST_INTAKE_POSITION);
             },
             wrist));
+  }
+
+  //sets wrist and elevator to 0
+  public static Command stow(Wrist wrist, Elevator elevator) {
+    return sequence(
+        runOnce(
+            () -> {
+              wrist.setPosition(0);
+            },
+            wrist),
+        waitSeconds(.5),
+        runOnce(
+            () -> {
+              elevator.setPosition(0);
+            },
+            elevator));
   }
 
   public static Command setClimberUp(Climber climber) {
@@ -116,7 +146,7 @@ public class MainCommands {
   // }
 
   // public static Command moveWrist(double position, Wrist wrist) { // testing
-  //   return runOnce(() -> wrist.setPosition(position)).until(() -> wrist.atSetpoint());
+  //   return run(() -> wrist.setPosition(position)).until(() -> wrist.atSetpoint());
   // }
 
   public static Command setElevatorVoltage(Elevator elevator, DoubleSupplier ySupplier) {

@@ -40,7 +40,7 @@ public class Vision extends SubsystemBase {
     this.consumer = consumer;
     this.io = io;
 
-//    Initialize inputs
+    // Initialize inputs
     this.inputs = new VisionIOInputsAutoLogged[io.length];
     for (int i = 0; i < inputs.length; i++) {
       inputs[i] = new VisionIOInputsAutoLogged();
@@ -54,38 +54,34 @@ public class Vision extends SubsystemBase {
     }
   }
 
-
   public Rotation2d getTargetX(int cameraIndex) {
     return inputs[cameraIndex].latestTargetObservation.tx();
   }
 
   public static double autoAlignValue() {
-    return LimelightHelpers.getTXNC(VisionConstants.camera0Name) <
-VisionConstants.closeAlignRange
+    return LimelightHelpers.getTXNC(VisionConstants.camera0Name) < VisionConstants.closeAlignRange
             && LimelightHelpers.getTXNC(VisionConstants.camera0Name)
                 > -VisionConstants.closeAlignRange
         ? 0
-        : LimelightHelpers.getTXNC(VisionConstants.camera0Name) >
-VisionConstants.closeAlignRange
+        : LimelightHelpers.getTXNC(VisionConstants.camera0Name) > VisionConstants.closeAlignRange
             ? -VisionConstants.closeAlignSpeed
             : LimelightHelpers.getTXNC(VisionConstants.camera0Name)
                     < -VisionConstants.closeAlignRange
                 ? VisionConstants.closeAlignSpeed
-                : LimelightHelpers.getTXNC(VisionConstants.camera0Name) >
-VisionConstants.alignRange
+                : LimelightHelpers.getTXNC(VisionConstants.camera0Name) > VisionConstants.alignRange
                     ? -VisionConstants.alignSpeed
                     : VisionConstants.alignSpeed;
-//     LimelightHelpers.getTXNC(VisionConstants.camera0Name) < VisionConstants.alignRange
-//             && LimelightHelpers.getTXNC(VisionConstants.camera0name)
-//                 > -VisionConstants.alignRange
-//         ? 0
-//         : LimelightHelpers.getTXNC(VisionConstants.camera0name) >
-// VisionConstants.alignRange
-//             ? -VisionConstants.alignSpeed
-//             : VisionConstants.alignSpeed));
+    //     LimelightHelpers.getTXNC(VisionConstants.camera0Name) < VisionConstants.alignRange
+    //             && LimelightHelpers.getTXNC(VisionConstants.camera0name)
+    //                 > -VisionConstants.alignRange
+    //         ? 0
+    //         : LimelightHelpers.getTXNC(VisionConstants.camera0name) >
+    // VisionConstants.alignRange
+    //             ? -VisionConstants.alignSpeed
+    //             : VisionConstants.alignSpeed));
   }
 
-   @Override
+  @Override
   public void periodic() {
     for (int i = 0; i < io.length; i++) {
       io[i].updateInputs(inputs[i]);

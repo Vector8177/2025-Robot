@@ -19,7 +19,6 @@ public class Wrist extends SubsystemBase {
 
     this.io = io;
     pidController = new PIDController(WristConstants.kP, WristConstants.kI, WristConstants.kD);
-    // pidController.enableContinuousInput(0, Math.PI * 2);
     pidController.setTolerance(.25);
     io.resetRelativeEncoder();
 
@@ -31,7 +30,7 @@ public class Wrist extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    // Logger.getInstance().processInputs("Wrist", inputs);
+    Logger.processInputs("Wrist", inputs);
     Logger.recordOutput("Wrist Position", io.getPosition());
 
     double pidMotorSpeed =
