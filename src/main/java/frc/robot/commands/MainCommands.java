@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.WristConstants;
@@ -9,6 +10,7 @@ import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.wrist.Wrist;
+import java.util.function.DoubleSupplier;
 
 public class MainCommands {
 
@@ -38,6 +40,15 @@ public class MainCommands {
         intake);
   }
 
+  public static Command setWristPerpendicular(Wrist wrist) {
+    return sequence(
+        runOnce(
+            () -> {
+              wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION);
+            },
+            wrist));
+  }
+
   public static Command setIntakePosition(Wrist wrist, Elevator elevator) {
     return sequence(
         runOnce(
@@ -48,7 +59,7 @@ public class MainCommands {
         waitSeconds(0.5),
         runOnce(
             () -> {
-              wrist.setPosition(WristConstants.WIRST_INTAKE_POSITION);
+              wrist.setPosition(WristConstants.WRIST_INTAKE_POSITION);
             },
             wrist));
   }
@@ -81,17 +92,18 @@ public class MainCommands {
       Wrist wrist, Elevator elevator, double elevatorPosition, double wristPosition) {
     return sequence(
         runOnce(
-          () -> {
-            wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION);
-          }, 
-          wrist),
-        waitSeconds(0.5),
+            () -> {
+              wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION);
+            },
+            wrist),
+        waitSeconds(.6),
         runOnce(
             () -> {
               elevator.setPosition(elevatorPosition);
             },
             elevator),
-        waitSeconds(0.5),
+        waitSeconds(
+            .6), // og .5 - changed it to 1 for now due to the wrist getting stuck while going down
         runOnce(
             () -> {
               wrist.setPosition(wristPosition);
@@ -99,17 +111,18 @@ public class MainCommands {
             wrist));
   }
 
-  // public static Command setElevatorPositionTest(Elevator elevator, double elevatorPosition) {
-  //   return runOnce(
-  //       () -> {
-  //         elevator.setPosition(elevatorPosition);
-  //       },
-  //       elevator);
+  // public static Command moveElevator(double position, Elevator elevator) { // testing
+  //   return run(() -> elevator.setPosition(position)).until(() -> elevator.atSetpoint());
   // }
 
-  public static Command setElevatorVoltage(Elevator elevator, double speed) {
+  // public static Command moveWrist(double position, Wrist wrist) { // testing
+  //   return runOnce(() -> wrist.setPosition(position)).until(() -> wrist.atSetpoint());
+  // }
+
+  public static Command setElevatorVoltage(Elevator elevator, DoubleSupplier ySupplier) {
     return runOnce(
         () -> {
+          double speed = MathUtil.applyDeadband(ySupplier.getAsDouble(), 0.1);
           elevator.setSpeed(speed);
         },
         elevator);

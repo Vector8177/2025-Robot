@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.MainCommands;
@@ -42,8 +41,8 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
-import frc.robot.subsystems.vision.Vision;
-import frc.robot.subsystems.vision.VisionIOLimelight;
+// import frc.robot.subsystems.vision.Vision;
+// import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.wrist.Wrist;
 import frc.robot.subsystems.wrist.WristIOTalonFX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -61,8 +60,6 @@ public class RobotContainer {
   private final Climber climber;
   private final Elevator elevator;
   private final Wrist wrist;
-  private final Vision vision;
-  // private final PathPlannerTrajectory trajectory;
 
   // Controller
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -92,13 +89,10 @@ public class RobotContainer {
 
         wrist = new Wrist(new WristIOTalonFX());
 
-        // trajectory = PathPlanner.loadPath("Start to center");
-
-        vision =
-            new Vision(
-                drive::addVisionMeasurement,
-                new VisionIOLimelight("limelight-bottom", drive::getRotation),
-                new VisionIOLimelight("limelight-top", drive::getRotation));
+        // new Vision(
+        //     drive::addVisionMeasurement,
+        //     new VisionIOLimelight("limelight-bottom", drive::getRotation),
+        //     new VisionIOLimelight("limelight-top", drive::getRotation));
         break;
 
       case SIM:
@@ -119,15 +113,13 @@ public class RobotContainer {
 
         wrist = new Wrist(new WristIOTalonFX());
 
-        vision =
-            new Vision(
-                drive::addVisionMeasurement,
-                new VisionIOLimelight("limelight-bottom", drive::getRotation),
-                new VisionIOLimelight("limelight-top", drive::getRotation));
+        // new Vision(
+        //     drive::addVisionMeasurement,
+        //     new VisionIOLimelight("limelight-bottom", drive::getRotation),
+        //     new VisionIOLimelight("limelight-top", drive::getRotation));
         break;
 
       default:
-        // Replayed robot, disable IO implementations
         drive =
             new Drive(
                 new GyroIO() {},
@@ -144,11 +136,10 @@ public class RobotContainer {
 
         wrist = new Wrist(new WristIOTalonFX());
 
-        vision =
-            new Vision(
-                drive::addVisionMeasurement,
-                new VisionIOLimelight("limelight-bottom", drive::getRotation),
-                new VisionIOLimelight("limelight-top", drive::getRotation));
+        // new Vision(
+        //     drive::addVisionMeasurement,
+        //     new VisionIOLimelight("limelight-bottom", drive::getRotation),
+        //     new VisionIOLimelight("limelight-top", drive::getRotation));
         break;
     }
 
@@ -157,10 +148,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Run Outake", MainCommands.runOutake(intake));
 
     NamedCommands.registerCommand(
-        "Set Wrist Intake Position", MainCommands.setIntakePosition(wrist, elevator));
+        "Set Intake Position", MainCommands.setIntakePosition(wrist, elevator));
 
-    NamedCommands.registerCommand(
-        "Auto Align", DriveCommands.autoAlign(drive, () -> Vision.autoAlignValue()));
+    // NamedCommands.registerCommand(
+    //     "Auto Align", DriveCommands.autoAlign(drive, () -> Vision.autoAlignValue()));
 
     NamedCommands.registerCommand(
         "Set Elevator L1",
@@ -236,58 +227,63 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
-    driverController
-        .b()
-        .whileTrue(
-            Commands.sequence(
-                DriveCommands.joystickDrive(
-                    drive,
-                    () ->
-                        LimelightHelpers.getTX("limelight-bottom")
-                                > VisionConstants.alignRange
-                                    * Math.cos(drive.getRotation().getRadians())
-                            ? -VisionConstants.alignSpeed
-                                * Math.cos(drive.getRotation().getRadians())
-                            : LimelightHelpers.getTX("limelight-bottom")
-                                    < -VisionConstants.alignRange
-                                        * Math.cos(drive.getRotation().getRadians())
-                                ? VisionConstants.alignSpeed
-                                    * Math.cos(drive.getRotation().getRadians())
-                                : 0,
-                    () ->
-                        LimelightHelpers.getTX("limelight-bottom")
-                                > VisionConstants.alignRange
-                                    * Math.sin(drive.getRotation().getRadians())
-                            ? -VisionConstants.alignSpeed
-                                * Math.sin(drive.getRotation().getRadians())
-                            : LimelightHelpers.getTX("limelight-bottom")
-                                    < -VisionConstants.alignRange
-                                        * Math.sin(drive.getRotation().getRadians())
-                                ? VisionConstants.alignSpeed
-                                    * Math.sin(drive.getRotation().getRadians())
-                                : 0,
-                    () -> 0)));
-    driverController
-        .a()
-        .whileTrue(
-            DriveCommands.joystickDrive(
-                drive,
-                () -> -driverController.getLeftY(),
-                () -> -driverController.getLeftX(),
-                () -> Vision.autoAlignValue()));
+    // driverController
+    //     .b()
+    //     .whileTrue(
+    //         Commands.sequence(
+    //             DriveCommands.joystickDrive(
+    //                 drive,
+    //                 () ->
+    //                     LimelightHelpers.getTX("limelight-bottom")
+    //                             > VisionConstants.alignRange
+    //                                 * Math.cos(drive.getRotation().getRadians())
+    //                         ? -VisionConstants.alignSpeed
+    //                             * Math.cos(drive.getRotation().getRadians())
+    //                         : LimelightHelpers.getTX("limelight-bottom")
+    //                                 < -VisionConstants.alignRange
+    //                                     * Math.cos(drive.getRotation().getRadians())
+    //                             ? VisionConstants.alignSpeed
+    //                                 * Math.cos(drive.getRotation().getRadians())
+    //                             : 0,
+    //                 () ->
+    //                     LimelightHelpers.getTX("limelight-bottom")
+    //                             > VisionConstants.alignRange
+    //                                 * Math.sin(drive.getRotation().getRadians())
+    //                         ? -VisionConstants.alignSpeed
+    //                             * Math.sin(drive.getRotation().getRadians())
+    //                         : LimelightHelpers.getTX("limelight-bottom")
+    //                                 < -VisionConstants.alignRange
+    //                                     * Math.sin(drive.getRotation().getRadians())
+    //                             ? VisionConstants.alignSpeed
+    //                                 * Math.sin(drive.getRotation().getRadians())
+    //                             : 0,
+    //                 () -> 0)));
+    // driverController
+    //     .a()
+    //     .whileTrue(
+    //         DriveCommands.joystickDrive(
+    //             drive,
+    //             () -> -driverController.getLeftY(),
+    //             () -> -driverController.getLeftX(),
+    //             () -> Vision.autoAlignValue()));
 
-    // operatorController
-    //     .povLeft()
-    //     .onTrue(MainCommands.setElevatorPositionTest(elevator, ElevatorConstants.ELEVATOR_L2));
-    // operatorController
-    //     .povUp()
-    //     .onTrue(MainCommands.setElevatorPositionTest(elevator, ElevatorConstants.ELEVATOR_L1));
-    // operatorController
-    //     .povDown()
-    //     .onTrue(MainCommands.setElevatorPositionTest(elevator, ElevatorConstants.ELEVATOR_L3));
-    // operatorController
-    //     .povRight()
-    //     .onTrue(MainCommands.setElevatorPositionTest(elevator, ElevatorConstants.ELEVATOR_L4));
+    driverController
+        .rightTrigger()
+        .onTrue(MainCommands.runIntake(intake))
+        .onFalse(MainCommands.stopIntake(intake));
+    driverController
+        .leftTrigger()
+        .onTrue(MainCommands.runOutake(intake))
+        .onFalse(MainCommands.stopIntake(intake));
+    driverController
+        .rightBumper()
+        .onTrue(MainCommands.setClimberUp(climber))
+        .onFalse(MainCommands.stopClimber(climber));
+    driverController
+        .leftBumper()
+        .onTrue(MainCommands.setClimberDown(climber))
+        .onFalse(MainCommands.stopClimber(climber));
+
     operatorController
         .povUp()
         .onTrue(
@@ -321,6 +317,15 @@ public class RobotContainer {
                 ElevatorConstants.ELEVATOR_L4,
                 WristConstants.WRIST_SCORING_POSITION_L4));
     operatorController
+        .b()
+        .onTrue(
+            MainCommands.setElevatorPosition(
+                wrist,
+                elevator,
+                ElevatorConstants.ELEVATOR_NET,
+                WristConstants.WRIST_SCORING_POSITION_NET));
+    operatorController.a().onTrue(MainCommands.setIntakePosition(wrist, elevator));
+    operatorController
         .rightTrigger()
         .onTrue(MainCommands.runIntake(intake))
         .onFalse(MainCommands.stopIntake(intake));
@@ -328,15 +333,8 @@ public class RobotContainer {
         .leftTrigger()
         .onTrue(MainCommands.runOutake(intake))
         .onFalse(MainCommands.stopIntake(intake));
-    operatorController.a().onTrue(MainCommands.setIntakePosition(wrist, elevator));
-    operatorController
-        .b()
-        .onTrue(MainCommands.setElevatorVoltage(elevator, 1))
-        .onFalse(MainCommands.stopElevator(elevator));
-    operatorController
-        .x()
-        .onTrue(MainCommands.setElevatorVoltage(elevator, -1))
-        .onFalse(MainCommands.stopElevator(elevator));
+    // elevator.setDefaultCommand(
+    //     MainCommands.setElevatorVoltage(elevator, () -> operatorController.getLeftY()));
     operatorController
         .rightBumper()
         .onTrue(MainCommands.setClimberUp(climber))

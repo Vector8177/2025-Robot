@@ -10,10 +10,10 @@ public class WristIOTalonFX implements WristIO {
   private final TalonFXConfiguration configuration;
 
   public WristIOTalonFX() {
-    wristMotor = new TalonFX(WristConstants.WRIST_MOTOR_ID); // Change ID to correct one
-    configuration = new TalonFXConfiguration(); // Change ID to correct one
+    wristMotor = new TalonFX(WristConstants.WRIST_MOTOR_ID);
+    configuration = new TalonFXConfiguration();
 
-    wristMotor.getConfigurator().apply(this.configuration, .05);
+    wristMotor.getConfigurator().apply(configuration, .05);
 
     wristMotor.setPosition(0);
 

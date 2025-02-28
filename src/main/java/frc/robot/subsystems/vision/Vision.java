@@ -1,15 +1,15 @@
-// Copyright 2021-2025 FRC 6328
-// http://github.com/Mechanical-Advantage
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// version 3 as published by the Free Software Foundation or
-// available in the root directory of this project.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
+// // Copyright 2021-2025 FRC 6328
+// // http://github.com/Mechanical-Advantage
+// //
+// // This program is free software; you can redistribute it and/or
+// // modify it under the terms of the GNU General Public License
+// // version 3 as published by the Free Software Foundation or
+// // available in the root directory of this project.
+// //
+// // This program is distributed in the hope that it will be useful,
+// // but WITHOUT ANY WARRANTY; without even the implied warranty of
+// // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// // GNU General Public License for more details.
 
 package frc.robot.subsystems.vision;
 
@@ -40,7 +40,7 @@ public class Vision extends SubsystemBase {
     this.consumer = consumer;
     this.io = io;
 
-    // Initialize inputs
+//    Initialize inputs
     this.inputs = new VisionIOInputsAutoLogged[io.length];
     for (int i = 0; i < inputs.length; i++) {
       inputs[i] = new VisionIOInputsAutoLogged();
@@ -54,36 +54,38 @@ public class Vision extends SubsystemBase {
     }
   }
 
-  /**
-   * Returns the X angle to the best target, which can be used for simple servoing with vision.
-   *
-   * @param cameraIndex The index of the camera to use.
-   */
+
   public Rotation2d getTargetX(int cameraIndex) {
     return inputs[cameraIndex].latestTargetObservation.tx();
   }
 
   public static double autoAlignValue() {
-    return LimelightHelpers.getTXNC("limelight-bottom") < VisionConstants.closeAlignRange
-            && LimelightHelpers.getTXNC("limelight-bottom") > -VisionConstants.closeAlignRange
+    return LimelightHelpers.getTXNC(VisionConstants.camera0Name) <
+VisionConstants.closeAlignRange
+            && LimelightHelpers.getTXNC(VisionConstants.camera0Name)
+                > -VisionConstants.closeAlignRange
         ? 0
-        : LimelightHelpers.getTXNC("limelight-bottom") > VisionConstants.closeAlignRange
+        : LimelightHelpers.getTXNC(VisionConstants.camera0Name) >
+VisionConstants.closeAlignRange
             ? -VisionConstants.closeAlignSpeed
-            : LimelightHelpers.getTXNC("limelight-bottom") < -VisionConstants.closeAlignRange
+            : LimelightHelpers.getTXNC(VisionConstants.camera0Name)
+                    < -VisionConstants.closeAlignRange
                 ? VisionConstants.closeAlignSpeed
-                : LimelightHelpers.getTXNC("limelight-bottom") > VisionConstants.alignRange
+                : LimelightHelpers.getTXNC(VisionConstants.camera0Name) >
+VisionConstants.alignRange
                     ? -VisionConstants.alignSpeed
                     : VisionConstants.alignSpeed;
-    // LimelightHelpers.getTXNC("limelight-bottom") < VisionConstants.alignRange
-    //         && LimelightHelpers.getTXNC("limelight-bottom")
-    //             > -VisionConstants.alignRange
-    //     ? 0
-    //     : LimelightHelpers.getTXNC("limelight-bottom") > VisionConstants.alignRange
-    //         ? -VisionConstants.alignSpeed
-    //         : VisionConstants.alignSpeed));
+//     LimelightHelpers.getTXNC(VisionConstants.camera0Name) < VisionConstants.alignRange
+//             && LimelightHelpers.getTXNC(VisionConstants.camera0name)
+//                 > -VisionConstants.alignRange
+//         ? 0
+//         : LimelightHelpers.getTXNC(VisionConstants.camera0name) >
+// VisionConstants.alignRange
+//             ? -VisionConstants.alignSpeed
+//             : VisionConstants.alignSpeed));
   }
 
-  @Override
+   @Override
   public void periodic() {
     for (int i = 0; i < io.length; i++) {
       io[i].updateInputs(inputs[i]);

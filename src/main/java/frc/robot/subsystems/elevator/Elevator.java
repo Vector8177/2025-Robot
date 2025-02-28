@@ -3,7 +3,6 @@ package frc.robot.subsystems.elevator;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 import org.littletonrobotics.junction.Logger;
@@ -18,12 +17,11 @@ public class Elevator extends SubsystemBase {
   private final PIDController pidController;
   private ArmFeedforward feedForward;
 
-  // Constructor
   public Elevator(ElevatorIO io) {
     this.io = io;
     pidController =
         new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
-    pidController.enableContinuousInput(0, Math.PI * 2);
+    // pidController.enableContinuousInput(0, Math.PI * 2);
     pidController.setTolerance(.25);
     io.resetPosition();
     feedForward =
@@ -38,9 +36,17 @@ public class Elevator extends SubsystemBase {
     Logger.recordOutput("Elevator Position", io.getPosition());
 
     double pidMotorSpeed =
-        pidController.calculate(io.getPosition(), targetPosition)
-            + feedForward.calculate(targetPosition, 0);
+        MathUtil.applyDeadband(
+            pidController.calculate(io.getPosition(), targetPosition)
+                + feedForward.calculate(targetPosition, 0),
+            .5);
     Logger.recordOutput("PID Speed", pidMotorSpeed);
+    Logger.recordOutput("Manual Speed", targetSpeed);
+    // setMotor(
+    //     MathUtil.clamp(
+    //         (-targetSpeed * ElevatorConstants.MAX_ELEVATOR_VOLTAGE),
+    //         -ElevatorConstants.MAX_ELEVATOR_VOLTAGE,
+    //         ElevatorConstants.MAX_ELEVATOR_VOLTAGE));
     setMotor(
         MathUtil.clamp(
             (pidMotorSpeed),
@@ -49,16 +55,11 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
-    Logger.recordOutput("Elevator Speed", speed);
     targetSpeed = speed;
   }
 
   public boolean atSetpoint() {
     return pidController.atSetpoint();
-  }
-
-  public Command moveElevator(double position) {
-    return run(() -> setPosition(position)).until(() -> atSetpoint());
   }
 
   public void setPosition(double position) {

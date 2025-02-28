@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.processInputs("Intake", inputs); // PLEASE CHECK THIS AGAIN??
+    Logger.processInputs("Intake", inputs);
 
     setSpeedRaw(targetSpeed);
   }

@@ -1,13 +1,11 @@
 package frc.robot.subsystems.wrist;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WristConstants;
+import org.littletonrobotics.junction.Logger;
 
 public class Wrist extends SubsystemBase {
   private double targetPosition;
@@ -21,7 +19,7 @@ public class Wrist extends SubsystemBase {
 
     this.io = io;
     pidController = new PIDController(WristConstants.kP, WristConstants.kI, WristConstants.kD);
-    pidController.enableContinuousInput(0, Math.PI * 2);
+    // pidController.enableContinuousInput(0, Math.PI * 2);
     pidController.setTolerance(.25);
     io.resetRelativeEncoder();
 
@@ -46,10 +44,6 @@ public class Wrist extends SubsystemBase {
 
   public void setMotor(double voltage) {
     io.setVoltage(voltage);
-  }
-
-  public Command moveWrist(double position) {
-    return runOnce(() -> setPosition(position)).until(() -> atSetpoint());
   }
 
   public void setPosition(double position) {

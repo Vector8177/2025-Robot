@@ -43,14 +43,14 @@ public final class Constants {
     public static final int LEFT_ELEVATOR_MOTOR_ID = 31; // lead motor
     public static final int RIGHT_ELEVATOR_MOTOR_ID = 32;
 
-    public static final int ELEVATOR_INTAKE = 2; // change this later
-    public static final int ELEVATOR_L1 = 5; // change this later
-    public static final int ELEVATOR_L2 = 15; // change this later
-    public static final int ELEVATOR_L3 = 20; // change this later
-    public static final int ELEVATOR_L4 = 25; // change this later
-    public static final int ELEVATOR_NET = 45; // change this later
+    public static final int ELEVATOR_INTAKE = 6; // change this later
+    public static final int ELEVATOR_L1 = 0; // og 0 change this later
+    public static final int ELEVATOR_L2 = 35; // change this later - 30
+    public static final int ELEVATOR_L3 = 65; // change this later - 45
+    public static final int ELEVATOR_L4 = 95; // THIS ONE NEEDS TO BE CHANGED
+    public static final int ELEVATOR_NET = 95; // change this later
 
-    public static final int MAX_ELEVATOR_VOLTAGE = 12;
+    public static final int MAX_ELEVATOR_VOLTAGE = 8; // 12
 
     public static double kP = 2.5;
     public static double kI = 0.0;
@@ -65,7 +65,7 @@ public final class Constants {
   public static final class IntakeConstants {
 
     public static final int INTAKE_MOTOR_ID = 42;
-    public static final int MAX_INTAKE_VOLTAGE = 12;
+    public static final int MAX_INTAKE_VOLTAGE = 9;
     public static final double INTAKE_SPEED = 1d;
   }
 
@@ -73,14 +73,14 @@ public final class Constants {
     public static final int WRIST_MOTOR_ID = 41;
     public static final int MAX_WRIST_VOLTAGE = 12;
 
-    public static final double WIRST_INTAKE_POSITION = 5; // Change this later
-    public static final double WRIST_SCORING_POSITION_L1 = 1.5; // Change this later
-    public static final double WRIST_SCORING_POSITION_L2 = 2; // Change this later; L2 and L3 should be the same
-    public static final double WRIST_SCORING_POSITION_L4 = 3; // Change this later
-    public static final double WRIST_PERPENDICULAR_POSITION = 3; // Change this later
-    public static final double WRIST_SCORING_POSITION_NET = 3; // Change this later
+    public static final double WRIST_INTAKE_POSITION = 12; // Change this later
+    public static final double WRIST_SCORING_POSITION_L1 = 3.5; // Change this later
+    public static final double WRIST_SCORING_POSITION_L2 = 5; // L2 and L3 should be same
+    public static final double WRIST_SCORING_POSITION_L4 = 7; // Change this later
+    public static final double WRIST_PERPENDICULAR_POSITION = 7.5; // Change this later
+    public static final double WRIST_SCORING_POSITION_NET = 11; // Change this later
 
-    public static double kP = 0.5;
+    public static double kP = .65;
     public static double kI = 0.0;
     public static double kD = 0.0;
 
