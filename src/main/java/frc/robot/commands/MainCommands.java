@@ -27,7 +27,7 @@ public class MainCommands {
   public static Command runIntake(Intake intake) {
     return runOnce(
         () -> {
-          intake.setSpeed(1);
+          intake.setSpeed(.15); // .25
         },
         intake);
   }
@@ -43,7 +43,7 @@ public class MainCommands {
   public static Command runOutakeSlow(Intake intake) {
     return runOnce(
         () -> {
-          intake.setSpeed(-.5);
+          intake.setSpeed(-.25);
         },
         intake);
   }
@@ -64,13 +64,13 @@ public class MainCommands {
               wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION);
             },
             wrist),
-        waitSeconds(.5),
+        waitSeconds(.25),
         runOnce(
             () -> {
               elevator.setPosition(ElevatorConstants.ELEVATOR_INTAKE);
             },
             elevator),
-        waitSeconds(0.5),
+        waitSeconds(0.25),
         runOnce(
             () -> {
               wrist.setPosition(WristConstants.WRIST_INTAKE_POSITION);
@@ -78,20 +78,26 @@ public class MainCommands {
             wrist));
   }
 
-  //sets wrist and elevator to 0
+  // sets wrist and elevator to 0
   public static Command stow(Wrist wrist, Elevator elevator) {
     return sequence(
         runOnce(
             () -> {
-              wrist.setPosition(0);
+              wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION);
             },
             wrist),
-        waitSeconds(.5),
+        waitSeconds(.25),
         runOnce(
             () -> {
               elevator.setPosition(0);
             },
-            elevator));
+            elevator),
+        waitSeconds(.25),
+        runOnce(
+            () -> {
+              wrist.setPosition(0);
+            },
+            wrist));
   }
 
   public static Command setClimberUp(Climber climber) {
@@ -126,14 +132,14 @@ public class MainCommands {
               wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION);
             },
             wrist),
-        waitSeconds(.6),
+        waitSeconds(.25),
         runOnce(
             () -> {
               elevator.setPosition(elevatorPosition);
             },
             elevator),
         waitSeconds(
-            .6), // og .5 - changed it to 1 for now due to the wrist getting stuck while going down
+            .25), // og .5 - changed it to 1 for now due to the wrist getting stuck while going down
         runOnce(
             () -> {
               wrist.setPosition(wristPosition);

@@ -43,12 +43,12 @@ public final class Constants {
     public static final int LEFT_ELEVATOR_MOTOR_ID = 31; // lead motor
     public static final int RIGHT_ELEVATOR_MOTOR_ID = 32;
 
-    public static final double ELEVATOR_INTAKE = 4.5;
+    public static final double ELEVATOR_INTAKE = 5.5;
     public static final int ELEVATOR_L1 = 0;
-    public static final int ELEVATOR_L2 = 35;
-    public static final int ELEVATOR_L3 = 65;
-    public static final int ELEVATOR_L4 = 95;
-    public static final int ELEVATOR_NET = 95;
+    public static final int ELEVATOR_L2 = 37;
+    public static final int ELEVATOR_L3 = 67;
+    public static final int ELEVATOR_L4 = 97;
+    public static final int ELEVATOR_NET = 97;
 
     public static final int MAX_ELEVATOR_VOLTAGE = 12; // 12
 
@@ -65,7 +65,7 @@ public final class Constants {
   public static final class IntakeConstants {
 
     public static final int INTAKE_MOTOR_ID = 42;
-    public static final int MAX_INTAKE_VOLTAGE = 9;
+    public static final int MAX_INTAKE_VOLTAGE = 12;
     public static final double INTAKE_SPEED = 1d;
   }
 
@@ -73,10 +73,10 @@ public final class Constants {
     public static final int WRIST_MOTOR_ID = 41;
     public static final int MAX_WRIST_VOLTAGE = 12;
 
-    public static final double WRIST_INTAKE_POSITION = 10.75;
+    public static final double WRIST_INTAKE_POSITION = 10.5;
     public static final double WRIST_SCORING_POSITION_L1 = 4;
     public static final double WRIST_SCORING_POSITION_L2 = 4.75; // L2 and L3 should be same
-    public static final double WRIST_SCORING_POSITION_L4 = 6.5;
+    public static final double WRIST_SCORING_POSITION_L4 = 5.75;
     public static final double WRIST_PERPENDICULAR_POSITION = 7.5;
     public static final double WRIST_SCORING_POSITION_NET = 11;
 
