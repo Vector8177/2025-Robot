@@ -12,6 +12,9 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   private final TalonFXConfiguration config;
 
   // Constructor
+  // public WristIOInputsAutoLogged(){
+  //   WristIO.WristIOInputs = AutoLog;
+  // }
   public ElevatorIOTalonFX() {
     leadMotor = new TalonFX(ElevatorConstants.LEFT_ELEVATOR_MOTOR_ID);
     followMotor = new TalonFX(ElevatorConstants.RIGHT_ELEVATOR_MOTOR_ID);

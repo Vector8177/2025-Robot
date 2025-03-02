@@ -18,6 +18,7 @@ public class Intake extends SubsystemBase {
 
   private void setSpeedRaw(double speed) {
     speed = MathUtil.clamp(speed, -1, 1);
+    Logger.recordOutput("Intake speed", speed);
     io.setIntakeVoltage(speed * Constants.IntakeConstants.MAX_INTAKE_VOLTAGE);
   }
 

@@ -56,6 +56,10 @@ public class Elevator extends SubsystemBase {
     targetSpeed = speed;
   }
 
+  public void setElevatorSetpoint(double offset) {
+    io.setPosition(io.getPosition() + offset);
+  }
+
   public boolean atSetpoint() {
     return pidController.atSetpoint();
   }
@@ -63,6 +67,10 @@ public class Elevator extends SubsystemBase {
   public void setPosition(double position) {
     Logger.recordOutput("ElevatorTargetPosition", position);
     targetPosition = position;
+  }
+
+  public double getPosition() {
+    return io.getPosition();
   }
 
   public void setMotor(double voltage) {

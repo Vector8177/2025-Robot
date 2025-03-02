@@ -27,7 +27,7 @@ public class MainCommands {
   public static Command runIntake(Intake intake) {
     return runOnce(
         () -> {
-          intake.setSpeed(.15); // .25
+          intake.setSpeed(.25); // .25
         },
         intake);
   }
@@ -145,6 +145,15 @@ public class MainCommands {
               wrist.setPosition(wristPosition);
             },
             wrist));
+  }
+
+  // changes all setpoints of the elevator
+  public static Command changeElevatorSetpoint(Elevator elevator, double offset) {
+    return runOnce(
+        () -> {
+          elevator.setElevatorSetpoint(offset);
+        },
+        elevator);
   }
 
   // public static Command moveElevator(double position, Elevator elevator) { // testing

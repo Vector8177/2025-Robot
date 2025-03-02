@@ -17,13 +17,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Auto Align"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Set Elevator L3"
+                  "name": "Set Elevator L2"
                 }
               },
               {
@@ -106,12 +100,6 @@
           "type": "sequential",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Auto Align"
-                }
-              },
               {
                 "type": "named",
                 "data": {

@@ -17,13 +17,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Auto Align"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Set Elevator L3"
+                  "name": "Set Elevator L2"
                 }
               },
               {
@@ -41,7 +35,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 1.0
                 }
               },
               {
@@ -63,6 +57,43 @@
           "type": "path",
           "data": {
             "pathName": "Reef to Left Human"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Set Intake Position"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Intake"
+                }
+              }
+            ]
           }
         }
       ]

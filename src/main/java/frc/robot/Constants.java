@@ -43,14 +43,14 @@ public final class Constants {
     public static final int LEFT_ELEVATOR_MOTOR_ID = 31; // lead motor
     public static final int RIGHT_ELEVATOR_MOTOR_ID = 32;
 
-    public static final double ELEVATOR_INTAKE = 5.5;
+    public static final double ELEVATOR_INTAKE = 8;
     public static final int ELEVATOR_L1 = 0;
-    public static final int ELEVATOR_L2 = 37;
-    public static final int ELEVATOR_L3 = 67;
-    public static final int ELEVATOR_L4 = 97;
-    public static final int ELEVATOR_NET = 97;
+    public static final int ELEVATOR_L2 = 38;
+    public static final int ELEVATOR_L3 = 70;
+    public static final int ELEVATOR_L4 = 99;
+    public static final int ELEVATOR_NET = 99;
 
-    public static final int MAX_ELEVATOR_VOLTAGE = 12; // 12
+    public static final int MAX_ELEVATOR_VOLTAGE = 12;
 
     public static double kP = 2.5;
     public static double kI = 0.0;

@@ -47,6 +47,7 @@ public class Wrist extends SubsystemBase {
 
   public void setPosition(double position) {
     // Logger.getInstance().recordOutput("WristTargetPosition", position);
+    Logger.recordOutput("Wrist Target Position", position);
     targetPosition = position;
   }
 
