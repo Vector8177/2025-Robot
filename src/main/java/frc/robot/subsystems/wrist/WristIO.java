@@ -15,6 +15,8 @@ public interface WristIO {
 
   public default void updateInputs(WristIOInputs inputs) {}
 
+  public default void setPosition(double position) {}
+
   public default void setVoltage(double speed) {}
 
   public default void resetRelativeEncoder() {}

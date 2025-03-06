@@ -58,4 +58,8 @@ public class Wrist extends SubsystemBase {
   public void resetRelativeEncoder() {
     io.resetRelativeEncoder();
   }
+
+  public void setWristSetpoint(double offset) {
+    io.setPosition(io.getPosition() + offset);
+  }
 }

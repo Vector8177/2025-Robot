@@ -156,6 +156,14 @@ public class MainCommands {
         elevator);
   }
 
+  public static Command changeWristSetpoint(Wrist wrist, double offset) {
+    return runOnce(
+        () -> {
+          wrist.setWristSetpoint(offset);
+        },
+        wrist);
+  }
+
   // public static Command moveElevator(double position, Elevator elevator) { // testing
   //   return run(() -> elevator.setPosition(position)).until(() -> elevator.atSetpoint());
   // }

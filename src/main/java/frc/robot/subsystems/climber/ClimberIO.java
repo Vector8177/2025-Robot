@@ -9,10 +9,6 @@ public interface ClimberIO {
     double rightClimberVelocityRadPerSec = 0d;
     double leftClimberAppliedVolts = 0d;
     double rightClimberAppliedVolts = 0d;
-    double[] leftClimberCurrentAmps = new double[] {};
-    double[] rightClimberCurrentAmps = new double[] {};
-    double leftClimberAbsoluteEncoderPosition = 0d;
-    double rightClimberAbsoluteEncoderPosition = 0d;
     double leftClimberEncoderPosition = 0d;
     double rightClimberEncoderPosition = 0d;
   }

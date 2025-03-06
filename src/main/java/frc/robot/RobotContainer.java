@@ -220,44 +220,44 @@ public class RobotContainer {
         break;
     }
 
-    NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
-    NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
-    NamedCommands.registerCommand("Run Outake", MainCommands.runOutakeSlow(intake));
-
-    NamedCommands.registerCommand(
-        "Set Intake Position", MainCommands.setIntakePosition(wrist, elevator));
+    // NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
+    // NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
+    // NamedCommands.registerCommand("Run Outake", MainCommands.runOutakeSlow(intake));
 
     // NamedCommands.registerCommand(
-    //     "Auto Align", DriveCommands.autoAlign(drive, () -> Vision.autoAlignValue()));
+    //     "Set Intake Position", MainCommands.setIntakePosition(wrist, elevator));
 
-    NamedCommands.registerCommand(
-        "Set Elevator L1",
-        MainCommands.setElevatorPosition(
-            wrist,
-            elevator,
-            ElevatorConstants.ELEVATOR_L1,
-            WristConstants.WRIST_SCORING_POSITION_L1));
-    NamedCommands.registerCommand(
-        "Set Elevator L2",
-        MainCommands.setElevatorPosition(
-            wrist,
-            elevator,
-            ElevatorConstants.ELEVATOR_L2,
-            WristConstants.WRIST_SCORING_POSITION_L2));
-    NamedCommands.registerCommand(
-        "Set Elevator L3",
-        MainCommands.setElevatorPosition(
-            wrist,
-            elevator,
-            ElevatorConstants.ELEVATOR_L3,
-            WristConstants.WRIST_SCORING_POSITION_L2));
-    NamedCommands.registerCommand(
-        "Set Elevator L4",
-        MainCommands.setElevatorPosition(
-            wrist,
-            elevator,
-            ElevatorConstants.ELEVATOR_L4,
-            WristConstants.WRIST_SCORING_POSITION_L4));
+    // // NamedCommands.registerCommand(
+    // //     "Auto Align", DriveCommands.autoAlign(drive, () -> Vision.autoAlignValue()));
+
+    // NamedCommands.registerCommand(
+    //     "Set Elevator L1",
+    //     MainCommands.setElevatorPosition(
+    //         wrist,
+    //         elevator,
+    //         ElevatorConstants.ELEVATOR_L1,
+    //         WristConstants.WRIST_SCORING_POSITION_L1));
+    // NamedCommands.registerCommand(
+    //     "Set Elevator L2",
+    //     MainCommands.setElevatorPosition(
+    //         wrist,
+    //         elevator,
+    //         ElevatorConstants.ELEVATOR_L2,
+    //         WristConstants.WRIST_SCORING_POSITION_L2));
+    // NamedCommands.registerCommand(
+    //     "Set Elevator L3",
+    //     MainCommands.setElevatorPosition(
+    //         wrist,
+    //         elevator,
+    //         ElevatorConstants.ELEVATOR_L3,
+    //         WristConstants.WRIST_SCORING_POSITION_L2));
+    // NamedCommands.registerCommand(
+    //     "Set Elevator L4",
+    //     MainCommands.setElevatorPosition(
+    //         wrist,
+    //         elevator,
+    //         ElevatorConstants.ELEVATOR_L4,
+    //         WristConstants.WRIST_SCORING_POSITION_L4));
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -314,6 +314,8 @@ public class RobotContainer {
                 () -> -driverController.getRightX() * .5));
     driverController.povUp().onTrue(MainCommands.changeElevatorSetpoint(elevator, -1));
     driverController.povDown().onTrue(MainCommands.changeElevatorSetpoint(elevator, 1));
+    driverController.povRight().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
+    driverController.povLeft().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
     // driverController
     //     .b()
     //     .whileTrue(
@@ -425,18 +427,9 @@ public class RobotContainer {
         .leftTrigger()
         .onTrue(MainCommands.runOutake(intake))
         .onFalse(MainCommands.stopIntake(intake));
-    // elevator.setDefaultCommand(
-    //     MainCommands.setElevatorVoltage(elevator, () -> operatorController.getLeftY()));
-    operatorController
-        .rightBumper()
-        .onTrue(MainCommands.setClimberUp(climber))
-        .onFalse(MainCommands.stopClimber(climber));
-    operatorController
-        .leftBumper()
-        .onTrue(MainCommands.setClimberDown(climber))
-        .onFalse(MainCommands.stopClimber(climber));
+    operatorController.rightBumper().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
+    operatorController.leftBumper().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
   }
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

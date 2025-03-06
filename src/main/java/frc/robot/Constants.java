@@ -74,7 +74,7 @@ public final class Constants {
     public static final int MAX_WRIST_VOLTAGE = 12;
 
     public static final double WRIST_INTAKE_POSITION = 10.5;
-    public static final double WRIST_SCORING_POSITION_L1 = 4;
+    public static final double WRIST_SCORING_POSITION_L1 = 4.5;
     public static final double WRIST_SCORING_POSITION_L2 = 4.75; // L2 and L3 should be same
     public static final double WRIST_SCORING_POSITION_L4 = 5.75;
     public static final double WRIST_PERPENDICULAR_POSITION = 7.5;

@@ -37,4 +37,9 @@ public class WristIOTalonFX implements WristIO {
   public double getPosition() {
     return wristMotor.getPosition().getValueAsDouble();
   }
+
+  @Override
+  public void setPosition(double position) {
+    wristMotor.setPosition(position);
+  }
 }

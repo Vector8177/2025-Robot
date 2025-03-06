@@ -20,7 +20,7 @@ public class IntakeIOTalonFX implements IntakeIO {
   public IntakeIOTalonFX() {
     intakeMotor =
         new TalonFX(
-            IntakeConstants.INTAKE_MOTOR_ID); // CHANGE ID, NOT ACCURATE; send this a string later
+            IntakeConstants.INTAKE_MOTOR_ID); 
 
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
@@ -38,11 +38,7 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   @Override
   public void setIntakeVoltage(double volts) {
-    // TalonFXConfiguration newConfig = new TalonFXConfiguration();
-    // newConfig.TorqueCurrent = new TorqueCurrentConfigs();
-
     intakeMotor.setVoltage(volts);
-    // this.talon.getConfigurator().apply(newConfig, .05);
   }
 
   @Override

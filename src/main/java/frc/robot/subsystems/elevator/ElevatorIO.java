@@ -7,10 +7,12 @@ public interface ElevatorIO {
   public static class ElevatorIOInputs {
     public double motorCurrent = 0;
     public double motorVoltage = 0;
-    public double motorAngle = 0;
+    public double motorSpeed = 0;
+    public double motorPosition = 0;
   }
 
   public default void updateInputs(ElevatorIOInputs inputs) {}
+  
   // Sets the power to the elevator motor
   public default void setElevatorVoltage(double voltage) {}
 

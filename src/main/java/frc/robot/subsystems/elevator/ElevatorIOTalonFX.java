@@ -4,7 +4,10 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.subsystems.climber.ClimberIO.ClimberIOInputs;
 
 public class ElevatorIOTalonFX implements ElevatorIO {
   private final TalonFX leadMotor;
