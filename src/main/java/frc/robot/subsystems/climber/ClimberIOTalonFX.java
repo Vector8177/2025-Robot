@@ -34,8 +34,6 @@ public class ClimberIOTalonFX implements ClimberIO {
     inputs.leftClimberVelocityRadPerSec =
         Units.rotationsPerMinuteToRadiansPerSecond(
             leftClimberMotor.getVelocity().getValueAsDouble());
-    // inputs.leftClimberCurrentAmps = new double[] {leftClimberMotor.getOutputCurrent()};
-    inputs.leftClimberEncoderPosition = leftClimberMotor.getPosition().getValueAsDouble();
 
     inputs.rightClimberAppliedVolts =
         rightClimberMotor.getDutyCycle().getValueAsDouble()
@@ -43,8 +41,6 @@ public class ClimberIOTalonFX implements ClimberIO {
     inputs.rightClimberVelocityRadPerSec =
         Units.rotationsPerMinuteToRadiansPerSecond(
             rightClimberMotor.getVelocity().getValueAsDouble());
-    // inputs.rightClimberCurrentAmps = new double[] {rightClimberMotor.getOutputCurrent()};
-    inputs.rightClimberEncoderPosition = rightClimberMotor.getPosition().getValueAsDouble();
   }
 
   @Override

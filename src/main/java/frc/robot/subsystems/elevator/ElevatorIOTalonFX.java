@@ -4,24 +4,17 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.subsystems.climber.ClimberIO.ClimberIOInputs;
 
 public class ElevatorIOTalonFX implements ElevatorIO {
   private final TalonFX leadMotor;
   private final TalonFX followMotor;
-  private final TalonFXConfiguration config;
 
-  // Constructor
-  // public WristIOInputsAutoLogged(){
-  //   WristIO.WristIOInputs = AutoLog;
-  // }
   public ElevatorIOTalonFX() {
     leadMotor = new TalonFX(ElevatorConstants.LEFT_ELEVATOR_MOTOR_ID);
     followMotor = new TalonFX(ElevatorConstants.RIGHT_ELEVATOR_MOTOR_ID);
-    config = new TalonFXConfiguration();
+    TalonFXConfiguration config = new TalonFXConfiguration();
 
     leadMotor.getConfigurator().apply(config, 0.05);
     followMotor.getConfigurator().apply(config, 0.05);
@@ -33,6 +26,21 @@ public class ElevatorIOTalonFX implements ElevatorIO {
 
     leadMotor.setNeutralMode(NeutralModeValue.Brake);
     followMotor.setNeutralMode(NeutralModeValue.Brake);
+  }
+
+  @Override
+  public void updateInputs(ElevatorIOInputs inputs) {
+    inputs.leftElevatorAppliedVolts =
+        leadMotor.getDutyCycle().getValueAsDouble()
+            * leadMotor.getSupplyVoltage().getValueAsDouble();
+    inputs.leftElevatorVelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(leadMotor.getVelocity().getValueAsDouble());
+
+    inputs.rightElevatorAppliedVolts =
+        followMotor.getDutyCycle().getValueAsDouble()
+            * followMotor.getSupplyVoltage().getValueAsDouble();
+    inputs.rightElevatorVelocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(followMotor.getVelocity().getValueAsDouble());
   }
 
   @Override

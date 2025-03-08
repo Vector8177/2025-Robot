@@ -15,8 +15,6 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -28,7 +26,7 @@ public final class Constants {
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
 
-  public static enum Mode {
+  public enum Mode {
     /** Running on a real robot. */
     REAL,
 
@@ -44,11 +42,11 @@ public final class Constants {
     public static final int RIGHT_ELEVATOR_MOTOR_ID = 32;
 
     public static final double ELEVATOR_INTAKE = 8;
-    public static final int ELEVATOR_L1 = 0;
-    public static final int ELEVATOR_L2 = 38;
-    public static final int ELEVATOR_L3 = 70;
-    public static final int ELEVATOR_L4 = 99;
-    public static final int ELEVATOR_NET = 99;
+    public static final double ELEVATOR_L1 = 0;
+    public static final double ELEVATOR_L2 = 38;
+    public static final double ELEVATOR_L3 = 70;
+    public static final double ELEVATOR_L4 = 99;
+    public static final double ELEVATOR_NET = 99;
 
     public static final int MAX_ELEVATOR_VOLTAGE = 12;
 
@@ -66,13 +64,13 @@ public final class Constants {
 
     public static final int INTAKE_MOTOR_ID = 42;
     public static final int MAX_INTAKE_VOLTAGE = 12;
-    public static final double INTAKE_SPEED = 1d;
   }
 
   public static final class WristConstants {
     public static final int WRIST_MOTOR_ID = 41;
     public static final int MAX_WRIST_VOLTAGE = 12;
 
+    // CHANGE ALL OF THE WRIST SETPOINTS IF WE USE ABSOLUTE ENCODER
     public static final double WRIST_INTAKE_POSITION = 10.5;
     public static final double WRIST_SCORING_POSITION_L1 = 4.5;
     public static final double WRIST_SCORING_POSITION_L2 = 4.75; // L2 and L3 should be same
@@ -90,32 +88,25 @@ public final class Constants {
     public static double kG = 0.76416;
   }
 
-  public final class VisionConstants {
-    public static final double alignSpeed = .4;
-    public static final double alignRange = 3;
-    public static final double closeAlignSpeed = .25;
+  public static final class VisionConstants {
+    public static final double alignSpeed = -.5;
+    public static final double alignRange = 5;
+    public static final double closeAlignSpeed = -.25;
     public static final double closeAlignRange = 1;
 
     // AprilTag layout
     public static AprilTagFieldLayout aprilTagLayout =
-        AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+        AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
 
     // Camera names, must match names configured on coprocessor
     public static String camera0Name = "limelight-bottom";
     public static String camera1Name = "limelight-top";
 
-    // Robot to camera transforms
-    // (Not used by Limelight, configure in web UI instead)
-    public static Transform3d robotToCamera0 =
-        new Transform3d(0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, 0.0));
-    public static Transform3d robotToCamera1 =
-        new Transform3d(-0.2, 0.0, 0.2, new Rotation3d(0.0, -0.4, Math.PI));
-
     // Basic filtering thresholds
     public static double maxAmbiguity = 0.3;
     public static double maxZError = 0.75;
 
-    // Standard deviation baselines, for 1 meter distance and 1 tag
+    // Standard deviation baselines, for 1-meter distance and 1 tag
     // (Adjusted automatically based on distance and # of tags)
     public static double linearStdDevBaseline = 0.02; // Meters
     public static double angularStdDevBaseline = 0.06; // Radians

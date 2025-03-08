@@ -13,8 +13,7 @@ public interface IntakeIO {
 
   @AutoLog
   class IntakeIOInputs {
-    double intakeRadPerSec = 0d;
+    double intakeVelocityRadPerSec = 0d;
     double intakeAppliedVolts = 0d;
-    double[] intakeCurrentAmps = new double[] {};
   }
 }

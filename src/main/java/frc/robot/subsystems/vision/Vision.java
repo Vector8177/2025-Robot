@@ -13,6 +13,7 @@
 
 package frc.robot.subsystems.vision;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -59,33 +60,26 @@ public class Vision extends SubsystemBase {
   }
 
   public static double autoAlignValue() {
-    return LimelightHelpers.getTXNC(VisionConstants.camera0Name) < VisionConstants.closeAlignRange
-            && LimelightHelpers.getTXNC(VisionConstants.camera0Name)
-                > -VisionConstants.closeAlignRange
-        ? 0
-        : LimelightHelpers.getTXNC(VisionConstants.camera0Name) > VisionConstants.closeAlignRange
-            ? -VisionConstants.closeAlignSpeed
-            : LimelightHelpers.getTXNC(VisionConstants.camera0Name)
-                    < -VisionConstants.closeAlignRange
-                ? VisionConstants.closeAlignSpeed
-                : LimelightHelpers.getTXNC(VisionConstants.camera0Name) > VisionConstants.alignRange
-                    ? -VisionConstants.alignSpeed
-                    : VisionConstants.alignSpeed;
-    //     LimelightHelpers.getTXNC(VisionConstants.camera0Name) < VisionConstants.alignRange
-    //             && LimelightHelpers.getTXNC(VisionConstants.camera0name)
-    //                 > -VisionConstants.alignRange
+    double tx = LimelightHelpers.getTX(VisionConstants.camera0Name);
+    double alignSpeed = .05 * tx;
+    return MathUtil.clamp(alignSpeed, -1, 1);
+    // return tx < VisionConstants.closeAlignRange
+    //     && tx > -VisionConstants.closeAlignRange
     //         ? 0
-    //         : LimelightHelpers.getTXNC(VisionConstants.camera0name) >
-    // VisionConstants.alignRange
+    //         : tx > VisionConstants.alignRange
     //             ? -VisionConstants.alignSpeed
-    //             : VisionConstants.alignSpeed));
+    //             : tx < -VisionConstants.alignRange
+    //                 ? VisionConstants.alignSpeed
+    //                 : tx > VisionConstants.closeAlignRange
+    //                     ? -VisionConstants.closeAlignSpeed
+    //                     : VisionConstants.closeAlignSpeed;
   }
 
   @Override
   public void periodic() {
     for (int i = 0; i < io.length; i++) {
       io[i].updateInputs(inputs[i]);
-      Logger.processInputs("Vision/Camera" + Integer.toString(i), inputs[i]);
+      Logger.processInputs("Vision/Camera" + i, inputs[i]);
       Logger.recordOutput("Vision/autoalignvalue", autoAlignValue());
     }
 
@@ -109,9 +103,7 @@ public class Vision extends SubsystemBase {
       // Add tag poses
       for (int tagId : inputs[cameraIndex].tagIds) {
         var tagPose = VisionConstants.aprilTagLayout.getTagPose(tagId);
-        if (tagPose.isPresent()) {
-          tagPoses.add(tagPose.get());
-        }
+        tagPose.ifPresent(tagPoses::add);
       }
 
       // Loop over pose observations
@@ -167,17 +159,15 @@ public class Vision extends SubsystemBase {
 
       // Log camera data
       Logger.recordOutput(
-          "Vision/Camera" + Integer.toString(cameraIndex) + "/TagPoses",
-          tagPoses.toArray(new Pose3d[tagPoses.size()]));
+          "Vision/Camera" + cameraIndex + "/TagPoses", tagPoses.toArray(new Pose3d[0]));
       Logger.recordOutput(
-          "Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPoses",
-          robotPoses.toArray(new Pose3d[robotPoses.size()]));
+          "Vision/Camera" + cameraIndex + "/RobotPoses", robotPoses.toArray(new Pose3d[0]));
       Logger.recordOutput(
-          "Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPosesAccepted",
-          robotPosesAccepted.toArray(new Pose3d[robotPosesAccepted.size()]));
+          "Vision/Camera" + cameraIndex + "/RobotPosesAccepted",
+          robotPosesAccepted.toArray(new Pose3d[0]));
       Logger.recordOutput(
-          "Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPosesRejected",
-          robotPosesRejected.toArray(new Pose3d[robotPosesRejected.size()]));
+          "Vision/Camera" + cameraIndex + "/RobotPosesRejected",
+          robotPosesRejected.toArray(new Pose3d[0]));
       allTagPoses.addAll(tagPoses);
       allRobotPoses.addAll(robotPoses);
       allRobotPosesAccepted.addAll(robotPosesAccepted);
@@ -185,21 +175,17 @@ public class Vision extends SubsystemBase {
     }
 
     // Log summary data
+    Logger.recordOutput("Vision/Summary/TagPoses", allTagPoses.toArray(new Pose3d[0]));
+    Logger.recordOutput("Vision/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[0]));
     Logger.recordOutput(
-        "Vision/Summary/TagPoses", allTagPoses.toArray(new Pose3d[allTagPoses.size()]));
+        "Vision/Summary/RobotPosesAccepted", allRobotPosesAccepted.toArray(new Pose3d[0]));
     Logger.recordOutput(
-        "Vision/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[allRobotPoses.size()]));
-    Logger.recordOutput(
-        "Vision/Summary/RobotPosesAccepted",
-        allRobotPosesAccepted.toArray(new Pose3d[allRobotPosesAccepted.size()]));
-    Logger.recordOutput(
-        "Vision/Summary/RobotPosesRejected",
-        allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
+        "Vision/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[0]));
   }
 
   @FunctionalInterface
-  public static interface VisionConsumer {
-    public void accept(
+  public interface VisionConsumer {
+    void accept(
         Pose2d visionRobotPoseMeters,
         double timestampSeconds,
         Matrix<N3, N1> visionMeasurementStdDevs);

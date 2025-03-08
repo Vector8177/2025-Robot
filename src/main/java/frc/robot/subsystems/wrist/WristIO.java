@@ -5,12 +5,9 @@ import org.littletonrobotics.junction.AutoLog;
 public interface WristIO {
   @AutoLog
   public static class WristIOInputs {
-    public double velocity = 0.0;
-    public double absoluteEncoderPosition = 0.0;
-
-    public double appliedVolts = 0.0;
-    public double[] currentAmps = new double[] {};
-    public double[] tempCelcius = new double[] {};
+    public double wristVelocityRadPerSec = 0.0;
+    public double wristAbsoluteEncoderPosition = 0.0;
+    public double wristAppliedVolts = 0.0;
   }
 
   public default void updateInputs(WristIOInputs inputs) {}

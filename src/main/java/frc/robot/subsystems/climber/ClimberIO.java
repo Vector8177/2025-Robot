@@ -9,8 +9,6 @@ public interface ClimberIO {
     double rightClimberVelocityRadPerSec = 0d;
     double leftClimberAppliedVolts = 0d;
     double rightClimberAppliedVolts = 0d;
-    double leftClimberEncoderPosition = 0d;
-    double rightClimberEncoderPosition = 0d;
   }
 
   default void updateInputs(ClimberIOInputs inputs) {}
