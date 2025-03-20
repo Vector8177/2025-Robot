@@ -17,19 +17,19 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Set Elevator L2"
+                  "name": "Set Elevator L4"
                 }
               },
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 2.0
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Run Outake"
+                  "name": "Flick Wrist"
                 }
               },
               {
@@ -47,7 +47,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Set Elevator L1"
+                  "name": "Set Intake Position"
                 }
               }
             ]

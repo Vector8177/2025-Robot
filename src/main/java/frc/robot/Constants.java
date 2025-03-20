@@ -45,8 +45,8 @@ public final class Constants {
     public static final double L1 = 0;
     public static final double L2 = 29; // 29
     public static final double L3 = 60.5; // 62.5
-    public static final double L4 = 103.5; // 101
-    public static final double NET = 101.5; // 101
+    public static final double L4 = 104; // 101
+    public static final double NET = 103.5; // 101
 
     public static final int MAX_VOLTAGE = 12;
 
@@ -70,7 +70,7 @@ public final class Constants {
     public static final int MAX_VOLTAGE = 12;
 
     // These are relative encoder positions - comments are for absolute encoder -7.87
-    public static final double INTAKE_POSITION = -8.3; // .67
+    public static final double INTAKE_POSITION = -8.6; // .67
     public static final double SCORING_POSITION_L1 = -4.5; // .35
     public static final double SCORING_POSITION_L2 = -4.75; // .53
     public static final double SCORING_POSITION_L4 = -6.5; // .58
@@ -97,7 +97,7 @@ public final class Constants {
 
     // AprilTag layout
     public static AprilTagFieldLayout aprilTagLayout =
-        AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+        AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
     // Camera names, must match names configured on coprocessor
     public static String camera0Name = "limelight-bottom";

@@ -23,13 +23,13 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 2.0
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Run Outake"
+                  "name": "Flick Wrist"
                 }
               },
               {

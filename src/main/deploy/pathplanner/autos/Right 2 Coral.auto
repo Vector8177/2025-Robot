@@ -29,7 +29,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Run Outake"
+                  "name": "Flick Wrist"
                 }
               },
               {
@@ -47,7 +47,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Set Elevator L1"
+                  "name": "Set Intake Position"
                 }
               }
             ]
@@ -66,19 +66,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Set Intake Position"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
                   "name": "Run Intake"
                 }
               },
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 2.0
                 }
               },
               {
@@ -115,7 +109,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Run Outake"
+                  "name": "Flick Wrist"
                 }
               },
               {

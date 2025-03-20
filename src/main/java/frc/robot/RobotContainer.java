@@ -110,6 +110,8 @@ public class RobotContainer {
             MainCommands.setElevatorPosition(
                 wrist, elevator, ElevatorConstants.L4, WristConstants.SCORING_POSITION_L4));
 
+        NamedCommands.registerCommand("Flick Wrist", MainCommands.flickWrist(intake, wrist));
+
         drive =
             new Drive(
                 new GyroIOPigeon2(),
