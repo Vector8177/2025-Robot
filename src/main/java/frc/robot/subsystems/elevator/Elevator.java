@@ -39,17 +39,10 @@ public class Elevator extends SubsystemBase {
             + feedForward.calculate(targetPosition, 0);
     Logger.recordOutput("PID Speed", pidMotorSpeed);
     Logger.recordOutput("Manual Speed", targetSpeed);
-    // Only use this for manual control
-    // setMotor(
-    //     MathUtil.clamp(
-    //         (-targetSpeed * ElevatorConstants.MAX_ELEVATOR_VOLTAGE),
-    //         -ElevatorConstants.MAX_ELEVATOR_VOLTAGE,
-    //         ElevatorConstants.MAX_ELEVATOR_VOLTAGE));
+
     setMotor(
         MathUtil.clamp(
-            (pidMotorSpeed),
-            -ElevatorConstants.MAX_ELEVATOR_VOLTAGE,
-            ElevatorConstants.MAX_ELEVATOR_VOLTAGE));
+            (pidMotorSpeed), -ElevatorConstants.MAX_VOLTAGE, ElevatorConstants.MAX_VOLTAGE));
   }
 
   public void setSpeed(double speed) {
@@ -57,7 +50,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setElevatorSetpoint(double offset) {
-    io.setPosition(io.getPosition() + offset);
+    targetPosition = (io.getPosition() + offset);
   }
 
   public boolean atSetpoint() {

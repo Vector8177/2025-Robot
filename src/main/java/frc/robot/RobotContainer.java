@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.MainCommands;
@@ -76,15 +75,7 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL -> {
         // Real robot, instantiate hardware IO implementations
-        drive =
-            new Drive(
-                new GyroIOPigeon2(),
-                new ModuleIOTalonFX(TunerConstants.FrontLeft),
-                new ModuleIOTalonFX(TunerConstants.FrontRight),
-                new ModuleIOTalonFX(TunerConstants.BackLeft),
-                new ModuleIOTalonFX(TunerConstants.BackRight));
-
-        intake = new Intake(new IntakeIOTalonFX()); // rename string to canbussname
+        intake = new Intake(new IntakeIOTalonFX());
 
         climber = new Climber(new ClimberIOTalonFX());
 
@@ -92,15 +83,9 @@ public class RobotContainer {
 
         wrist = new Wrist(new WristIOTalonFX());
 
-        vision =
-            new Vision(
-                drive::addVisionMeasurement,
-                new VisionIOLimelight(Constants.VisionConstants.camera0Name, drive::getRotation),
-                new VisionIOLimelight(Constants.VisionConstants.camera1Name, drive::getRotation));
-
         NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
         NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
-        NamedCommands.registerCommand("Run Outake", MainCommands.runOuttakeSlow(intake));
+        NamedCommands.registerCommand("Run Outtake", MainCommands.runOuttakeSlow(intake));
 
         NamedCommands.registerCommand(
             "Set Intake Position", MainCommands.setIntakePosition(wrist, elevator));
@@ -111,31 +96,33 @@ public class RobotContainer {
         NamedCommands.registerCommand(
             "Set Elevator L1",
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L1,
-                WristConstants.WRIST_SCORING_POSITION_L1));
+                wrist, elevator, ElevatorConstants.L1, WristConstants.SCORING_POSITION_L1));
         NamedCommands.registerCommand(
             "Set Elevator L2",
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L2,
-                WristConstants.WRIST_SCORING_POSITION_L2));
+                wrist, elevator, ElevatorConstants.L2, WristConstants.SCORING_POSITION_L2));
         NamedCommands.registerCommand(
             "Set Elevator L3",
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L3,
-                WristConstants.WRIST_SCORING_POSITION_L2));
+                wrist, elevator, ElevatorConstants.L3, WristConstants.SCORING_POSITION_L2));
         NamedCommands.registerCommand(
             "Set Elevator L4",
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L4,
-                WristConstants.WRIST_SCORING_POSITION_L4));
+                wrist, elevator, ElevatorConstants.L4, WristConstants.SCORING_POSITION_L4));
+
+        drive =
+            new Drive(
+                new GyroIOPigeon2(),
+                new ModuleIOTalonFX(TunerConstants.FrontLeft),
+                new ModuleIOTalonFX(TunerConstants.FrontRight),
+                new ModuleIOTalonFX(TunerConstants.BackLeft),
+                new ModuleIOTalonFX(TunerConstants.BackRight));
+
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOLimelight("limelight-bottom", drive::getRotation),
+                new VisionIOLimelight("limelight-top", drive::getRotation));
       }
 
       case SIM -> {
@@ -148,7 +135,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
 
-        intake = new Intake(new IntakeIOTalonFX()); // rename string to canbussname
+        intake = new Intake(new IntakeIOTalonFX());
 
         climber = new Climber(new ClimberIOTalonFX());
 
@@ -164,14 +151,6 @@ public class RobotContainer {
       }
 
       default -> {
-        drive =
-            new Drive(
-                new GyroIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {});
-
         intake = new Intake(new IntakeIOTalonFX());
 
         climber = new Climber(new ClimberIOTalonFX());
@@ -179,12 +158,6 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOTalonFX());
 
         wrist = new Wrist(new WristIOTalonFX());
-
-        vision =
-            new Vision(
-                drive::addVisionMeasurement,
-                new VisionIOLimelight("limelight-bottom", drive::getRotation),
-                new VisionIOLimelight("limelight-top", drive::getRotation));
 
         NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
         NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
@@ -199,31 +172,34 @@ public class RobotContainer {
         NamedCommands.registerCommand(
             "Set Elevator L1",
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L1,
-                WristConstants.WRIST_SCORING_POSITION_L1));
+                wrist, elevator, ElevatorConstants.L1, WristConstants.SCORING_POSITION_L1));
         NamedCommands.registerCommand(
             "Set Elevator L2",
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L2,
-                WristConstants.WRIST_SCORING_POSITION_L2));
+                wrist, elevator, ElevatorConstants.L2, WristConstants.SCORING_POSITION_L2));
         NamedCommands.registerCommand(
             "Set Elevator L3",
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L3,
-                WristConstants.WRIST_SCORING_POSITION_L2));
+                wrist, elevator, ElevatorConstants.L3, WristConstants.SCORING_POSITION_L2));
         NamedCommands.registerCommand(
             "Set Elevator L4",
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L4,
-                WristConstants.WRIST_SCORING_POSITION_L4));
+                wrist, elevator, ElevatorConstants.L4, WristConstants.SCORING_POSITION_L4));
+        NamedCommands.registerCommand("Flick Wrist", MainCommands.flickWrist(intake, wrist));
+
+        drive =
+            new Drive(
+                new GyroIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {});
+
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOLimelight("limelight-bottom", drive::getRotation),
+                new VisionIOLimelight("limelight-top", drive::getRotation));
       }
     }
 
@@ -279,41 +255,42 @@ public class RobotContainer {
                 () -> -driverController.getLeftY() * .5,
                 () -> -driverController.getLeftX() * .5,
                 () -> -driverController.getRightX() * .5));
-    driverController.povUp().onTrue(MainCommands.changeElevatorSetpoint(elevator, -1));
-    driverController.povDown().onTrue(MainCommands.changeElevatorSetpoint(elevator, 1));
-    driverController.povRight().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
-    driverController.povLeft().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
-    driverController
-        .b()
-        .whileTrue(
-            Commands.sequence(
-                DriveCommands.joystickDrive(
-                    drive,
-                    () ->
-                        LimelightHelpers.getTX("limelight-bottom")
-                                > VisionConstants.alignRange
-                                    * Math.cos(drive.getRotation().getRadians())
-                            ? -VisionConstants.alignSpeed
-                                * Math.cos(drive.getRotation().getRadians())
-                            : LimelightHelpers.getTX("limelight-bottom")
-                                    < -VisionConstants.alignRange
-                                        * Math.cos(drive.getRotation().getRadians())
-                                ? VisionConstants.alignSpeed
-                                    * Math.cos(drive.getRotation().getRadians())
-                                : 0,
-                    () ->
-                        LimelightHelpers.getTX("limelight-bottom")
-                                > VisionConstants.alignRange
-                                    * Math.sin(drive.getRotation().getRadians())
-                            ? -VisionConstants.alignSpeed
-                                * Math.sin(drive.getRotation().getRadians())
-                            : LimelightHelpers.getTX("limelight-bottom")
-                                    < -VisionConstants.alignRange
-                                        * Math.sin(drive.getRotation().getRadians())
-                                ? VisionConstants.alignSpeed
-                                    * Math.sin(drive.getRotation().getRadians())
-                                : 0,
-                    () -> 0)));
+    driverController.povUp().onTrue(MainCommands.changeElevatorSetpoint(elevator, 1));
+    driverController.povDown().onTrue(MainCommands.changeElevatorSetpoint(elevator, -1));
+    driverController.povRight().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
+    driverController.povLeft().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
+    // driverController
+    //     .b()
+    //     .whileTrue(
+    //         Commands.sequence(
+    //             DriveCommands.joystickDrive(
+    //                 drive,
+    //                 () ->
+    //                     LimelightHelpers.getTX("limelight-bottom")
+    //                             > VisionConstants.alignRange
+    //                                 * Math.cos(drive.getRotation().getRadians())
+    //                         ? -VisionConstants.alignSpeed
+    //                             * Math.cos(drive.getRotation().getRadians())
+    //                         : LimelightHelpers.getTX("limelight-bottom")
+    //                                 < -VisionConstants.alignRange
+    //                                     * Math.cos(drive.getRotation().getRadians())
+    //                             ? VisionConstants.alignSpeed
+    //                                 * Math.cos(drive.getRotation().getRadians())
+    //                             : 0,
+    //                 () ->
+    //                     LimelightHelpers.getTX("limelight-bottom")
+    //                             > VisionConstants.alignRange
+    //                                 * Math.sin(drive.getRotation().getRadians())
+    //                         ? -VisionConstants.alignSpeed
+    //                             * Math.sin(drive.getRotation().getRadians())
+    //                         : LimelightHelpers.getTX("limelight-bottom")
+    //                                 < -VisionConstants.alignRange
+    //                                     * Math.sin(drive.getRotation().getRadians())
+    //                             ? VisionConstants.alignSpeed
+    //                                 * Math.sin(drive.getRotation().getRadians())
+    //                             : 0,
+    //                 () -> 0)));
+    driverController.b().onTrue(MainCommands.flickWrist(intake, wrist));
     driverController
         .a()
         .whileTrue(
@@ -321,7 +298,7 @@ public class RobotContainer {
                 drive,
                 () -> -driverController.getLeftY(),
                 () -> -driverController.getLeftX(),
-                () -> Vision.autoAlignValue()));
+                Vision::autoAlignValue));
 
     driverController
         .rightTrigger()
@@ -333,53 +310,38 @@ public class RobotContainer {
         .onFalse(MainCommands.stopIntake(intake));
     driverController
         .rightBumper()
-        .onTrue(MainCommands.setClimberUp(climber))
+        .onTrue(MainCommands.setClimberDown(climber))
         .onFalse(MainCommands.stopClimber(climber));
     driverController
         .leftBumper()
-        .onTrue(MainCommands.setClimberDown(climber))
+        .onTrue(MainCommands.setClimberUp(climber))
         .onFalse(MainCommands.stopClimber(climber));
 
     operatorController
         .povDown()
         .onTrue(
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L1,
-                WristConstants.WRIST_SCORING_POSITION_L1));
+                wrist, elevator, ElevatorConstants.L1, WristConstants.SCORING_POSITION_L1));
     operatorController
         .povLeft()
         .onTrue(
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L2,
-                WristConstants.WRIST_SCORING_POSITION_L2));
+                wrist, elevator, ElevatorConstants.L2, WristConstants.SCORING_POSITION_L2));
     operatorController
         .povUp()
         .onTrue(
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L3,
-                WristConstants.WRIST_SCORING_POSITION_L2));
+                wrist, elevator, ElevatorConstants.L3, WristConstants.SCORING_POSITION_L2));
     operatorController
         .povRight()
         .onTrue(
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_L4,
-                WristConstants.WRIST_SCORING_POSITION_L4));
+                wrist, elevator, ElevatorConstants.L4, WristConstants.SCORING_POSITION_L4));
     operatorController
         .b()
         .onTrue(
             MainCommands.setElevatorPosition(
-                wrist,
-                elevator,
-                ElevatorConstants.ELEVATOR_NET,
-                WristConstants.WRIST_SCORING_POSITION_NET));
+                wrist, elevator, ElevatorConstants.NET, WristConstants.SCORING_POSITION_NET));
     operatorController.a().onTrue(MainCommands.setIntakePosition(wrist, elevator));
     operatorController
         .x()
@@ -394,9 +356,10 @@ public class RobotContainer {
         .leftTrigger()
         .onTrue(MainCommands.runOuttake(intake))
         .onFalse(MainCommands.stopIntake(intake));
-    operatorController.rightBumper().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
-    operatorController.leftBumper().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
+    operatorController.rightBumper().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
+    operatorController.leftBumper().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
   }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

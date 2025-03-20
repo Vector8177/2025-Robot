@@ -7,8 +7,6 @@ public interface IntakeIO {
 
   default void setIntakeVoltage(double volts) {}
 
-  default void runVolts(double volts) {}
-
   default void stop() {}
 
   @AutoLog

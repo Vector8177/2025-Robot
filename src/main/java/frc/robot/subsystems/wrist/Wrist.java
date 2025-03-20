@@ -8,19 +8,17 @@ import frc.robot.Constants.WristConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class Wrist extends SubsystemBase {
-  private double targetPosition;
   private final PIDController pidController;
-  private ArmFeedforward feedForward;
-
   private final WristIO io;
   private final WristIOInputsAutoLogged inputs = new WristIOInputsAutoLogged();
+  private double targetPosition;
+  private ArmFeedforward feedForward;
 
   public Wrist(WristIO io) {
 
     this.io = io;
     pidController = new PIDController(WristConstants.kP, WristConstants.kI, WristConstants.kD);
-    pidController.setTolerance(.25);
-    io.resetRelativeEncoder();
+    pidController.setTolerance(.05);
 
     feedForward =
         new ArmFeedforward(
@@ -31,14 +29,14 @@ public class Wrist extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Wrist", inputs);
-    Logger.recordOutput("Wrist Position", io.getPosition());
-
+    Logger.recordOutput("Current Position", io.getPosition());
     double pidMotorSpeed =
         pidController.calculate(io.getPosition(), targetPosition)
             + feedForward.calculate(targetPosition, 0);
+    ;
+    Logger.recordOutput("Wrist Speed", pidMotorSpeed);
     setMotor(
-        MathUtil.clamp(
-            (pidMotorSpeed), -WristConstants.MAX_WRIST_VOLTAGE, WristConstants.MAX_WRIST_VOLTAGE));
+        MathUtil.clamp((pidMotorSpeed), -WristConstants.MAX_VOLTAGE, WristConstants.MAX_VOLTAGE));
   }
 
   public void setMotor(double voltage) {
@@ -47,18 +45,11 @@ public class Wrist extends SubsystemBase {
 
   public void setPosition(double position) {
     Logger.recordOutput("Wrist Target Position", position);
+
     targetPosition = position;
   }
 
-  public boolean atSetpoint() {
-    return pidController.atSetpoint();
-  }
-
-  public void resetRelativeEncoder() {
-    io.resetRelativeEncoder();
-  }
-
   public void setWristSetpoint(double offset) {
-    io.setPosition(io.getPosition() + offset);
+    targetPosition = (io.getPosition() + offset);
   }
 }

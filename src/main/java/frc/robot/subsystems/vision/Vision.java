@@ -24,6 +24,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.vision.VisionIO.PoseObservationType;
@@ -61,7 +62,7 @@ public class Vision extends SubsystemBase {
 
   public static double autoAlignValue() {
     double tx = LimelightHelpers.getTX(VisionConstants.camera0Name);
-    double alignSpeed = .05 * tx;
+    double alignSpeed = Constants.VisionConstants.kP * tx;
     return MathUtil.clamp(alignSpeed, -1, 1);
     // return tx < VisionConstants.closeAlignRange
     //     && tx > -VisionConstants.closeAlignRange

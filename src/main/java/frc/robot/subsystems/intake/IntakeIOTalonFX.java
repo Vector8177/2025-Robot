@@ -19,7 +19,7 @@ public class IntakeIOTalonFX implements IntakeIO {
   private final NeutralOut neutralOut = new NeutralOut();
 
   public IntakeIOTalonFX() {
-    intakeMotor = new TalonFX(IntakeConstants.INTAKE_MOTOR_ID);
+    intakeMotor = new TalonFX(IntakeConstants.MOTOR_ID);
 
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.CurrentLimits.SupplyCurrentLimitEnable = true;

@@ -3,7 +3,7 @@ package frc.robot.subsystems.intake;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class Intake extends SubsystemBase {
@@ -19,7 +19,7 @@ public class Intake extends SubsystemBase {
   private void setSpeedRaw(double speed) {
     speed = MathUtil.clamp(speed, -1, 1);
     Logger.recordOutput("Intake speed", speed);
-    io.setIntakeVoltage(speed * Constants.IntakeConstants.MAX_INTAKE_VOLTAGE);
+    io.setIntakeVoltage(speed * IntakeConstants.MAX_VOLTAGE);
   }
 
   public void setSpeed(double speed) {

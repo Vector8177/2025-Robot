@@ -15,7 +15,7 @@ public class WristIOTalonFX implements WristIO {
   private final DutyCycleEncoder encoder;
 
   public WristIOTalonFX() {
-    wristMotor = new TalonFX(WristConstants.WRIST_MOTOR_ID);
+    wristMotor = new TalonFX(WristConstants.MOTOR_ID);
     configuration = new TalonFXConfiguration();
 
     wristMotor.getConfigurator().apply(configuration, .05);
@@ -24,7 +24,7 @@ public class WristIOTalonFX implements WristIO {
 
     input = new DigitalInput(0);
     encoder = new DutyCycleEncoder(input);
-    encoder.setDutyCycleRange(0, .5); // change this later
+    // encoder.setDutyCycleRange(0.01, .99);
   }
 
   @Override
@@ -34,11 +34,7 @@ public class WristIOTalonFX implements WristIO {
             * wristMotor.getSupplyVoltage().getValueAsDouble();
     inputs.wristVelocityRadPerSec =
         Units.rotationsPerMinuteToRadiansPerSecond(wristMotor.getVelocity().getValueAsDouble());
-  }
-
-  @Override
-  public void resetRelativeEncoder() {
-    wristMotor.setPosition(0);
+    inputs.wristAbsoluteEncoderPosition = encoder.get();
   }
 
   @Override
@@ -48,8 +44,12 @@ public class WristIOTalonFX implements WristIO {
 
   @Override
   public double getPosition() {
-    // return wristMotor.getPosition().getValueAsDouble();
-    return encoder.get();
+    return wristMotor.getPosition().getValueAsDouble();
+    // if (encoder.get() > .75) {
+    //   return .6;
+    // }
+    // return encoder.get();
+
   }
 
   @Override

@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.WristConstants;
@@ -10,7 +9,6 @@ import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.wrist.Wrist;
-import java.util.function.DoubleSupplier;
 
 public class MainCommands {
 
@@ -23,48 +21,51 @@ public class MainCommands {
   public static Command runIntake(Intake intake) {
     return runOnce(
         () -> {
-          intake.setSpeed(.25);
+          intake.setSpeed(-.3); // .25
         },
         intake);
   }
 
   public static Command runOuttake(Intake intake) {
-    return runOnce(() -> intake.setSpeed(-1), intake);
+    return runOnce(() -> intake.setSpeed(.5), intake); // -1
   }
 
   public static Command runOuttakeSlow(Intake intake) {
-    return runOnce(() -> intake.setSpeed(-.25), intake);
+    return runOnce(() -> intake.setSpeed(.15), intake); // -.25
   }
 
-  public static Command setWristPerpendicular(Wrist wrist) {
+  public static Command flickWrist(Intake intake, Wrist wrist) {
     return sequence(
-        runOnce(() -> wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION), wrist));
+        runOnce(() -> intake.setSpeed(.25), intake),
+        waitSeconds(.25),
+        runOnce(() -> wrist.setPosition(WristConstants.FLICK_WRIST_POSITION), wrist),
+        runOnce(() -> intake.setSpeed(0), intake));
   }
 
   public static Command setIntakePosition(Wrist wrist, Elevator elevator) {
     return sequence(
-        runOnce(() -> wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION), wrist),
+        runOnce(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist),
         waitSeconds(.25),
-        runOnce(() -> elevator.setPosition(ElevatorConstants.ELEVATOR_INTAKE), elevator),
+        runOnce(() -> elevator.setPosition(ElevatorConstants.INTAKE), elevator),
         waitSeconds(0.25),
-        runOnce(() -> wrist.setPosition(WristConstants.WRIST_INTAKE_POSITION), wrist));
+        runOnce(() -> wrist.setPosition(WristConstants.INTAKE_POSITION), wrist));
   }
 
-  // sets wrist and elevator to 0
+  // Sets wrist and elevator to 0
   public static Command stow(Wrist wrist, Elevator elevator) {
     return sequence(
-        runOnce(() -> wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION), wrist),
+        runOnce(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist),
         waitSeconds(.25),
         runOnce(() -> elevator.setPosition(0), elevator),
         waitSeconds(.25),
         runOnce(() -> wrist.setPosition(0), wrist));
   }
 
-  public static Command setClimberUp(Climber climber) {
+  public static Command setClimberDown(Climber climber) {
     return runOnce(() -> climber.setSpeed(1), climber);
   }
 
-  public static Command setClimberDown(Climber climber) {
+  public static Command setClimberUp(Climber climber) {
     return runOnce(() -> climber.setSpeed(-1), climber);
   }
 
@@ -75,14 +76,14 @@ public class MainCommands {
   public static Command setElevatorPosition(
       Wrist wrist, Elevator elevator, double elevatorPosition, double wristPosition) {
     return sequence(
-        runOnce(() -> wrist.setPosition(WristConstants.WRIST_PERPENDICULAR_POSITION), wrist),
+        runOnce(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist),
         waitSeconds(.25),
         runOnce(() -> elevator.setPosition(elevatorPosition), elevator),
         waitSeconds(.25),
         runOnce(() -> wrist.setPosition(wristPosition), wrist));
   }
 
-  // changes all setpoints of the elevator
+  // manually move the elevator or wrist
   public static Command changeElevatorSetpoint(Elevator elevator, double offset) {
     return runOnce(() -> elevator.setElevatorSetpoint(offset), elevator);
   }
@@ -91,28 +92,11 @@ public class MainCommands {
     return runOnce(() -> wrist.setWristSetpoint(offset), wrist);
   }
 
-  // public static Command moveElevator(double position, Elevator elevator) { // testing
-  //   return run(() -> elevator.setPosition(position)).until(() -> elevator.atSetpoint());
+  // public static Command moveElevator(Elevator elevator, double speed) {
+  //   return runOnce(() -> elevator.setSpeed(speed), elevator);
   // }
 
-  // public static Command moveWrist(double position, Wrist wrist) { // testing
-  //   return run(() -> wrist.setPosition(position)).until(() -> wrist.atSetpoint());
+  // public static Command stopElevator(Elevator elevator) {
+  //   return runOnce(() -> elevator.setSpeed(0), elevator);
   // }
-
-  public static Command setElevatorVoltage(Elevator elevator, DoubleSupplier ySupplier) {
-    return runOnce(
-        () -> {
-          double speed = MathUtil.applyDeadband(ySupplier.getAsDouble(), 0.1);
-          elevator.setSpeed(speed);
-        },
-        elevator);
-  }
-
-  public static Command stopElevator(Elevator elevator) {
-    return runOnce(
-        () -> {
-          elevator.setSpeed(0);
-        },
-        elevator);
-  }
 }

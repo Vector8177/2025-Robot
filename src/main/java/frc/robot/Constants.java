@@ -38,17 +38,17 @@ public final class Constants {
   }
 
   public static final class ElevatorConstants {
-    public static final int LEFT_ELEVATOR_MOTOR_ID = 31; // lead motor
-    public static final int RIGHT_ELEVATOR_MOTOR_ID = 32;
+    public static final int LEFT_MOTOR_ID = 31; // lead motor
+    public static final int RIGHT_MOTOR_ID = 32;
 
-    public static final double ELEVATOR_INTAKE = 8;
-    public static final double ELEVATOR_L1 = 0;
-    public static final double ELEVATOR_L2 = 38;
-    public static final double ELEVATOR_L3 = 70;
-    public static final double ELEVATOR_L4 = 99;
-    public static final double ELEVATOR_NET = 99;
+    public static final double INTAKE = 15; // 14.7
+    public static final double L1 = 0;
+    public static final double L2 = 29; // 29
+    public static final double L3 = 60.5; // 62.5
+    public static final double L4 = 103.5; // 101
+    public static final double NET = 101.5; // 101
 
-    public static final int MAX_ELEVATOR_VOLTAGE = 12;
+    public static final int MAX_VOLTAGE = 12;
 
     public static double kP = 2.5;
     public static double kI = 0.0;
@@ -61,26 +61,26 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-
-    public static final int INTAKE_MOTOR_ID = 42;
-    public static final int MAX_INTAKE_VOLTAGE = 12;
+    public static final int MOTOR_ID = 42;
+    public static final int MAX_VOLTAGE = 12;
   }
 
   public static final class WristConstants {
-    public static final int WRIST_MOTOR_ID = 41;
-    public static final int MAX_WRIST_VOLTAGE = 12;
+    public static final int MOTOR_ID = 41;
+    public static final int MAX_VOLTAGE = 12;
 
-    // CHANGE ALL OF THE WRIST SETPOINTS IF WE USE ABSOLUTE ENCODER
-    public static final double WRIST_INTAKE_POSITION = 10.5;
-    public static final double WRIST_SCORING_POSITION_L1 = 4.5;
-    public static final double WRIST_SCORING_POSITION_L2 = 4.75; // L2 and L3 should be same
-    public static final double WRIST_SCORING_POSITION_L4 = 5.75;
-    public static final double WRIST_PERPENDICULAR_POSITION = 7.5;
-    public static final double WRIST_SCORING_POSITION_NET = 11;
+    // These are relative encoder positions - comments are for absolute encoder -7.87
+    public static final double INTAKE_POSITION = -8.3; // .67
+    public static final double SCORING_POSITION_L1 = -4.5; // .35
+    public static final double SCORING_POSITION_L2 = -4.75; // .53
+    public static final double SCORING_POSITION_L4 = -6.5; // .58
+    public static final double PERPENDICULAR_POSITION = -5.7; // .6
+    public static final double SCORING_POSITION_NET = -7.8; // .65
+    public static final double FLICK_WRIST_POSITION = -7.5; // .525
 
-    public static double kP = .65;
+    public static double kP = 1.5;
     public static double kI = 0.0;
-    public static double kD = 0.0;
+    public static double kD = 0;
 
     public static double kS = 0.11237;
     public static double kV = 0.56387;
@@ -93,6 +93,7 @@ public final class Constants {
     public static final double alignRange = 5;
     public static final double closeAlignSpeed = -.25;
     public static final double closeAlignRange = 1;
+    public static final double kP = .05;
 
     // AprilTag layout
     public static AprilTagFieldLayout aprilTagLayout =
@@ -129,6 +130,6 @@ public final class Constants {
     public static final int RIGHT_MOTOR_ID = 52;
     public static final int LEFT_MOTOR_ID = 51;
 
-    public static final int maxClimberMotorVoltage = 12;
+    public static final int MAX_VOLTAGE = 12;
   }
 }

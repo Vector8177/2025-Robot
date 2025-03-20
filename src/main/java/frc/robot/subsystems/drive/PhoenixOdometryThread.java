@@ -44,7 +44,7 @@ public class PhoenixOdometryThread extends Thread {
   private final List<Queue<Double>> genericQueues = new ArrayList<>();
   private final List<Queue<Double>> timestampQueues = new ArrayList<>();
 
-  private static boolean isCANFD =
+  private static final boolean isCANFD =
       new CANBus(TunerConstants.DrivetrainConstants.CANBusName).isNetworkFD();
   private static PhoenixOdometryThread instance = null;
 
@@ -62,7 +62,7 @@ public class PhoenixOdometryThread extends Thread {
 
   @Override
   public void start() {
-    if (timestampQueues.size() > 0) {
+    if (!timestampQueues.isEmpty()) {
       super.start();
     }
   }
@@ -78,21 +78,6 @@ public class PhoenixOdometryThread extends Thread {
       newSignals[phoenixSignals.length] = signal;
       phoenixSignals = newSignals;
       phoenixQueues.add(queue);
-    } finally {
-      signalsLock.unlock();
-      Drive.odometryLock.unlock();
-    }
-    return queue;
-  }
-
-  /** Registers a generic signal to be read from the thread. */
-  public Queue<Double> registerSignal(DoubleSupplier signal) {
-    Queue<Double> queue = new ArrayBlockingQueue<>(20);
-    signalsLock.lock();
-    Drive.odometryLock.lock();
-    try {
-      genericSignals.add(signal);
-      genericQueues.add(queue);
     } finally {
       signalsLock.unlock();
       Drive.odometryLock.unlock();
@@ -155,8 +140,8 @@ public class PhoenixOdometryThread extends Thread {
         for (int i = 0; i < genericSignals.size(); i++) {
           genericQueues.get(i).offer(genericSignals.get(i).getAsDouble());
         }
-        for (int i = 0; i < timestampQueues.size(); i++) {
-          timestampQueues.get(i).offer(timestamp);
+        for (Queue<Double> timestampQueue : timestampQueues) {
+          timestampQueue.offer(timestamp);
         }
       } finally {
         Drive.odometryLock.unlock();

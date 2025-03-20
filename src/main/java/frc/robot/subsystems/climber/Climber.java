@@ -17,19 +17,11 @@ public class Climber extends SubsystemBase {
 
   public void setSpeedRaw(double speed) {
     speed = MathUtil.clamp(speed, -1, 1);
-    io.setClimberVoltage(speed * Constants.ClimberConstants.maxClimberMotorVoltage);
+    io.setClimberVoltage(speed * Constants.ClimberConstants.MAX_VOLTAGE);
   }
 
   public void setSpeed(double speed) {
     targetSpeed = speed;
-  }
-
-  public double getLeftClimberVelocity() {
-    return inputs.leftClimberVelocityRadPerSec;
-  }
-
-  public double getRightClimberVelocity() {
-    return inputs.rightClimberVelocityRadPerSec;
   }
 
   @Override

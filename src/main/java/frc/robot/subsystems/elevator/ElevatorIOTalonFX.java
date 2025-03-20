@@ -12,14 +12,14 @@ public class ElevatorIOTalonFX implements ElevatorIO {
   private final TalonFX followMotor;
 
   public ElevatorIOTalonFX() {
-    leadMotor = new TalonFX(ElevatorConstants.LEFT_ELEVATOR_MOTOR_ID);
-    followMotor = new TalonFX(ElevatorConstants.RIGHT_ELEVATOR_MOTOR_ID);
+    leadMotor = new TalonFX(ElevatorConstants.LEFT_MOTOR_ID);
+    followMotor = new TalonFX(ElevatorConstants.RIGHT_MOTOR_ID);
     TalonFXConfiguration config = new TalonFXConfiguration();
 
     leadMotor.getConfigurator().apply(config, 0.05);
     followMotor.getConfigurator().apply(config, 0.05);
 
-    followMotor.setControl(new Follower(ElevatorConstants.LEFT_ELEVATOR_MOTOR_ID, true));
+    followMotor.setControl(new Follower(ElevatorConstants.LEFT_MOTOR_ID, true));
 
     leadMotor.setPosition(0);
     followMotor.setPosition(0);
