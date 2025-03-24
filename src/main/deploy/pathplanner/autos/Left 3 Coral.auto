@@ -23,7 +23,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 0.75
                 }
               },
               {
@@ -35,7 +35,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 0.75
                 }
               },
               {
@@ -47,7 +47,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Set Intake Position"
+                  "name": "Set Elevator L1"
                 }
               }
             ]
@@ -66,6 +66,18 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "Set Intake Position"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "Run Intake"
                 }
               },
@@ -79,6 +91,12 @@
                 "type": "named",
                 "data": {
                   "name": "Stop Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Set Elevator L1"
                 }
               }
             ]
@@ -103,7 +121,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 0.75
                 }
               },
               {
@@ -115,7 +133,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 0.75
                 }
               },
               {
@@ -136,7 +154,81 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Reef Rotate Forward"
+            "pathName": "Middle Reef to Left Human"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Human to Middle Reef 2"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Set Elevator L4"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.75
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Flick Wrist"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.75
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Set Elevator L1"
+                }
+              }
+            ]
           }
         }
       ]

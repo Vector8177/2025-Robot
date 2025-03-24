@@ -62,18 +62,8 @@ public class Vision extends SubsystemBase {
 
   public static double autoAlignValue() {
     double tx = LimelightHelpers.getTX(VisionConstants.camera0Name);
-    double alignSpeed = Constants.VisionConstants.kP * tx;
+    double alignSpeed = -Constants.VisionConstants.kP * tx;
     return MathUtil.clamp(alignSpeed, -1, 1);
-    // return tx < VisionConstants.closeAlignRange
-    //     && tx > -VisionConstants.closeAlignRange
-    //         ? 0
-    //         : tx > VisionConstants.alignRange
-    //             ? -VisionConstants.alignSpeed
-    //             : tx < -VisionConstants.alignRange
-    //                 ? VisionConstants.alignSpeed
-    //                 : tx > VisionConstants.closeAlignRange
-    //                     ? -VisionConstants.closeAlignSpeed
-    //                     : VisionConstants.closeAlignSpeed;
   }
 
   @Override
@@ -123,6 +113,7 @@ public class Vision extends SubsystemBase {
                 || observation.pose().getX() > VisionConstants.aprilTagLayout.getFieldLength()
                 || observation.pose().getY() < 0.0
                 || observation.pose().getY() > VisionConstants.aprilTagLayout.getFieldWidth();
+        // || DriverStation.isTeleop();
 
         // Add pose to log
         robotPoses.add(observation.pose());

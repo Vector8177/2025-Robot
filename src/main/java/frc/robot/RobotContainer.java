@@ -174,7 +174,7 @@ public class RobotContainer {
         NamedCommands.registerCommand(
             "Set Elevator L1",
             MainCommands.setElevatorPosition(
-                wrist, elevator, ElevatorConstants.L1, WristConstants.SCORING_POSITION_L1));
+                wrist, elevator, ElevatorConstants.L1, WristConstants.L1_AUTO));
         NamedCommands.registerCommand(
             "Set Elevator L2",
             MainCommands.setElevatorPosition(
@@ -259,8 +259,8 @@ public class RobotContainer {
                 () -> -driverController.getRightX() * .5));
     driverController.povUp().onTrue(MainCommands.changeElevatorSetpoint(elevator, 1));
     driverController.povDown().onTrue(MainCommands.changeElevatorSetpoint(elevator, -1));
-    driverController.povRight().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
-    driverController.povLeft().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
+    driverController.povRight().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
+    driverController.povLeft().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
     // driverController
     //     .b()
     //     .whileTrue(
@@ -293,14 +293,14 @@ public class RobotContainer {
     //                             : 0,
     //                 () -> 0)));
     driverController.b().onTrue(MainCommands.flickWrist(intake, wrist));
-    driverController
-        .a()
-        .whileTrue(
-            DriveCommands.joystickDrive(
-                drive,
-                () -> -driverController.getLeftY(),
-                () -> -driverController.getLeftX(),
-                Vision::autoAlignValue));
+    // driverController
+    //     .a()
+    //     .whileTrue(
+    //         DriveCommands.joystickDrive(
+    //             drive,
+    //             () -> -driverController.getLeftY(),
+    //             () -> -driverController.getLeftX(),
+    //             Vision::autoAlignValue));
 
     driverController
         .rightTrigger()
@@ -358,8 +358,8 @@ public class RobotContainer {
         .leftTrigger()
         .onTrue(MainCommands.runOuttake(intake))
         .onFalse(MainCommands.stopIntake(intake));
-    operatorController.rightBumper().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
-    operatorController.leftBumper().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
+    operatorController.rightBumper().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
+    operatorController.leftBumper().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
   }
 
   /**

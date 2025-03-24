@@ -41,7 +41,7 @@ public final class Constants {
     public static final int LEFT_MOTOR_ID = 31; // lead motor
     public static final int RIGHT_MOTOR_ID = 32;
 
-    public static final double INTAKE = 15; // 14.7
+    public static final double INTAKE = 15; // 15
     public static final double L1 = 0;
     public static final double L2 = 29; // 29
     public static final double L3 = 60.5; // 62.5
@@ -72,6 +72,7 @@ public final class Constants {
     // These are relative encoder positions - comments are for absolute encoder -7.87
     public static final double INTAKE_POSITION = -8.6; // .67
     public static final double SCORING_POSITION_L1 = -4.5; // .35
+    public static final double L1_AUTO = -5.5; // .35
     public static final double SCORING_POSITION_L2 = -4.75; // .53
     public static final double SCORING_POSITION_L4 = -6.5; // .58
     public static final double PERPENDICULAR_POSITION = -5.7; // .6
@@ -116,7 +117,7 @@ public final class Constants {
     // (Adjust to trust some cameras more than others)
     public static double[] cameraStdDevFactors =
         new double[] {
-          1.0, // Camera 0
+          .5, // Camera 0
           1.0 // Camera 1
         };
 

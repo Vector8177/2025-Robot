@@ -52,6 +52,12 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Reef Rotate Forward 2"
+          }
         }
       ]
     }
