@@ -45,7 +45,7 @@ public final class Constants {
     public static final double L1 = 0;
     public static final double L2 = 29; // 29
     public static final double L3 = 60.5; // 62.5
-    public static final double L4 = 104; // 101
+    public static final double L4 = 103; // 101
     public static final double NET = 103.5; // 101
 
     public static final int MAX_VOLTAGE = 12;
@@ -94,7 +94,7 @@ public final class Constants {
     public static final double alignRange = 5;
     public static final double closeAlignSpeed = -.25;
     public static final double closeAlignRange = 1;
-    public static final double kP = .05;
+    public static final double kP = .04;
 
     // AprilTag layout
     public static AprilTagFieldLayout aprilTagLayout =
@@ -117,12 +117,12 @@ public final class Constants {
     // (Adjust to trust some cameras more than others)
     public static double[] cameraStdDevFactors =
         new double[] {
-          .5, // Camera 0
+          1.0, // Camera 0
           1.0 // Camera 1
         };
 
     // Multipliers to apply for MegaTag 2 observations
-    public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
+    public static double linearStdDevMegatag2Factor = .75; // More stable than full 3D solve .5
     public static double angularStdDevMegatag2Factor =
         Double.POSITIVE_INFINITY; // No rotation data available
   }

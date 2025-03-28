@@ -60,7 +60,7 @@ public class Vision extends SubsystemBase {
     return inputs[cameraIndex].latestTargetObservation.tx();
   }
 
-  public static double autoAlignValue() {
+  public static double autoAlignRotValue() {
     double tx = LimelightHelpers.getTX(VisionConstants.camera0Name);
     double alignSpeed = -Constants.VisionConstants.kP * tx;
     return MathUtil.clamp(alignSpeed, -1, 1);
@@ -71,7 +71,7 @@ public class Vision extends SubsystemBase {
     for (int i = 0; i < io.length; i++) {
       io[i].updateInputs(inputs[i]);
       Logger.processInputs("Vision/Camera" + i, inputs[i]);
-      Logger.recordOutput("Vision/autoalignvalue", autoAlignValue());
+      Logger.recordOutput("Vision/autoalignvalue", autoAlignRotValue());
     }
 
     // Initialize logging values
@@ -113,7 +113,6 @@ public class Vision extends SubsystemBase {
                 || observation.pose().getX() > VisionConstants.aprilTagLayout.getFieldLength()
                 || observation.pose().getY() < 0.0
                 || observation.pose().getY() > VisionConstants.aprilTagLayout.getFieldWidth();
-        // || DriverStation.isTeleop();
 
         // Add pose to log
         robotPoses.add(observation.pose());
@@ -142,6 +141,8 @@ public class Vision extends SubsystemBase {
           angularStdDev *= VisionConstants.cameraStdDevFactors[cameraIndex];
         }
 
+        Logger.recordOutput("linear stddev", linearStdDev);
+        Logger.recordOutput("angular stddev", angularStdDev);
         // Send vision observation
         consumer.accept(
             observation.pose().toPose2d(),

@@ -21,7 +21,6 @@ import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -34,6 +33,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
@@ -45,6 +45,7 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -52,7 +53,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.generated.TunerConstants;
-import frc.robot.util.LocalADStarAK;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -72,7 +72,7 @@ public class Drive extends SubsystemBase {
               Math.hypot(TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)));
 
   // PathPlanner config constants
-  private static final double ROBOT_MASS_KG = 54; // 74.088
+  private static final double ROBOT_MASS_KG = 52.16; // 54 pounds -> 119.05
   private static final double ROBOT_MOI = 6.883;
   private static final double WHEEL_COF = 1.2;
   private static final RobotConfig PP_CONFIG =
@@ -109,6 +109,14 @@ public class Drive extends SubsystemBase {
       };
   private final SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
+
+  // Testing
+  // Initial Position values are not set in stone
+  Pose2d robotPosition = new Pose2d(0, 0, new Rotation2d());
+  SwerveDriveOdometry odo =
+      new SwerveDriveOdometry(kinematics, rawGyroRotation, lastModulePositions, robotPosition);
+
+  private Field2d field = new Field2d();
 
   public Drive(
       GyroIO gyroIO,
@@ -167,11 +175,11 @@ public class Drive extends SubsystemBase {
         this::getChassisSpeeds,
         this::runVelocity,
         new PPHolonomicDriveController(
-            new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
+            new PIDConstants(2.5, 0.0, 0.0), new PIDConstants(2.5, 0.0, 0.0)), // 5
         PP_CONFIG,
         () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
         this);
-    Pathfinding.setPathfinder(new LocalADStarAK());
+    // Pathfinding.setPathfinder(new LocalADStarAK());
     PathPlannerLogging.setLogActivePathCallback(
         (activePath) -> {
           Logger.recordOutput("Odometry/Trajectory", activePath.toArray(new Pose2d[0]));
@@ -250,6 +258,25 @@ public class Drive extends SubsystemBase {
 
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
+
+    //
+    robotPosition = odo.update(rawGyroRotation, lastModulePositions);
+    field.setRobotPose(robotPosition);
+
+    // Logger.recordOutput("Swerve Field", field);
+
+    Logger.recordOutput("Robot Position - X", odo.getPoseMeters().getX());
+    Logger.recordOutput("Robot Position - Y", odo.getPoseMeters().getY());
+    Logger.recordOutput("Robot Position - Angle", odo.getPoseMeters().getRotation());
+
+    // Logger.recordOutput("Swerve/Pose", odo.getPoseMeters());
+
+    // posePublisher.set(
+    //     new Pose2d(
+    //         robotPosition.getX(),
+    //         robotPosition.getY(),
+    //         new Rotation2d(robotPosition.getRotation().getDegrees())));
+    SmartDashboard.putData("Field", field);
   }
 
   /**
@@ -365,6 +392,7 @@ public class Drive extends SubsystemBase {
   /** Returns the current odometry rotation. */
   public Rotation2d getRotation() {
     return getPose().getRotation();
+    // return rawGyroRotation;
   }
 
   /** Resets the current odometry pose. */

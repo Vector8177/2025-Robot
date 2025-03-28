@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.MainCommands;
@@ -41,7 +42,6 @@ import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
-// import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.wrist.Wrist;
@@ -123,8 +123,7 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOLimelight("limelight-bottom", drive::getRotation),
-                new VisionIOLimelight("limelight-top", drive::getRotation));
+                new VisionIOLimelight("limelight-bottom", drive::getRotation));
       }
 
       case SIM -> {
@@ -148,8 +147,7 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOLimelight("limelight-bottom", drive::getRotation),
-                new VisionIOLimelight("limelight-top", drive::getRotation));
+                new VisionIOLimelight("limelight-bottom", drive::getRotation));
       }
 
       default -> {
@@ -200,8 +198,7 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOLimelight("limelight-bottom", drive::getRotation),
-                new VisionIOLimelight("limelight-top", drive::getRotation));
+                new VisionIOLimelight("limelight-bottom", drive::getRotation));
       }
     }
 
@@ -261,37 +258,37 @@ public class RobotContainer {
     driverController.povDown().onTrue(MainCommands.changeElevatorSetpoint(elevator, -1));
     driverController.povRight().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
     driverController.povLeft().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
-    // driverController
-    //     .b()
-    //     .whileTrue(
-    //         Commands.sequence(
-    //             DriveCommands.joystickDrive(
-    //                 drive,
-    //                 () ->
-    //                     LimelightHelpers.getTX("limelight-bottom")
-    //                             > VisionConstants.alignRange
-    //                                 * Math.cos(drive.getRotation().getRadians())
-    //                         ? -VisionConstants.alignSpeed
-    //                             * Math.cos(drive.getRotation().getRadians())
-    //                         : LimelightHelpers.getTX("limelight-bottom")
-    //                                 < -VisionConstants.alignRange
-    //                                     * Math.cos(drive.getRotation().getRadians())
-    //                             ? VisionConstants.alignSpeed
-    //                                 * Math.cos(drive.getRotation().getRadians())
-    //                             : 0,
-    //                 () ->
-    //                     LimelightHelpers.getTX("limelight-bottom")
-    //                             > VisionConstants.alignRange
-    //                                 * Math.sin(drive.getRotation().getRadians())
-    //                         ? -VisionConstants.alignSpeed
-    //                             * Math.sin(drive.getRotation().getRadians())
-    //                         : LimelightHelpers.getTX("limelight-bottom")
-    //                                 < -VisionConstants.alignRange
-    //                                     * Math.sin(drive.getRotation().getRadians())
-    //                             ? VisionConstants.alignSpeed
-    //                                 * Math.sin(drive.getRotation().getRadians())
-    //                             : 0,
-    //                 () -> 0)));
+    driverController
+        .a()
+        .whileTrue(
+            Commands.sequence(
+                DriveCommands.joystickDrive(
+                    drive,
+                    () ->
+                        LimelightHelpers.getTX("limelight-bottom")
+                                > VisionConstants.alignRange
+                                    * Math.cos(drive.getRotation().getRadians())
+                            ? -VisionConstants.alignSpeed
+                                * Math.cos(drive.getRotation().getRadians())
+                            : LimelightHelpers.getTX("limelight-bottom")
+                                    < -VisionConstants.alignRange
+                                        * Math.cos(drive.getRotation().getRadians())
+                                ? VisionConstants.alignSpeed
+                                    * Math.cos(drive.getRotation().getRadians())
+                                : 0,
+                    () ->
+                        LimelightHelpers.getTX("limelight-bottom")
+                                > VisionConstants.alignRange
+                                    * Math.sin(drive.getRotation().getRadians())
+                            ? -VisionConstants.alignSpeed
+                                * Math.sin(drive.getRotation().getRadians())
+                            : LimelightHelpers.getTX("limelight-bottom")
+                                    < -VisionConstants.alignRange
+                                        * Math.sin(drive.getRotation().getRadians())
+                                ? VisionConstants.alignSpeed
+                                    * Math.sin(drive.getRotation().getRadians())
+                                : 0,
+                    () -> 0)));
     driverController.b().onTrue(MainCommands.flickWrist(intake, wrist));
     // driverController
     //     .a()
