@@ -99,6 +99,8 @@ public class Vision extends SubsystemBase {
 
       // Loop over pose observations
       for (var observation : inputs[cameraIndex].poseObservations) {
+        double averageTagDistance = observation.averageTagDistance();
+        Logger.recordOutput("Vision Avg Tag Distance", averageTagDistance);
         // Check whether to reject pose
         boolean rejectPose =
             observation.tagCount() == 0 // Must have at least one tag
@@ -112,7 +114,8 @@ public class Vision extends SubsystemBase {
                 || observation.pose().getX() < 0.0
                 || observation.pose().getX() > VisionConstants.aprilTagLayout.getFieldLength()
                 || observation.pose().getY() < 0.0
-                || observation.pose().getY() > VisionConstants.aprilTagLayout.getFieldWidth();
+                || observation.pose().getY() > VisionConstants.aprilTagLayout.getFieldWidth()
+                || averageTagDistance > VisionConstants.maxAvgTagDistance;
 
         // Add pose to log
         robotPoses.add(observation.pose());

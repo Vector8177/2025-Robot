@@ -29,7 +29,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Flick Wrist"
+                  "name": "Run Outake"
                 }
               },
               {
@@ -63,6 +63,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Left",
   "choreoAuto": false
 }

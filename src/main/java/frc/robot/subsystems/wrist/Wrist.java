@@ -18,7 +18,7 @@ public class Wrist extends SubsystemBase {
 
     this.io = io;
     pidController = new PIDController(WristConstants.kP, WristConstants.kI, WristConstants.kD);
-    pidController.setTolerance(.05);
+    pidController.setTolerance(.2);
 
     feedForward =
         new ArmFeedforward(
@@ -51,5 +51,9 @@ public class Wrist extends SubsystemBase {
 
   public void setWristSetpoint(double offset) {
     targetPosition = (io.getPosition() + offset);
+  }
+
+  public boolean atSetpoint() {
+    return pidController.atSetpoint();
   }
 }

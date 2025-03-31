@@ -33,7 +33,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
@@ -45,7 +44,6 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -109,14 +107,6 @@ public class Drive extends SubsystemBase {
       };
   private final SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
-
-  // Testing
-  // Initial Position values are not set in stone
-  Pose2d robotPosition = new Pose2d(0, 0, new Rotation2d());
-  SwerveDriveOdometry odo =
-      new SwerveDriveOdometry(kinematics, rawGyroRotation, lastModulePositions, robotPosition);
-
-  private Field2d field = new Field2d();
 
   public Drive(
       GyroIO gyroIO,
@@ -258,25 +248,6 @@ public class Drive extends SubsystemBase {
 
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
-
-    //
-    robotPosition = odo.update(rawGyroRotation, lastModulePositions);
-    field.setRobotPose(robotPosition);
-
-    // Logger.recordOutput("Swerve Field", field);
-
-    Logger.recordOutput("Robot Position - X", odo.getPoseMeters().getX());
-    Logger.recordOutput("Robot Position - Y", odo.getPoseMeters().getY());
-    Logger.recordOutput("Robot Position - Angle", odo.getPoseMeters().getRotation());
-
-    // Logger.recordOutput("Swerve/Pose", odo.getPoseMeters());
-
-    // posePublisher.set(
-    //     new Pose2d(
-    //         robotPosition.getX(),
-    //         robotPosition.getY(),
-    //         new Rotation2d(robotPosition.getRotation().getDegrees())));
-    SmartDashboard.putData("Field", field);
   }
 
   /**

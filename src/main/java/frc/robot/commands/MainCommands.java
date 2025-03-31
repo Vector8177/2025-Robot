@@ -21,17 +21,17 @@ public class MainCommands {
   public static Command runIntake(Intake intake) {
     return runOnce(
         () -> {
-          intake.setSpeed(-.3); // .25
+          intake.setSpeed(-.3); 
         },
         intake);
   }
 
   public static Command runOuttake(Intake intake) {
-    return runOnce(() -> intake.setSpeed(.5), intake); // -1
+    return runOnce(() -> intake.setSpeed(.5), intake); 
   }
 
   public static Command runOuttakeSlow(Intake intake) {
-    return runOnce(() -> intake.setSpeed(.15), intake); // -.25
+    return runOnce(() -> intake.setSpeed(.15), intake); 
   }
 
   public static Command flickWrist(Intake intake, Wrist wrist) {

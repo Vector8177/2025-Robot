@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.commands.AutoAlign;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.MainCommands;
 import frc.robot.generated.TunerConstants;
@@ -123,7 +124,7 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOLimelight("limelight-bottom", drive::getRotation));
+                new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
       }
 
       case SIM -> {
@@ -147,7 +148,7 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOLimelight("limelight-bottom", drive::getRotation));
+                new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
       }
 
       default -> {
@@ -161,7 +162,7 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
         NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
-        NamedCommands.registerCommand("Run Outake", MainCommands.runOuttakeSlow(intake));
+        NamedCommands.registerCommand("Run Outake", MainCommands.runOuttake(intake));
 
         NamedCommands.registerCommand(
             "Set Intake Position", MainCommands.setIntakePosition(wrist, elevator));
@@ -198,7 +199,7 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOLimelight("limelight-bottom", drive::getRotation));
+                new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
       }
     }
 
@@ -256,8 +257,8 @@ public class RobotContainer {
                 () -> -driverController.getRightX() * .5));
     driverController.povUp().onTrue(MainCommands.changeElevatorSetpoint(elevator, 1));
     driverController.povDown().onTrue(MainCommands.changeElevatorSetpoint(elevator, -1));
-    driverController.povRight().onTrue(MainCommands.changeWristSetpoint(wrist, -.5));
-    driverController.povLeft().onTrue(MainCommands.changeWristSetpoint(wrist, .5));
+    driverController.povRight().onTrue(new AutoAlign(drive, true));
+    driverController.povLeft().onTrue(new AutoAlign(drive, false));
     driverController
         .a()
         .whileTrue(

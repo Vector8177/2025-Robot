@@ -22,6 +22,8 @@ import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotController;
+import frc.robot.Constants.VisionConstants;
+import frc.robot.LimelightHelpers;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,6 +56,8 @@ public class VisionIOLimelight implements VisionIO {
     table.getDoubleArrayTopic("botpose_wpiblue").subscribe(new double[] {});
     megatag2Subscriber =
         table.getDoubleArrayTopic("botpose_orb_wpiblue").subscribe(new double[] {});
+    int[] validIDs = {6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22};
+    LimelightHelpers.SetFiducialIDFiltersOverride(VisionConstants.camera0Name, validIDs);
   }
 
   @Override

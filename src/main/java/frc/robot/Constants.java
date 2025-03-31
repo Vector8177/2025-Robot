@@ -122,9 +122,54 @@ public final class Constants {
         };
 
     // Multipliers to apply for MegaTag 2 observations
-    public static double linearStdDevMegatag2Factor = .75; // More stable than full 3D solve .5
+    public static double linearStdDevMegatag2Factor = .5; // More stable than full 3D solve .5
     public static double angularStdDevMegatag2Factor =
         Double.POSITIVE_INFINITY; // No rotation data available
+
+    public static double maxAvgTagDistance = 3.0; // change this later
+
+    // Boolean for Left/Right Reef
+    public static boolean k_isRightReef = true;
+
+    // Boolean for Committing to Shoot
+    public static boolean k_positioned = true;
+
+    // PID for Tag Relative Control for Scoring
+    public static final double kP_aim = 0.10;
+    public static final double kI_aim = 0.0;
+    public static final double kD_aim = 0.0;
+
+    public static final double kP_range = 0.35;
+    public static final double kI_range = 0.0;
+    public static final double kD_range = 0.0;
+
+    public static final double kP_strafe = 0.35;
+    public static final double kI_strafe = 0.0;
+    public static final double kD_strafe = 0.0;
+
+    // AimNRange Reef Right
+    public static final double k_aimReefRightTarget = 0;
+    public static final double k_rangeReefRightTarget = -0.56;
+    public static final double k_strafeReefRightTarget = 0.17;
+
+    // AimNRange Reef Left
+    public static final double k_aimReefLeftTarget = 0;
+    public static final double k_rangeReefLeftTarget = -0.54;
+    public static final double k_strafeReefLeftTarget = -0.18;
+
+    // Prerequisites
+    public static final double k_tzValidRange = -1.5;
+    public static final double k_yawValidRange = 35;
+
+    // Thresholds
+    public static final double k_rangeThreshold = 0.02;
+    public static final double k_strafeThreshold = 0.02;
+    public static final double k_aimThreshold = 0.5;
+
+    // For testing
+    public static boolean k_positioning = false;
+
+    public static double[] k_botPoseTargetSpace = new double[6];
   }
 
   public static final class ClimberConstants {

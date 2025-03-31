@@ -21,7 +21,7 @@ public class Elevator extends SubsystemBase {
     this.io = io;
     pidController =
         new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
-    pidController.setTolerance(.25);
+    pidController.setTolerance(.5);
     io.resetPosition();
     feedForward =
         new ArmFeedforward(

@@ -23,13 +23,13 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 1.0
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Flick Wrist"
+                  "name": "Run Outake"
                 }
               },
               {
@@ -57,6 +57,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Middle",
   "choreoAuto": false
 }
