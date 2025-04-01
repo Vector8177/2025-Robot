@@ -11,7 +11,6 @@ public class Elevator extends SubsystemBase {
 
   private final ElevatorIO io;
   private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
-  private double targetSpeed = 0;
 
   private double targetPosition;
   private final PIDController pidController;
@@ -21,14 +20,13 @@ public class Elevator extends SubsystemBase {
     this.io = io;
     pidController =
         new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
-    pidController.setTolerance(.5);
+    pidController.setTolerance(1);
     io.resetPosition();
     feedForward =
         new ArmFeedforward(
             ElevatorConstants.kS, ElevatorConstants.kG, ElevatorConstants.kV, ElevatorConstants.kA);
   }
 
-  // Periodic method called in every cycle (e.g., 20ms)
   @Override
   public void periodic() {
     io.updateInputs(inputs);
@@ -38,15 +36,10 @@ public class Elevator extends SubsystemBase {
         pidController.calculate(io.getPosition(), targetPosition)
             + feedForward.calculate(targetPosition, 0);
     Logger.recordOutput("PID Speed", pidMotorSpeed);
-    Logger.recordOutput("Manual Speed", targetSpeed);
 
     setMotor(
         MathUtil.clamp(
             (pidMotorSpeed), -ElevatorConstants.MAX_VOLTAGE, ElevatorConstants.MAX_VOLTAGE));
-  }
-
-  public void setSpeed(double speed) {
-    targetSpeed = speed;
   }
 
   public void setElevatorSetpoint(double offset) {

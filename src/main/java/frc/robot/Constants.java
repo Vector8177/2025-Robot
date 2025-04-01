@@ -149,12 +149,12 @@ public final class Constants {
 
     // AimNRange Reef Right
     public static final double k_aimReefRightTarget = 0;
-    public static final double k_rangeReefRightTarget = -0.56;
-    public static final double k_strafeReefRightTarget = 0.17;
+    public static final double k_rangeReefRightTarget = -0.56; //change this later
+    public static final double k_strafeReefRightTarget = 0.18;
 
     // AimNRange Reef Left
     public static final double k_aimReefLeftTarget = 0;
-    public static final double k_rangeReefLeftTarget = -0.54;
+    public static final double k_rangeReefLeftTarget = -0.54; //change this later
     public static final double k_strafeReefLeftTarget = -0.18;
 
     // Prerequisites

@@ -11,8 +11,8 @@ import frc.robot.Constants.WristConstants;
 public class WristIOTalonFX implements WristIO {
   private final TalonFX wristMotor;
   private final TalonFXConfiguration configuration;
-  private final DigitalInput input;
-  private final DutyCycleEncoder encoder;
+  // private final DigitalInput input;
+  // private final DutyCycleEncoder encoder;
 
   public WristIOTalonFX() {
     wristMotor = new TalonFX(WristConstants.MOTOR_ID);
@@ -22,9 +22,9 @@ public class WristIOTalonFX implements WristIO {
     wristMotor.setPosition(0);
     wristMotor.setNeutralMode(NeutralModeValue.Brake);
 
-    input = new DigitalInput(0);
-    encoder = new DutyCycleEncoder(input);
-    // encoder.setDutyCycleRange(0.01, .99);
+    // input = new DigitalInput(0);
+    // encoder = new DutyCycleEncoder(input);
+    // // encoder.setDutyCycleRange(0.01, .99);
   }
 
   @Override
@@ -34,7 +34,7 @@ public class WristIOTalonFX implements WristIO {
             * wristMotor.getSupplyVoltage().getValueAsDouble();
     inputs.wristVelocityRadPerSec =
         Units.rotationsPerMinuteToRadiansPerSecond(wristMotor.getVelocity().getValueAsDouble());
-    inputs.wristAbsoluteEncoderPosition = encoder.get();
+    // inputs.wristAbsoluteEncoderPosition = encoder.get();
   }
 
   @Override

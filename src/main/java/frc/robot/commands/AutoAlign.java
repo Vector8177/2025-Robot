@@ -67,9 +67,9 @@ public class AutoAlign extends Command {
   private boolean tiv;
 
   // Constants
-  private double m_rangeTarget;
-  private double m_strafeTarget;
-  private double m_aimTarget;
+  private double m_rangeTarget; //forward
+  private double m_strafeTarget; //sideways
+  private double m_aimTarget; //rotation
 
   // Constructor
   public AutoAlign(Drive driveSubsystem, boolean isReefRight) {

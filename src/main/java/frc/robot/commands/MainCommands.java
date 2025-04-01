@@ -45,7 +45,7 @@ public class MainCommands {
   public static Command setIntakePosition(Wrist wrist, Elevator elevator) {
     return sequence(
         runOnce(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist),
-        waitSeconds(.25),
+        waitSeconds(0.25),
         runOnce(() -> elevator.setPosition(ElevatorConstants.INTAKE), elevator),
         waitSeconds(0.25),
         runOnce(() -> wrist.setPosition(WristConstants.INTAKE_POSITION), wrist));
@@ -54,7 +54,7 @@ public class MainCommands {
   // Sets wrist and elevator to 0
   public static Command stow(Wrist wrist, Elevator elevator) {
     return sequence(
-        runOnce(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist),
+        run(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist),
         waitSeconds(.25),
         runOnce(() -> elevator.setPosition(0), elevator),
         waitSeconds(.25),
@@ -76,11 +76,11 @@ public class MainCommands {
   public static Command setElevatorPosition(
       Wrist wrist, Elevator elevator, double elevatorPosition, double wristPosition) {
     return sequence(
-        runOnce(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist),
-        waitSeconds(.25),
-        runOnce(() -> elevator.setPosition(elevatorPosition), elevator),
-        waitSeconds(.25),
-        runOnce(() -> wrist.setPosition(wristPosition), wrist));
+        run(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist).until(() -> wrist.atSetpoint()),
+        // waitSeconds(.20),
+        run(() -> elevator.setPosition(elevatorPosition), elevator).until(() -> elevator.atSetpoint()),
+        // waitSeconds(.20),
+        run(() -> wrist.setPosition(wristPosition), wrist).until(() -> wrist.atSetpoint()));
   }
 
   // manually move the elevator or wrist
@@ -91,12 +91,4 @@ public class MainCommands {
   public static Command changeWristSetpoint(Wrist wrist, double offset) {
     return runOnce(() -> wrist.setWristSetpoint(offset), wrist);
   }
-
-  // public static Command moveElevator(Elevator elevator, double speed) {
-  //   return runOnce(() -> elevator.setSpeed(speed), elevator);
-  // }
-
-  // public static Command stopElevator(Elevator elevator) {
-  //   return runOnce(() -> elevator.setSpeed(0), elevator);
-  // }
 }
