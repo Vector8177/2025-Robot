@@ -16,6 +16,10 @@ package frc.robot;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.DriveMotorArrangement;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.SteerMotorArrangement;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,6 +32,7 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.opencv.core.Mat;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -42,45 +47,45 @@ public class Robot extends LoggedRobot {
   private Timer matchTimer;
   private int matchTimeRemaining;
 
-  // private Thread m_visionThread;
+  private Thread m_visionThread;
 
   public Robot() {
     matchTimer = new Timer();
     matchTimeRemaining = 150;
-    // m_visionThread =
-    //     new Thread(
-    //         () -> {
-    //           // Get the UsbCamera from CameraServer
-    //           UsbCamera camera = CameraServer.startAutomaticCapture();
-    //           // Set the resolution
-    //           camera.setResolution(640, 480);
+    m_visionThread =
+        new Thread(
+            () -> {
+              // Get the UsbCamera from CameraServer
+              UsbCamera camera = CameraServer.startAutomaticCapture();
+              // Set the resolution
+              camera.setResolution(640, 480);
 
-    //           // Get a CvSink. This will capture Mats from the camera
-    //           CvSink cvSink = CameraServer.getVideo();
-    //           // Setup a CvSource. This will send images back to the Dashboard
-    //           CvSource outputStream = CameraServer.putVideo("Rectangle", 640, 480);
+              // Get a CvSink. This will capture Mats from the camera
+              CvSink cvSink = CameraServer.getVideo();
+              // Setup a CvSource. This will send images back to the Dashboard
+              CvSource outputStream = CameraServer.putVideo("Rectangle", 640, 480);
 
-    //           // Mats are very memory expensive. Lets reuse this Mat.
-    //           Mat mat = new Mat();
+              // Mats are very memory expensive. Lets reuse this Mat.
+              Mat mat = new Mat();
 
-    //           // This cannot be 'true'. The program will never exit if it is. This
-    //           // lets the robot stop this thread when restarting robot code or
-    //           // deploying.
-    //           while (!Thread.interrupted()) {
-    //             // Tell the CvSink to grab a frame from the camera and put it
-    //             // in the source mat. If there is an error notify the output.
-    //             if (cvSink.grabFrame(mat) == 0) {
-    //               // Send the output the error.
-    //               outputStream.notifyError(cvSink.getError());
-    //               // skip the rest of the current iteration
-    //               continue;
-    //             }
-    //             // Give the output stream a new image to display
-    //             outputStream.putFrame(mat);
-    //           }
-    //         });
-    // m_visionThread.setDaemon(true);
-    // m_visionThread.start();
+              // This cannot be 'true'. The program will never exit if it is. This
+              // lets the robot stop this thread when restarting robot code or
+              // deploying.
+              while (!Thread.interrupted()) {
+                // Tell the CvSink to grab a frame from the camera and put it
+                // in the source mat. If there is an error notify the output.
+                if (cvSink.grabFrame(mat) == 0) {
+                  // Send the output the error.
+                  outputStream.notifyError(cvSink.getError());
+                  // skip the rest of the current iteration
+                  continue;
+                }
+                // Give the output stream a new image to display
+                outputStream.putFrame(mat);
+              }
+            });
+    m_visionThread.setDaemon(true);
+    m_visionThread.start();
 
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);

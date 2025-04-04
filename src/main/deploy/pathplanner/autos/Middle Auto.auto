@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 6.0
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Start to center"
@@ -51,6 +57,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle Rotate Forward"
           }
         }
       ]

@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -10,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.drive.Drive;
+import org.littletonrobotics.junction.Logger;
 
 // Positions Robot at the Nearest Valid Target
 public class AutoAlign extends Command {
@@ -67,9 +66,9 @@ public class AutoAlign extends Command {
   private boolean tiv;
 
   // Constants
-  private double m_rangeTarget; //forward
-  private double m_strafeTarget; //sideways
-  private double m_aimTarget; //rotation
+  private double m_rangeTarget; // forward
+  private double m_strafeTarget; // sideways
+  private double m_aimTarget; // rotation
 
   // Constructor
   public AutoAlign(Drive driveSubsystem, boolean isReefRight) {
@@ -139,10 +138,7 @@ public class AutoAlign extends Command {
           LimelightHelpers.getTV(VisionConstants.camera0Name)
               && botPoseTargetSpace[2] > VisionConstants.k_tzValidRange;
       m_swerveSubsystem.runVelocity(
-          new ChassisSpeeds(
-              limelight_range_PID(), 
-              limelight_strafe_PID(), 
-              limelight_aim_PID()));
+          new ChassisSpeeds(limelight_range_PID(), limelight_strafe_PID(), limelight_aim_PID()));
     }
   }
 
@@ -198,7 +194,7 @@ public class AutoAlign extends Command {
     // Value scale up to robot max speed and invert (double cannot exceed 1.0)
     targetingForwardSpeed *= 1.0 * m_swerveSubsystem.getMaxLinearSpeedMetersPerSec();
     Logger.recordOutput("Forward PID Speed", targetingForwardSpeed);
-
+    // records PID speed for further us as a variable
     return targetingForwardSpeed;
   }
 

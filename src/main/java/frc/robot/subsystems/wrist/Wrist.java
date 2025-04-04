@@ -18,7 +18,7 @@ public class Wrist extends SubsystemBase {
 
     this.io = io;
     pidController = new PIDController(WristConstants.kP, WristConstants.kI, WristConstants.kD);
-    pidController.setTolerance(.5);
+    pidController.setTolerance(.2);
 
     feedForward =
         new ArmFeedforward(

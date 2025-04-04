@@ -43,10 +43,10 @@ public final class Constants {
 
     public static final double INTAKE = 15; // 15
     public static final double L1 = 0;
-    public static final double L2 = 29; // 29
+    public static final double L2 = 29; // 31
     public static final double L3 = 60.5; // 62.5
-    public static final double L4 = 103; // 101
-    public static final double NET = 103.5; // 101
+    public static final double L4 = 98; // 99
+    public static final double NET = 103.5; // 103.5
 
     public static final int MAX_VOLTAGE = 12;
 
@@ -69,17 +69,17 @@ public final class Constants {
     public static final int MOTOR_ID = 41;
     public static final int MAX_VOLTAGE = 12;
 
-    // These are relative encoder positions - comments are for absolute encoder -7.87
+    // These are relative encoder positions - comments are for absolute encoder -
     public static final double INTAKE_POSITION = -8.6; // .67
     public static final double SCORING_POSITION_L1 = -4.5; // .35
     public static final double L1_AUTO = -5.5; // .35
     public static final double SCORING_POSITION_L2 = -4.75; // .53
-    public static final double SCORING_POSITION_L4 = -6.5; // .58
+    public static final double SCORING_POSITION_L4 = -7; // .58
     public static final double PERPENDICULAR_POSITION = -5.7; // .6
     public static final double SCORING_POSITION_NET = -7.8; // .65
     public static final double FLICK_WRIST_POSITION = -7.5; // .525
 
-    public static double kP = 1.5;
+    public static double kP = 1.75; // 1.5
     public static double kI = 0.0;
     public static double kD = 0;
 
@@ -126,7 +126,7 @@ public final class Constants {
     public static double angularStdDevMegatag2Factor =
         Double.POSITIVE_INFINITY; // No rotation data available
 
-    public static double maxAvgTagDistance = 3.0; // change this later
+    public static double maxAvgTagDistance = 2.0; // change this later
 
     // Boolean for Left/Right Reef
     public static boolean k_isRightReef = true;
@@ -149,13 +149,13 @@ public final class Constants {
 
     // AimNRange Reef Right
     public static final double k_aimReefRightTarget = 0;
-    public static final double k_rangeReefRightTarget = -0.56; //change this later
-    public static final double k_strafeReefRightTarget = 0.18;
+    public static final double k_rangeReefRightTarget = -0.56; // change this later
+    public static final double k_strafeReefRightTarget = 0.25;
 
     // AimNRange Reef Left
     public static final double k_aimReefLeftTarget = 0;
-    public static final double k_rangeReefLeftTarget = -0.54; //change this later
-    public static final double k_strafeReefLeftTarget = -0.18;
+    public static final double k_rangeReefLeftTarget = -0.54; // change this later
+    public static final double k_strafeReefLeftTarget = -0.05;
 
     // Prerequisites
     public static final double k_tzValidRange = -1.5;

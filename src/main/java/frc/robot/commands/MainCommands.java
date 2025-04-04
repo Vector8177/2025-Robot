@@ -21,17 +21,17 @@ public class MainCommands {
   public static Command runIntake(Intake intake) {
     return runOnce(
         () -> {
-          intake.setSpeed(-.3); 
+          intake.setSpeed(-.3);
         },
         intake);
   }
 
   public static Command runOuttake(Intake intake) {
-    return runOnce(() -> intake.setSpeed(.5), intake); 
+    return runOnce(() -> intake.setSpeed(.5), intake);
   }
 
   public static Command runOuttakeSlow(Intake intake) {
-    return runOnce(() -> intake.setSpeed(.15), intake); 
+    return runOnce(() -> intake.setSpeed(.15), intake);
   }
 
   public static Command flickWrist(Intake intake, Wrist wrist) {
@@ -73,14 +73,26 @@ public class MainCommands {
     return runOnce(() -> climber.setSpeed(0), climber);
   }
 
+  // public static Command setElevatorPosition(
+  //     Wrist wrist, Elevator elevator, double elevatorPosition, double wristPosition) {
+  //   return sequence(
+  //       run(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist)
+  //           .until(() -> wrist.atSetpoint()),
+  //       // waitSeconds(.20),
+  //       run(() -> elevator.setPosition(elevatorPosition), elevator)
+  //           .until(() -> elevator.atSetpoint()),
+  //       // waitSeconds(.20),
+  //       run(() -> wrist.setPosition(wristPosition), wrist).until(() -> wrist.atSetpoint()));
+  // }
+
   public static Command setElevatorPosition(
       Wrist wrist, Elevator elevator, double elevatorPosition, double wristPosition) {
     return sequence(
-        run(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist).until(() -> wrist.atSetpoint()),
-        // waitSeconds(.20),
-        run(() -> elevator.setPosition(elevatorPosition), elevator).until(() -> elevator.atSetpoint()),
-        // waitSeconds(.20),
-        run(() -> wrist.setPosition(wristPosition), wrist).until(() -> wrist.atSetpoint()));
+        runOnce(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist),
+        waitSeconds(.25),
+        runOnce(() -> elevator.setPosition(elevatorPosition), elevator),
+        waitSeconds(.25),
+        runOnce(() -> wrist.setPosition(wristPosition), wrist));
   }
 
   // manually move the elevator or wrist

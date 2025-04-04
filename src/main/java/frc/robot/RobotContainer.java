@@ -86,13 +86,10 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Stop Intake", MainCommands.stopIntake(intake));
         NamedCommands.registerCommand("Run Intake", MainCommands.runIntake(intake));
-        NamedCommands.registerCommand("Run Outtake", MainCommands.runOuttakeSlow(intake));
+        NamedCommands.registerCommand("Run Outake", MainCommands.runOuttake(intake));
 
         NamedCommands.registerCommand(
             "Set Intake Position", MainCommands.setIntakePosition(wrist, elevator));
-
-        // NamedCommands.registerCommand(
-        //     "Auto Align", DriveCommands.autoAlign(drive, () -> Vision.autoAlignValue()));
 
         NamedCommands.registerCommand(
             "Set Elevator L1",
@@ -166,9 +163,6 @@ public class RobotContainer {
 
         NamedCommands.registerCommand(
             "Set Intake Position", MainCommands.setIntakePosition(wrist, elevator));
-
-        // NamedCommands.registerCommand(
-        //     "Auto Align", DriveCommands.autoAlign(drive, () -> Vision.autoAlignValue()));
 
         NamedCommands.registerCommand(
             "Set Elevator L1",
