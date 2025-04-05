@@ -43,9 +43,9 @@ public final class Constants {
 
     public static final double INTAKE = 15; // 15
     public static final double L1 = 0;
-    public static final double L2 = 29; // 31
-    public static final double L3 = 60.5; // 62.5
-    public static final double L4 = 98; // 99
+    public static final double L2 = 27; // 27
+    public static final double L3 = 63.5; // 60.5
+    public static final double L4 = 98; // 98
     public static final double NET = 103.5; // 103.5
 
     public static final int MAX_VOLTAGE = 12;
@@ -71,7 +71,7 @@ public final class Constants {
 
     // These are relative encoder positions - comments are for absolute encoder -
     public static final double INTAKE_POSITION = -8.6; // .67
-    public static final double SCORING_POSITION_L1 = -4.5; // .35
+    public static final double SCORING_POSITION_L1 = -4.65; // .35
     public static final double L1_AUTO = -5.5; // .35
     public static final double SCORING_POSITION_L2 = -4.75; // .53
     public static final double SCORING_POSITION_L4 = -7; // .58
