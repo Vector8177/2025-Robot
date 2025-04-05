@@ -54,11 +54,11 @@ public class MainCommands {
   // Sets wrist and elevator to 0
   public static Command stow(Wrist wrist, Elevator elevator) {
     return sequence(
-        run(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist),
+        runOnce(() -> wrist.setPosition(WristConstants.PERPENDICULAR_POSITION), wrist),
         waitSeconds(.25),
-        runOnce(() -> elevator.setPosition(0), elevator),
+        runOnce(() -> elevator.setPosition(0.1), elevator),
         waitSeconds(.25),
-        runOnce(() -> wrist.setPosition(0), wrist));
+        runOnce(() -> wrist.setPosition(1), wrist));
   }
 
   public static Command setClimberDown(Climber climber) {
