@@ -42,12 +42,12 @@ import org.opencv.core.Mat;
  */
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
-  private RobotContainer robotContainer;
+  private final RobotContainer robotContainer;
 
-  private Timer matchTimer;
+  private final Timer matchTimer;
   private int matchTimeRemaining;
 
-  private Thread m_visionThread;
+  private final Thread m_visionThread;
 
   public Robot() {
     matchTimer = new Timer();
@@ -55,32 +55,19 @@ public class Robot extends LoggedRobot {
     m_visionThread =
         new Thread(
             () -> {
-              // Get the UsbCamera from CameraServer
               UsbCamera camera = CameraServer.startAutomaticCapture();
-              // Set the resolution
               camera.setResolution(640, 480);
 
-              // Get a CvSink. This will capture Mats from the camera
               CvSink cvSink = CameraServer.getVideo();
-              // Setup a CvSource. This will send images back to the Dashboard
               CvSource outputStream = CameraServer.putVideo("Rectangle", 640, 480);
 
-              // Mats are very memory expensive. Lets reuse this Mat.
               Mat mat = new Mat();
 
-              // This cannot be 'true'. The program will never exit if it is. This
-              // lets the robot stop this thread when restarting robot code or
-              // deploying.
               while (!Thread.interrupted()) {
-                // Tell the CvSink to grab a frame from the camera and put it
-                // in the source mat. If there is an error notify the output.
                 if (cvSink.grabFrame(mat) == 0) {
-                  // Send the output the error.
                   outputStream.notifyError(cvSink.getError());
-                  // skip the rest of the current iteration
                   continue;
                 }
-                // Give the output stream a new image to display
                 outputStream.putFrame(mat);
               }
             });

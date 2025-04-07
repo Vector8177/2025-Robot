@@ -57,10 +57,6 @@ public class Vision extends SubsystemBase {
     }
   }
 
-  public Rotation2d getTargetX(int cameraIndex) {
-    return inputs[cameraIndex].latestTargetObservation.tx();
-  }
-
   public static double autoAlignRotValue() {
     double tx = LimelightHelpers.getTX(VisionConstants.camera0Name);
     double alignSpeed = -Constants.VisionConstants.kP * tx;

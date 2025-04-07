@@ -20,9 +20,7 @@ public class MainCommands {
 
   public static Command runIntake(Intake intake) {
     return runOnce(
-        () -> {
-          intake.setSpeed(-.3);
-        },
+        () -> intake.setSpeed(-.3),
         intake);
   }
 

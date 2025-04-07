@@ -31,7 +31,7 @@ public class AutoAlign extends Command {
   // Bot Pose Target Space Relative [TX, TY, TZ, Pitch, Yaw, Roll]
   private double[] botPoseTargetSpace = new double[6];
 
-  private boolean m_isReefRight;
+  private final boolean m_isReefRight;
 
   /*
    * Tag Guide (Perspective is from respective DS):
@@ -192,7 +192,7 @@ public class AutoAlign extends Command {
         m_rangeController.calculate(botPoseTargetSpace[2] - m_rangeTarget);
 
     // Value scale up to robot max speed and invert (double cannot exceed 1.0)
-    targetingForwardSpeed *= 1.0 * m_swerveSubsystem.getMaxLinearSpeedMetersPerSec();
+    targetingForwardSpeed *= m_swerveSubsystem.getMaxLinearSpeedMetersPerSec();
     Logger.recordOutput("Forward PID Speed", targetingForwardSpeed);
     // records PID speed for further us as a variable
     return targetingForwardSpeed;

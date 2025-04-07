@@ -92,8 +92,6 @@ public final class Constants {
   public static final class VisionConstants {
     public static final double alignSpeed = -.5;
     public static final double alignRange = 5;
-    public static final double closeAlignSpeed = -.25;
-    public static final double closeAlignRange = 1;
     public static final double kP = .04;
 
     // AprilTag layout
@@ -102,7 +100,6 @@ public final class Constants {
 
     // Camera names, must match names configured on coprocessor
     public static String camera0Name = "limelight-bottom";
-    public static String camera1Name = "limelight-top";
 
     // Basic filtering thresholds
     public static double maxAmbiguity = 0.3;
@@ -168,8 +165,6 @@ public final class Constants {
 
     // For testing
     public static boolean k_positioning = false;
-
-    public static double[] k_botPoseTargetSpace = new double[6];
   }
 
   public static final class ClimberConstants {
