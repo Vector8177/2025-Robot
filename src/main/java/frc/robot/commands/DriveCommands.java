@@ -20,14 +20,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.drive.Drive;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.DoubleSupplier;
@@ -81,10 +79,15 @@ public class DriveCommands {
                   linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                   linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                   omega * drive.getMaxAngularSpeedRadPerSec());
-          DriverStation.getAlliance().isPresent();
-          DriverStation.getAlliance().get();
-          // .plus(new Rotation2d(Math.PI))
-          drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getRotation()));
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          drive.runVelocity(
+              ChassisSpeeds.fromFieldRelativeSpeeds(
+                  speeds,
+                  isFlipped
+                      ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                      : drive.getRotation()));
         },
         drive);
   }
@@ -108,23 +111,20 @@ public class DriveCommands {
             }),
 
         // Allow modules to orient
-        Commands.run(
-                () -> drive.runCharacterization(0.0),
-                drive)
-            .withTimeout(FF_START_DELAY),
+        Commands.run(() -> drive.runCharacterization(0.0), drive).withTimeout(FF_START_DELAY),
 
         // Start timer
         Commands.runOnce(timer::restart),
 
         // Accelerate and gather data
         Commands.run(
-                () -> {
-                  double voltage = timer.get() * FF_RAMP_RATE;
-                  drive.runCharacterization(voltage);
-                  velocitySamples.add(drive.getFFCharacterizationVelocity());
-                  voltageSamples.add(voltage);
-                },
-                drive));
+            () -> {
+              double voltage = timer.get() * FF_RAMP_RATE;
+              drive.runCharacterization(voltage);
+              velocitySamples.add(drive.getFFCharacterizationVelocity());
+              voltageSamples.add(voltage);
+            },
+            drive));
   }
 
   /** Measures the robot's wheel radius by spinning in a circle. */
@@ -136,8 +136,7 @@ public class DriveCommands {
         // Drive control sequence
         Commands.sequence(
             // Reset acceleration limiter
-            Commands.runOnce(
-                () -> limiter.reset(0.0)),
+            Commands.runOnce(() -> limiter.reset(0.0)),
 
             // Turn in place, accelerating up to full speed
             Commands.run(
@@ -162,11 +161,11 @@ public class DriveCommands {
 
             // Update gyro delta
             Commands.run(
-                    () -> {
-                      var rotation = drive.getRotation();
-                      state.gyroDelta += Math.abs(rotation.minus(state.lastAngle).getRadians());
-                      state.lastAngle = rotation;
-                    })));
+                () -> {
+                  var rotation = drive.getRotation();
+                  state.gyroDelta += Math.abs(rotation.minus(state.lastAngle).getRadians());
+                  state.lastAngle = rotation;
+                })));
   }
 
   private static class WheelRadiusCharacterizationState {

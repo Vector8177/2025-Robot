@@ -118,10 +118,14 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
 
+        NamedCommands.registerCommand("Auto Align Left", new AutoAlign(drive, false));
+        NamedCommands.registerCommand("Auto Align Right", new AutoAlign(drive, true));
+
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
+                new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+                new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
       }
 
       case SIM -> {
@@ -167,7 +171,7 @@ public class RobotContainer {
         NamedCommands.registerCommand(
             "Set Elevator L1",
             MainCommands.setElevatorPosition(
-                wrist, elevator, ElevatorConstants.L1, WristConstants.L1_AUTO));
+                wrist, elevator, ElevatorConstants.L1, WristConstants.SCORING_POSITION_L1));
         NamedCommands.registerCommand(
             "Set Elevator L2",
             MainCommands.setElevatorPosition(
@@ -193,7 +197,8 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation));
+                new VisionIOLimelight(VisionConstants.camera0Name, drive::getRotation),
+                new VisionIOLimelight(VisionConstants.camera1Name, drive::getRotation));
       }
     }
 
@@ -253,46 +258,7 @@ public class RobotContainer {
     driverController.povDown().onTrue(MainCommands.changeElevatorSetpoint(elevator, -1));
     driverController.povRight().onTrue(new AutoAlign(drive, true));
     driverController.povLeft().onTrue(new AutoAlign(drive, false));
-    driverController
-        .a()
-        .whileTrue(
-            Commands.sequence(
-                DriveCommands.joystickDrive(
-                    drive,
-                    () ->
-                        LimelightHelpers.getTX("limelight-bottom")
-                                > VisionConstants.alignRange
-                                    * Math.cos(drive.getRotation().getRadians())
-                            ? -VisionConstants.alignSpeed
-                                * Math.cos(drive.getRotation().getRadians())
-                            : LimelightHelpers.getTX("limelight-bottom")
-                                    < -VisionConstants.alignRange
-                                        * Math.cos(drive.getRotation().getRadians())
-                                ? VisionConstants.alignSpeed
-                                    * Math.cos(drive.getRotation().getRadians())
-                                : 0,
-                    () ->
-                        LimelightHelpers.getTX("limelight-bottom")
-                                > VisionConstants.alignRange
-                                    * Math.sin(drive.getRotation().getRadians())
-                            ? -VisionConstants.alignSpeed
-                                * Math.sin(drive.getRotation().getRadians())
-                            : LimelightHelpers.getTX("limelight-bottom")
-                                    < -VisionConstants.alignRange
-                                        * Math.sin(drive.getRotation().getRadians())
-                                ? VisionConstants.alignSpeed
-                                    * Math.sin(drive.getRotation().getRadians())
-                                : 0,
-                    () -> 0)));
     driverController.b().onTrue(MainCommands.flickWrist(intake, wrist));
-    // driverController
-    //     .a()
-    //     .whileTrue(
-    //         DriveCommands.joystickDrive(
-    //             drive,
-    //             () -> -driverController.getLeftY(),
-    //             () -> -driverController.getLeftX(),
-    //             Vision::autoAlignValue));
 
     driverController
         .rightTrigger()

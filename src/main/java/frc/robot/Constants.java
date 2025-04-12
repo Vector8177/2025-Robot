@@ -71,11 +71,10 @@ public final class Constants {
 
     // These are relative encoder positions - comments are for absolute encoder -
     public static final double INTAKE_POSITION = -8.6; // .67
-    public static final double SCORING_POSITION_L1 = -4.65; // .35
-    public static final double L1_AUTO = -5.5; // .35
+    public static final double SCORING_POSITION_L1 = -5; // .35
     public static final double SCORING_POSITION_L2 = -4.75; // .53
     public static final double SCORING_POSITION_L4 = -7; // .58
-    public static final double PERPENDICULAR_POSITION = -5.7; // .6
+    public static final double PERPENDICULAR_POSITION = -6.5; // .6
     public static final double SCORING_POSITION_NET = -7.8; // .65
     public static final double FLICK_WRIST_POSITION = -7.5; // .525
 
@@ -99,8 +98,8 @@ public final class Constants {
         AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
     // Camera names, must match names configured on coprocessor
-    public static String camera0Name = "limelight-bottom";
-
+    public static String camera0Name = "limelight-left"; // this is right
+    public static String camera1Name = "limelight-right"; // this is left
     // Basic filtering thresholds
     public static double maxAmbiguity = 0.3;
     public static double maxZError = 0.75;
@@ -136,23 +135,23 @@ public final class Constants {
     public static final double kI_aim = 0.0;
     public static final double kD_aim = 0.0;
 
-    public static final double kP_range = 0.35;
+    public static final double kP_range = 0.6;
     public static final double kI_range = 0.0;
     public static final double kD_range = 0.0;
 
-    public static final double kP_strafe = 0.35;
+    public static final double kP_strafe = 0.6;
     public static final double kI_strafe = 0.0;
     public static final double kD_strafe = 0.0;
 
     // AimNRange Reef Right
-    public static final double k_aimReefRightTarget = 0;
-    public static final double k_rangeReefRightTarget = -0.56; // change this later
-    public static final double k_strafeReefRightTarget = 0.25;
+    public static final double k_aimReefRightTarget = -6; // -5
+    public static final double k_rangeReefRightTarget = -0.58; // change this later
+    public static final double k_strafeReefRightTarget = 0.29; // .35
 
     // AimNRange Reef Left
-    public static final double k_aimReefLeftTarget = 0;
-    public static final double k_rangeReefLeftTarget = -0.54; // change this later
-    public static final double k_strafeReefLeftTarget = -0.05;
+    public static final double k_aimReefLeftTarget = 3; // 5
+    public static final double k_rangeReefLeftTarget = -0.58; // .55
+    public static final double k_strafeReefLeftTarget = -0.32; // .35
 
     // Prerequisites
     public static final double k_tzValidRange = -1.5;

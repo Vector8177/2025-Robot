@@ -19,9 +19,7 @@ public class MainCommands {
   }
 
   public static Command runIntake(Intake intake) {
-    return runOnce(
-        () -> intake.setSpeed(-.3),
-        intake);
+    return runOnce(() -> intake.setSpeed(-.3), intake);
   }
 
   public static Command runOuttake(Intake intake) {
@@ -56,7 +54,7 @@ public class MainCommands {
         waitSeconds(.25),
         runOnce(() -> elevator.setPosition(0.1), elevator),
         waitSeconds(.25),
-        runOnce(() -> wrist.setPosition(1), wrist));
+        runOnce(() -> wrist.setPosition(-.5), wrist));
   }
 
   public static Command setClimberDown(Climber climber) {

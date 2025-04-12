@@ -18,12 +18,10 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
@@ -101,7 +99,7 @@ public class Vision extends SubsystemBase {
         // Check whether to reject pose
         boolean rejectPose =
             observation.tagCount() == 0 // Must have at least one tag
-                || (observation.tagCount() == 1
+                || (observation.tagCount() > 1
                     && observation.ambiguity()
                         > VisionConstants.maxAmbiguity) // Cannot be high ambiguity
                 || Math.abs(observation.pose().getZ())
@@ -112,8 +110,8 @@ public class Vision extends SubsystemBase {
                 || observation.pose().getX() > VisionConstants.aprilTagLayout.getFieldLength()
                 || observation.pose().getY() < 0.0
                 || observation.pose().getY() > VisionConstants.aprilTagLayout.getFieldWidth()
-                || averageTagDistance > VisionConstants.maxAvgTagDistance
-                || DriverStation.isTeleopEnabled();
+                || averageTagDistance > VisionConstants.maxAvgTagDistance;
+        // || DriverStation.isTeleopEnabled();
 
         // Add pose to log
         robotPoses.add(observation.pose());

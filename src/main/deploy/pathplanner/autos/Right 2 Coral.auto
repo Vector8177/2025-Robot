@@ -21,6 +21,12 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Left"
+                }
+              },
+              {
                 "type": "wait",
                 "data": {
                   "waitTime": 1.0
@@ -98,6 +104,12 @@
                 "type": "named",
                 "data": {
                   "name": "Set Elevator L4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Right"
                 }
               },
               {

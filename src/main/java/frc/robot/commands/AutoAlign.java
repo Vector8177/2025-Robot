@@ -30,6 +30,7 @@ public class AutoAlign extends Command {
 
   // Bot Pose Target Space Relative [TX, TY, TZ, Pitch, Yaw, Roll]
   private double[] botPoseTargetSpace = new double[6];
+  private double[] botPoseTargetSpace2 = new double[6];
 
   private final boolean m_isReefRight;
 
@@ -64,6 +65,7 @@ public class AutoAlign extends Command {
 
   // Lil boolean for checking for "Tag In View"
   private boolean tiv;
+  private boolean tiv2;
 
   // Constants
   private double m_rangeTarget; // forward
@@ -89,10 +91,16 @@ public class AutoAlign extends Command {
     // Adds condition that filters out undesired IDs
     LimelightHelpers.SetFiducialIDFiltersOverride(VisionConstants.camera0Name, validIDs);
 
-    // Update BotPoseTargetSpace
+    // Update BotPoseTargetSpace 2 is using left camera
     botPoseTargetSpace =
         NetworkTableInstance.getDefault()
             .getTable(VisionConstants.camera0Name)
+            .getEntry("botpose_targetspace")
+            .getDoubleArray(new double[6]);
+
+    botPoseTargetSpace2 =
+        NetworkTableInstance.getDefault()
+            .getTable(VisionConstants.camera1Name)
             .getEntry("botpose_targetspace")
             .getDoubleArray(new double[6]);
 
@@ -101,6 +109,10 @@ public class AutoAlign extends Command {
         (LimelightHelpers.getTV(VisionConstants.camera0Name)
             && botPoseTargetSpace[2] > VisionConstants.k_tzValidRange
             && Math.abs(botPoseTargetSpace[4]) < VisionConstants.k_yawValidRange);
+    tiv2 =
+        (LimelightHelpers.getTV(VisionConstants.camera1Name)
+            && botPoseTargetSpace2[2] > VisionConstants.k_tzValidRange
+            && Math.abs(botPoseTargetSpace2[4]) < VisionConstants.k_yawValidRange);
 
     // Set Constants
     if (m_isReefRight) {
@@ -130,13 +142,25 @@ public class AutoAlign extends Command {
             .getEntry("botpose_targetspace")
             .getDoubleArray(new double[6]);
 
+    botPoseTargetSpace2 =
+        NetworkTableInstance.getDefault()
+            .getTable(VisionConstants.camera1Name)
+            .getEntry("botpose_targetspace")
+            .getDoubleArray(new double[6]);
+
     if (timer.get() > 1.5 || !tiv) VisionConstants.k_positioned = false;
 
     // Checks for a continued valid pose
-    if (tiv) {
+    if (tiv && m_isReefRight == false) {
       tiv =
           LimelightHelpers.getTV(VisionConstants.camera0Name)
               && botPoseTargetSpace[2] > VisionConstants.k_tzValidRange;
+      m_swerveSubsystem.runVelocity(
+          new ChassisSpeeds(limelight_range_PID(), limelight_strafe_PID(), limelight_aim_PID()));
+    } else if (tiv2 && m_isReefRight == true) {
+      tiv2 =
+          LimelightHelpers.getTV(VisionConstants.camera1Name)
+              && botPoseTargetSpace2[2] > VisionConstants.k_tzValidRange;
       m_swerveSubsystem.runVelocity(
           new ChassisSpeeds(limelight_range_PID(), limelight_strafe_PID(), limelight_aim_PID()));
     }
@@ -171,8 +195,12 @@ public class AutoAlign extends Command {
     m_strafeController.enableContinuousInput(-2, 2);
 
     // Calculates response based on difference in horizontal distance from tag to robot
-    double targetingStrafeSpeed =
-        m_strafeController.calculate(botPoseTargetSpace[0] - m_strafeTarget);
+    double targetingStrafeSpeed;
+    if (!m_isReefRight) {
+      targetingStrafeSpeed = m_strafeController.calculate(botPoseTargetSpace[0] - m_strafeTarget);
+    } else {
+      targetingStrafeSpeed = m_strafeController.calculate(botPoseTargetSpace2[0] - m_strafeTarget);
+    }
 
     // Value scale up to robot max speed (Double can't exceed 1.0)
     targetingStrafeSpeed *= -1.0 * m_swerveSubsystem.getMaxLinearSpeedMetersPerSec();
@@ -188,8 +216,12 @@ public class AutoAlign extends Command {
     m_rangeController.enableContinuousInput(-2, 0);
 
     // Calculates response based on difference in distance from tag to robot
-    double targetingForwardSpeed =
-        m_rangeController.calculate(botPoseTargetSpace[2] - m_rangeTarget);
+    double targetingForwardSpeed;
+    if (!m_isReefRight) {
+      targetingForwardSpeed = m_rangeController.calculate(botPoseTargetSpace[2] - m_rangeTarget);
+    } else {
+      targetingForwardSpeed = m_rangeController.calculate(botPoseTargetSpace2[2] - m_rangeTarget);
+    }
 
     // Value scale up to robot max speed and invert (double cannot exceed 1.0)
     targetingForwardSpeed *= m_swerveSubsystem.getMaxLinearSpeedMetersPerSec();
@@ -205,8 +237,12 @@ public class AutoAlign extends Command {
     m_aimController.enableContinuousInput(-30, 30);
 
     // Calculates response based on difference in angle from tag to robot
-    double targetingAngularVelocity =
-        m_aimController.calculate(botPoseTargetSpace[4] - m_aimTarget);
+    double targetingAngularVelocity;
+    if (!m_isReefRight) {
+      targetingAngularVelocity = m_aimController.calculate(botPoseTargetSpace[4] - m_aimTarget);
+    } else {
+      targetingAngularVelocity = m_aimController.calculate(botPoseTargetSpace2[4] - m_aimTarget);
+    }
 
     // Multiply by -1 because robot is CCW Positive. Multiply by a reduction
     // multiplier to reduce speed. Scale TX up with robot speed.

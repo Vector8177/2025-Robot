@@ -21,6 +21,12 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Left"
+                }
+              },
+              {
                 "type": "wait",
                 "data": {
                   "waitTime": 1.0
