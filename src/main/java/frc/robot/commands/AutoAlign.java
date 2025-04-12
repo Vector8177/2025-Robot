@@ -151,13 +151,13 @@ public class AutoAlign extends Command {
     if (timer.get() > 1.5 || !tiv) VisionConstants.k_positioned = false;
 
     // Checks for a continued valid pose
-    if (tiv && m_isReefRight == false) {
+    if (m_isReefRight == false && tiv) {
       tiv =
           LimelightHelpers.getTV(VisionConstants.camera0Name)
               && botPoseTargetSpace[2] > VisionConstants.k_tzValidRange;
       m_swerveSubsystem.runVelocity(
           new ChassisSpeeds(limelight_range_PID(), limelight_strafe_PID(), limelight_aim_PID()));
-    } else if (tiv2 && m_isReefRight == true) {
+    } else if (m_isReefRight == true && tiv2) {
       tiv2 =
           LimelightHelpers.getTV(VisionConstants.camera1Name)
               && botPoseTargetSpace2[2] > VisionConstants.k_tzValidRange;
@@ -173,19 +173,35 @@ public class AutoAlign extends Command {
 
   // Are we done yet? Finishes when threshold is reached or if no tag in view or if timer is reached
   public boolean isFinished() {
-    return (
-            // Strafe (Right Right Positioning)
-            Math.abs(botPoseTargetSpace[0] - m_strafeTarget) < VisionConstants.k_strafeThreshold)
-            &&
-            // Range (Distance to Tag)
-            Math.abs(botPoseTargetSpace[2] - m_rangeTarget) < VisionConstants.k_rangeThreshold
-            &&
-            // Aim (Angle)
-            Math.abs(botPoseTargetSpace[4] - m_aimTarget) < VisionConstants.k_aimThreshold
+    if (!m_isReefRight) {
+      return (
+              // Strafe (Right Right Positioning)
+              Math.abs(botPoseTargetSpace[0] - m_strafeTarget) < VisionConstants.k_strafeThreshold)
+              &&
+              // Range (Distance to Tag)
+              Math.abs(botPoseTargetSpace[2] - m_rangeTarget) < VisionConstants.k_rangeThreshold
+              &&
+              // Aim (Angle)
+              Math.abs(botPoseTargetSpace[4] - m_aimTarget) < VisionConstants.k_aimThreshold
 
-        // Other quit conditions
-        || !tiv
-        || timer.get() > 1.5;
+          // Other quit conditions
+          || !tiv
+          || timer.get() > 1.5;
+    } else {
+      return (
+              // Strafe (Right Right Positioning)
+              Math.abs(botPoseTargetSpace2[0] - m_strafeTarget) < VisionConstants.k_strafeThreshold)
+              &&
+              // Range (Distance to Tag)
+              Math.abs(botPoseTargetSpace2[2] - m_rangeTarget) < VisionConstants.k_rangeThreshold
+              &&
+              // Aim (Angle)
+              Math.abs(botPoseTargetSpace2[4] - m_aimTarget) < VisionConstants.k_aimThreshold
+
+          // Other quit conditions
+          || !tiv2
+          || timer.get() > 1.5;
+    }
   }
 
   // Advanced PID-assisted ranging control with Limelight's TX value from target-relative data

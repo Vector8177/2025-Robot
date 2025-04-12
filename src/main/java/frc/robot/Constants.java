@@ -89,9 +89,9 @@ public final class Constants {
   }
 
   public static final class VisionConstants {
-    public static final double alignSpeed = -.5;
-    public static final double alignRange = 5;
-    public static final double kP = .04;
+    // public static final double alignSpeed = -.5;
+    // public static final double alignRange = 5;
+    // public static final double kP = .04;
 
     // AprilTag layout
     public static AprilTagFieldLayout aprilTagLayout =
@@ -131,27 +131,27 @@ public final class Constants {
     public static boolean k_positioned = true;
 
     // PID for Tag Relative Control for Scoring
-    public static final double kP_aim = 0.10;
+    public static final double kP_aim = 0.15; // .1
     public static final double kI_aim = 0.0;
     public static final double kD_aim = 0.0;
 
-    public static final double kP_range = 0.6;
+    public static final double kP_range = 0.75; // .6
     public static final double kI_range = 0.0;
     public static final double kD_range = 0.0;
 
-    public static final double kP_strafe = 0.6;
+    public static final double kP_strafe = 0.75; // .6
     public static final double kI_strafe = 0.0;
     public static final double kD_strafe = 0.0;
 
     // AimNRange Reef Right
-    public static final double k_aimReefRightTarget = -6; // -5
+    public static final double k_aimReefRightTarget = -8; // -6
     public static final double k_rangeReefRightTarget = -0.58; // change this later
-    public static final double k_strafeReefRightTarget = 0.29; // .35
+    public static final double k_strafeReefRightTarget = 0.21; // .27
 
     // AimNRange Reef Left
     public static final double k_aimReefLeftTarget = 3; // 5
-    public static final double k_rangeReefLeftTarget = -0.58; // .55
-    public static final double k_strafeReefLeftTarget = -0.32; // .35
+    public static final double k_rangeReefLeftTarget = -0.61; // .55
+    public static final double k_strafeReefLeftTarget = -0.30; // .35
 
     // Prerequisites
     public static final double k_tzValidRange = -1.5;

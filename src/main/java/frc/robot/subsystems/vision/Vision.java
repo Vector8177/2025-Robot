@@ -13,7 +13,6 @@
 
 package frc.robot.subsystems.vision;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -23,9 +22,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.vision.VisionIO.PoseObservationType;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,18 +52,11 @@ public class Vision extends SubsystemBase {
     }
   }
 
-  public static double autoAlignRotValue() {
-    double tx = LimelightHelpers.getTX(VisionConstants.camera0Name);
-    double alignSpeed = -Constants.VisionConstants.kP * tx;
-    return MathUtil.clamp(alignSpeed, -1, 1);
-  }
-
   @Override
   public void periodic() {
     for (int i = 0; i < io.length; i++) {
       io[i].updateInputs(inputs[i]);
       Logger.processInputs("Vision/Camera" + i, inputs[i]);
-      Logger.recordOutput("Vision/autoalignvalue", autoAlignRotValue());
     }
 
     // Initialize logging values

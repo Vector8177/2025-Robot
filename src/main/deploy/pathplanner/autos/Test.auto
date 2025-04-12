@@ -1,0 +1,103 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Start to Reef"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Set Elevator L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Left"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Run Outake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Set Intake Position"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Half human Player"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Run Intake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Half to reef"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Set Elevator L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align Right"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Run Outake"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
