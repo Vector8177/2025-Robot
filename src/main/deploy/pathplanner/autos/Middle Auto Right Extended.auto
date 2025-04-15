@@ -7,7 +7,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 4.0
+            "waitTime": 2.0
           }
         },
         {
@@ -81,6 +81,91 @@
           "type": "path",
           "data": {
             "pathName": "Middle Human Station Right"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Run Intake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Human Station Right Middle"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Set Elevator L4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Left"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Flick Wrist"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle Move Back Left"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Set Intake Position"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         }
       ]

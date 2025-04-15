@@ -102,7 +102,7 @@ public final class Constants {
     public static String camera1Name = "limelight-right"; // this is left
     // Basic filtering thresholds
     public static double maxAmbiguity = 0.3;
-    public static double maxZError = 0.75;
+    public static double maxZError = .75;
 
     // Standard deviation baselines, for 1-meter distance and 1 tag
     // (Adjusted automatically based on distance and # of tags)
@@ -149,8 +149,8 @@ public final class Constants {
     public static final double k_strafeReefRightTarget = 0.21; // .27
 
     // AimNRange Reef Left
-    public static final double k_aimReefLeftTarget = 3; // 5
-    public static final double k_rangeReefLeftTarget = -0.61; // .55
+    public static final double k_aimReefLeftTarget = 14.8; // 5
+    public static final double k_rangeReefLeftTarget = -0.57; // .55
     public static final double k_strafeReefLeftTarget = -0.30; // .35
 
     // Prerequisites
