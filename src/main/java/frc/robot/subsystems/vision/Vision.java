@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -154,6 +155,20 @@ public class Vision extends SubsystemBase {
       allRobotPoses.addAll(robotPoses);
       allRobotPosesAccepted.addAll(robotPosesAccepted);
       allRobotPosesRejected.addAll(robotPosesRejected);
+
+      Logger.recordOutput(
+          "Camera 0 BotPose",
+          NetworkTableInstance.getDefault()
+              .getTable(VisionConstants.camera0Name)
+              .getEntry("botpose_targetspace")
+              .getDoubleArray(new double[6]));
+
+      Logger.recordOutput(
+          "Camera 1 BotPose",
+          NetworkTableInstance.getDefault()
+              .getTable(VisionConstants.camera1Name)
+              .getEntry("botpose_targetspace")
+              .getDoubleArray(new double[6]));
     }
 
     // Log summary data

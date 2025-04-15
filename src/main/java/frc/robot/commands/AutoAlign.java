@@ -91,18 +91,18 @@ public class AutoAlign extends Command {
     // Adds condition that filters out undesired IDs
     LimelightHelpers.SetFiducialIDFiltersOverride(VisionConstants.camera0Name, validIDs);
 
-    // Update BotPoseTargetSpace 2 is using left camera
+    // Update BotPoseTargetSpace 2
     botPoseTargetSpace =
         NetworkTableInstance.getDefault()
             .getTable(VisionConstants.camera0Name)
             .getEntry("botpose_targetspace")
-            .getDoubleArray(new double[6]);
+            .getDoubleArray(new double[6]); // using the right camera
 
     botPoseTargetSpace2 =
         NetworkTableInstance.getDefault()
             .getTable(VisionConstants.camera1Name)
             .getEntry("botpose_targetspace")
-            .getDoubleArray(new double[6]);
+            .getDoubleArray(new double[6]); // using the left camera
 
     // Checks for TIV
     tiv =

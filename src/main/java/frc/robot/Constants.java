@@ -41,11 +41,11 @@ public final class Constants {
     public static final int LEFT_MOTOR_ID = 31; // lead motor
     public static final int RIGHT_MOTOR_ID = 32;
 
-    public static final double INTAKE = 15; // 15
+    public static final double INTAKE = 19; // 15
     public static final double L1 = 0;
-    public static final double L2 = 27; // 27
-    public static final double L3 = 63.5; // 60.5
-    public static final double L4 = 98; // 98
+    public static final double L2 = 31; // 27
+    public static final double L3 = 64.5; // 60.5
+    public static final double L4 = 103; // 98
     public static final double NET = 103.5; // 103.5
 
     public static final int MAX_VOLTAGE = 12;
@@ -73,7 +73,7 @@ public final class Constants {
     public static final double INTAKE_POSITION = -8.6; // .67
     public static final double SCORING_POSITION_L1 = -5; // .35
     public static final double SCORING_POSITION_L2 = -4.75; // .53
-    public static final double SCORING_POSITION_L4 = -7; // .58
+    public static final double SCORING_POSITION_L4 = -6.70; // .58
     public static final double PERPENDICULAR_POSITION = -6.5; // .6
     public static final double SCORING_POSITION_NET = -7.8; // .65
     public static final double FLICK_WRIST_POSITION = -7.5; // .525
@@ -98,8 +98,8 @@ public final class Constants {
         AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
     // Camera names, must match names configured on coprocessor
-    public static String camera0Name = "limelight-left"; // this is right
-    public static String camera1Name = "limelight-right"; // this is left
+    public static String camera0Name = "limelight-left"; // this is the right LL
+    public static String camera1Name = "limelight-right"; // this is the left LL
     // Basic filtering thresholds
     public static double maxAmbiguity = 0.3;
     public static double maxZError = .75;
@@ -144,16 +144,17 @@ public final class Constants {
     public static final double kD_strafe = 0.0;
 
     // AimNRange Reef Right
-    public static final double k_aimReefRightTarget = -8; // -6
-    public static final double k_rangeReefRightTarget = -0.58; // change this later
-    public static final double k_strafeReefRightTarget = 0.21; // .27
+    public static final double k_aimReefRightTarget = 3; // -8
+    public static final double k_rangeReefRightTarget = -0.58; // -.58
+    public static final double k_strafeReefRightTarget = 0.14; // .21
 
     // AimNRange Reef Left
-    public static final double k_aimReefLeftTarget = 14.8; // 5
+    public static final double k_aimReefLeftTarget = 5; // 5
     public static final double k_rangeReefLeftTarget = -0.57; // .55
-    public static final double k_strafeReefLeftTarget = -0.30; // .35
+    public static final double k_strafeReefLeftTarget = -0.25; // .35
 
     // Prerequisites
+
     public static final double k_tzValidRange = -1.5;
     public static final double k_yawValidRange = 35;
 
