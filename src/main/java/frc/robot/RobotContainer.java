@@ -297,11 +297,11 @@ public class RobotContainer {
         .onTrue(
             MainCommands.setElevatorPosition(
                 wrist, elevator, ElevatorConstants.L4, WristConstants.SCORING_POSITION_L4));
-    operatorController
-        .b()
-        .onTrue(
-            MainCommands.setElevatorPosition(
-                wrist, elevator, ElevatorConstants.NET, WristConstants.SCORING_POSITION_NET));
+    // operatorController
+    //     .b()
+    //     .onTrue(
+    //         MainCommands.setElevatorPosition(
+    //             wrist, elevator, ElevatorConstants.NET, WristConstants.SCORING_POSITION_NET));
     operatorController.a().onTrue(MainCommands.setIntakePosition(wrist, elevator));
     operatorController
         .x()

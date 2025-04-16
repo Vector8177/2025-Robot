@@ -41,11 +41,11 @@ public final class Constants {
     public static final int LEFT_MOTOR_ID = 31; // lead motor
     public static final int RIGHT_MOTOR_ID = 32;
 
-    public static final double INTAKE = 19; // 15
+    public static final double INTAKE = 16.5; // 17.5
     public static final double L1 = 0;
-    public static final double L2 = 31; // 27
-    public static final double L3 = 64.5; // 60.5
-    public static final double L4 = 103; // 98
+    public static final double L2 = 30; // 31
+    public static final double L3 = 63.5; // 64.5
+    public static final double L4 = 102; // 103
     public static final double NET = 103.5; // 103.5
 
     public static final int MAX_VOLTAGE = 12;
@@ -146,7 +146,7 @@ public final class Constants {
     // AimNRange Reef Right
     public static final double k_aimReefRightTarget = 3; // -8
     public static final double k_rangeReefRightTarget = -0.58; // -.58
-    public static final double k_strafeReefRightTarget = 0.14; // .21
+    public static final double k_strafeReefRightTarget = 0.18; // .21
 
     // AimNRange Reef Left
     public static final double k_aimReefLeftTarget = 5; // 5
