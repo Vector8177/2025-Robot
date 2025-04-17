@@ -30,6 +30,8 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
+    Logger.processInputs("Elevator", inputs);
+
     Logger.recordOutput("Elevator Position", io.getPosition());
 
     double pidMotorSpeed =

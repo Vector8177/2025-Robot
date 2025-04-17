@@ -21,9 +21,15 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Left"
+                }
+              },
+              {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 0.25
                 }
               },
               {
@@ -35,7 +41,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 0.25
                 }
               },
               {
@@ -72,7 +78,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 1.0
                 }
               },
               {
@@ -101,9 +107,15 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "Auto Align Left"
+                }
+              },
+              {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 0.25
                 }
               },
               {
@@ -115,7 +127,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 0.25
                 }
               },
               {
@@ -131,12 +143,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Reef Rotate Forward"
           }
         }
       ]
