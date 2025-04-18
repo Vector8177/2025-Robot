@@ -16,10 +16,6 @@ package frc.robot;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.DriveMotorArrangement;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.SteerMotorArrangement;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,7 +28,6 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-import org.opencv.core.Mat;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -47,32 +42,32 @@ public class Robot extends LoggedRobot {
   private final Timer matchTimer;
   private int matchTimeRemaining;
 
-  private final Thread m_visionThread;
+  // private final Thread m_visionThread;
 
   public Robot() {
     matchTimer = new Timer();
     matchTimeRemaining = 150;
-    m_visionThread =
-        new Thread(
-            () -> {
-              UsbCamera camera = CameraServer.startAutomaticCapture();
-              camera.setResolution(640, 480);
+    // m_visionThread =
+    //     new Thread(
+    //         () -> {
+    //           UsbCamera camera = CameraServer.startAutomaticCapture();
+    //           camera.setResolution(640, 480);
 
-              CvSink cvSink = CameraServer.getVideo();
-              CvSource outputStream = CameraServer.putVideo("Rectangle", 640, 480);
+    //           CvSink cvSink = CameraServer.getVideo();
+    //           CvSource outputStream = CameraServer.putVideo("Rectangle", 640, 480);
 
-              Mat mat = new Mat();
+    //           Mat mat = new Mat();
 
-              while (!Thread.interrupted()) {
-                if (cvSink.grabFrame(mat) == 0) {
-                  outputStream.notifyError(cvSink.getError());
-                  continue;
-                }
-                outputStream.putFrame(mat);
-              }
-            });
-    m_visionThread.setDaemon(true);
-    m_visionThread.start();
+    //           while (!Thread.interrupted()) {
+    //             if (cvSink.grabFrame(mat) == 0) {
+    //               outputStream.notifyError(cvSink.getError());
+    //               continue;
+    //             }
+    //             outputStream.putFrame(mat);
+    //           }
+    //         });
+    // m_visionThread.setDaemon(true);
+    // m_visionThread.start();
 
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);

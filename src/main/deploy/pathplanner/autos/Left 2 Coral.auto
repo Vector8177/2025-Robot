@@ -60,21 +60,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Reef to Left Human"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Reef to Left Human"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake"
+                }
+              }
+            ]
           }
         },
         {
           "type": "sequential",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Run Intake"
-                }
-              },
               {
                 "type": "wait",
                 "data": {
